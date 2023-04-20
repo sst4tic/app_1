@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "116316009624",
+    "project_id": "yiwucloud",
+    "storage_bucket": "yiwucloud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116316009624:android:bb7585e4e78f095c21cced",
+        "android_client_info": {
+          "package_name": "com.yiwu.yiwucloud.yiwucloud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116316009624-und2k2delh91hplne82qbij84qhbbppe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBHmbbGsu30O8ddxpx-B9j6RzQBzmHf_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116316009624-und2k2delh91hplne82qbij84qhbbppe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
