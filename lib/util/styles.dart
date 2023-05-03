@@ -119,6 +119,9 @@ final lightTheme = ThemeData(
   radioTheme: RadioThemeData(
     fillColor: MaterialStateProperty.all(ColorStyles.primaryColor),
   ),
+  listTileTheme: const ListTileThemeData(
+    tileColor: Colors.white,
+  ),
   fontFamily: 'NotoSans',
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

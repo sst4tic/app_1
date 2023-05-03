@@ -1,8 +1,8 @@
-part of 'home_page_bloc.dart';
+part of 'service_bloc.dart';
 
-abstract class HomePageEvent {}
+abstract class ServiceEvent {}
 
-class LoadServices extends HomePageEvent {
+class LoadServices extends ServiceEvent {
   LoadServices({
     this.completer,
   });

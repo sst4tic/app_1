@@ -61,8 +61,7 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          ListView(
             children: <Widget>[
               SizedBox(
                 height: 100.h,
@@ -98,7 +97,7 @@ class _LoginState extends State<Login> {
                     child: Column(
                       children: [
                         SizedBox(height: 10.h),
-                        Text(
+                        const Text(
                           'Вход в аккаунт',
                           style: TextStyles.loginTitle,
                         ),

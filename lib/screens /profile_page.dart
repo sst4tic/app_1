@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yiwucloud/util/constants.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
+import '../models /build_user.dart';
 import '../util/styles.dart';
-
+import '../util/user.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,11 +19,29 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late Future<User> _future;
   late AuthBloc _authBloc;
+  String version = '';
+
+
+  static Future<User> getUser() async {
+    var url = '${Constants.API_URL_DOMAIN}action=user_profile';
+    final response =
+    await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return User.fromJson(body['data']);
+  }
+
+  Future<void> refresh() async {
+    setState(() {
+      _future = getUser();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    _future = getUser();
     _authBloc = BlocProvider.of<AuthBloc>(context);
   }
 
@@ -37,8 +60,24 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
                   borderRadius: const BorderRadius.all(Radius.circular(12))),
-              padding:  REdgeInsets.symmetric(horizontal: 10),
+              padding: REdgeInsets.symmetric(horizontal: 10),
               height: 80,
+              child: FutureBuilder<User>(
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('data');
+                    // return buildProfileShimmer();
+                  } else if (snapshot.hasData) {
+                    final user = snapshot.data!;
+                    return buildUser(user);
+                  } else {
+                    return const Center(
+                      child: Text('Не удалось загрузить пользователя'),
+                    );
+                  }
+                },
+              ),
             ),
             const SizedBox(height: 30),
             Text('Аккаунт'.toUpperCase(), style: TextStyles.headerStyle2),
@@ -83,7 +122,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const Divider(
               height: 0,
-              thickness: 2,
             ),
             GestureDetector(
               onTap: () async {

@@ -4,4 +4,5 @@ class Constants {
   static String USER_TOKEN = '';
   static String header = 'Authorization';
   static String bearer = '';
+  static headers() => {header: bearer, 'user-agent': 'YiwuMart: test'};
 }

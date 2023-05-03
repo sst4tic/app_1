@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:yiwucloud/screens%20/service_page.dart';
-import 'package:yiwucloud/util/function_class.dart';
-import 'package:yiwucloud/util/styles.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/home_page_bloc/home_page_bloc.dart';
+import '../models /build_services.dart';
+import 'notification_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -12,38 +13,49 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const List<String> _items = <String>['CRM', 'Склад', 'Сотрудники', 'Бухгалтерия', 'Аналитика'];
-  static const List<String> subtitles = <String>['Лиды и продажи', 'Склады, магазины, товары', 'Управление сотрудниками', 'Учеты, касса, расходы', 'Продажи, маркетинг, сотрудники'];
+  final _homePageBloc = HomePageBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _homePageBloc.add(LoadServices());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('Все сервисы'),
-      ),
-      body: GridView.builder(
-        padding: REdgeInsets.all(8),
-          gridDelegate: GridDelegateClass.gridDelegate,
-      itemCount: _items.length,
-      itemBuilder: (BuildContext context, int index) {
-          var limSubtitles = Func().strLimit(subtitles[index], 20);
-        return GestureDetector(
-          onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => const ServicePage(), fullscreenDialog: true)),
-          child: Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                 const Icon(Icons.ac_unit, size: 40,),
-                SizedBox(height: 10.h),
-                Text(_items[index], style: const TextStyle(fontSize: 14)),
-                SizedBox(height: 6.h),
-                Text(limSubtitles, style: const TextStyle(fontSize: 12, color: Colors.grey), textAlign: TextAlign.center, maxLines: 1,),
-              ],
-            )
-          ),
-        );
-      },
-      )
-    );
+        appBar: AppBar(
+          centerTitle: false,
+          title: const Text('Все сервисы'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationPage()));
+              },
+              icon: const Icon(Icons.notifications),
+            ),
+          ],
+        ),
+        body: BlocProvider<HomePageBloc>(
+          create: (context) => HomePageBloc(),
+          child: BlocBuilder<HomePageBloc, HomePageState>(
+            bloc: _homePageBloc,
+            builder: (context, state) {
+              if (state is HomePageLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is HomePageLoaded) {
+                return buildServices(state.services);
+              } else if (state is HomePageLoadingFailure) {
+                return Text(state.exception.toString());
+              } else {
+                return const Center(
+                  child: Text('ELSE'),
+                );
+              }
+            }),
+        ));
   }
 }

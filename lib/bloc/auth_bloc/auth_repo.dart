@@ -1,5 +1,5 @@
-
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/bloc/auth_bloc/abstract_auth.dart';
 import 'package:yiwucloud/util/function_class.dart';
@@ -34,5 +34,19 @@ class AuthRepo implements AbstractAuth {
     } on DioError catch (e) {
       return e.response;
     }
+  }
+  @override
+  getFirebaseToken() async {
+    // if (Constants.USER_TOKEN.isEmpty) {
+    //   FirebaseMessaging.instance.deleteToken();
+    //   print('TEST PRINT');
+    // } else {
+      FirebaseMessaging.instance.getToken().then((value) async {
+        // var url =
+        //     '${Constants.API_URL_DOMAIN}action=fcm_device_token_post&fcm_device_token=$value';
+        // var resp = await http.get(Uri.parse(url), headers: Constants.headers());
+        // return resp;
+      });
+    // }
   }
 }

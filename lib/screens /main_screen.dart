@@ -91,9 +91,6 @@ class MainScreenState extends State<MainScreen> {
                 return const HomePage();
               case 1:
                 return CupertinoTabView(
-                  routes: <String, WidgetBuilder>{
-                    '/': (BuildContext context) => const ProfilePage(),
-                  },
                   navigatorKey: tabNavKeys[index],
                   builder: (BuildContext context) => const ProfilePage(),
                 );
