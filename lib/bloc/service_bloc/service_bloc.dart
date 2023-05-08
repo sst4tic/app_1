@@ -19,7 +19,6 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
       );
       final body = jsonDecode(response.body);
       final List<dynamic> data = body['data'];
-      print(data);
       final services = data.map((item) => Services.fromJson(item)).toList();
       return services;
     }
@@ -31,7 +30,6 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
           emit(ServiceLoaded(services: services));
         }
       } catch (e) {
-        print(e);
         emit(ServiceLoadingFailure(exception: e));
       } finally {
         event.completer?.complete();

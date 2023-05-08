@@ -71,7 +71,7 @@ class MainScreenState extends State<MainScreen> {
           key: myKey,
           tabBar: CupertinoTabBar(
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            activeColor: Theme.of(context).canvasColor,
+            activeColor: const Color.fromRGBO(232, 69, 69, 1),
             inactiveColor: Theme.of(context).disabledColor,
             iconSize: 27,
             currentIndex: currentIndex,

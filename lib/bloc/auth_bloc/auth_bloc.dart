@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/util/constants.dart';
@@ -16,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({required this.authRepo}) : super(AuthInitial()) {
     _checkAuthenticationStatus();
+    on<AppStarted>(_onAppStarted);
     on<LoggedIn>((event, emit) {
       emit(Authenticated(token: event.token));
     });
@@ -25,7 +27,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginEvent>((event, emit) async {
       authRepo.getFirebaseToken();
       final response = await authRepo.login(event.email, event.password, event.context);
-      print(response.data['success']);
       Func().showSnackbar(event.context, response.data['message'], response.data['success']);
       if (response.data['success'] == true) {
         SharedPreferences pref = await SharedPreferences.getInstance();
@@ -63,25 +64,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     return super.close();
   }
 
-  Stream<AuthState> mapEventToState(AuthEvent event) async* {
-    if (event is AppStarted) {
-      final isAuthenticated = await authRepo.getToken();
-      if (isAuthenticated != '') {
-        yield Authenticated(token: isAuthenticated.toString());
-      } else {
-        yield Unauthenticated(token: isAuthenticated.toString());
-      }
-    } else if (event is LoggedIn) {
-      yield Authenticated(token: event.token);
-    } else if (event is LoggedOut) {
-      yield Unauthenticated(token: '');
-    } else if (event is LoginEvent) {
-      final data = await authRepo.login(event.email, event.password, event.context);
-      if (data['api_token'] != '') {
-        yield Authenticated(token: data['api_token']);
-      } else {
-        yield Unauthenticated(token: 'token');
-      }
+  Future<void> _onAppStarted(AppStarted event, Emitter<AuthState> emit) async {
+    final isAuthenticated = await authRepo.getToken();
+    if (isAuthenticated != '') {
+      emit(Authenticated(token: isAuthenticated.toString()));
+    } else {
+      emit(Unauthenticated(token: isAuthenticated.toString()));
     }
   }
 }

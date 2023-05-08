@@ -2,94 +2,94 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final darkTheme = ThemeData(
-  primaryColor: Colors.black,
-  accentColor: ColorStyles.accentColor,
-  canvasColor: Colors.white,
-  disabledColor: Colors.white,
-  primaryColorLight: Colors.white,
-  scaffoldBackgroundColor: ColorStyles.bodyColorDark,
-  brightness: Brightness.dark,
-  progressIndicatorTheme: const ProgressIndicatorThemeData(
-    color: Colors.white,
-  ),
-  appBarTheme: AppBarTheme(
-    titleTextStyle: const TextStyle(
-        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
-    elevation: Platform.isIOS ? 0 : 1,
-    color: ColorStyles.accentColor,
-    iconTheme: const IconThemeData(color: ColorStyles.bodyColor),
-  ),
-  sliderTheme: const SliderThemeData(
-    overlayColor: Colors.transparent,
-  ),
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
-    bodyMedium: TextStyle(fontSize: 12, color: Colors.white),
-    titleMedium: TextStyle(
-        fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white),
-    // appbar title
-    titleSmall: TextStyle(
-        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
-  ),
-  radioTheme: RadioThemeData(
-    fillColor: MaterialStateProperty.all(Colors.white),
-  ),
-  fontFamily: 'NotoSans',
-  elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(ColorStyles.primaryColor))),
-  textSelectionTheme: const TextSelectionThemeData(
-    cursorColor: Colors.white,
-  ),
-  inputDecorationTheme: InputDecorationTheme(
-    labelStyle: TextStyle(
-      color: Colors.white,
-      fontSize: 16.sp,
-    ),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(18),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.white, width: 1),
-      borderRadius: BorderRadius.circular(18),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.red, width: 1),
-      borderRadius: BorderRadius.circular(18),
-    ),
-  ),
-  expansionTileTheme: const ExpansionTileThemeData(
-      textColor: Colors.white, iconColor: Colors.grey
-      // collapsedTextColor: Colors.white
-      ),
-  textButtonTheme: TextButtonThemeData(
-    style: ButtonStyle(
-      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-      textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-      )),
-    ),
-  ),
-  tabBarTheme: TabBarTheme(
-    labelColor: Colors.white,
-    unselectedLabelColor: Colors.grey,
-    indicator: BoxDecoration(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(10.0),
-      ),
-      color: Colors.grey[800]!,
-    ),
-    labelStyle: const TextStyle(),
-  ),
-);
+// final darkTheme = ThemeData(
+//   primaryColor: Colors.black,
+//   accentColor: ColorStyles.accentColor,
+//   canvasColor: Colors.white,
+//   disabledColor: Colors.white,
+//   primaryColorLight: Colors.white,
+//   scaffoldBackgroundColor: ColorStyles.bodyColorDark,
+//   brightness: Brightness.dark,
+//   progressIndicatorTheme: const ProgressIndicatorThemeData(
+//     color: Colors.white,
+//   ),
+//   appBarTheme: AppBarTheme(
+//     titleTextStyle: const TextStyle(
+//         color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+//     elevation: Platform.isIOS ? 0 : 1,
+//     color: ColorStyles.accentColor,
+//     iconTheme: const IconThemeData(color: ColorStyles.bodyColor),
+//   ),
+//   sliderTheme: const SliderThemeData(
+//     overlayColor: Colors.transparent,
+//   ),
+//   textTheme: const TextTheme(
+//     bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
+//     bodyMedium: TextStyle(fontSize: 12, color: Colors.white),
+//     titleMedium: TextStyle(
+//         fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white),
+//     // appbar title
+//     titleSmall: TextStyle(
+//         color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+//   ),
+//   radioTheme: RadioThemeData(
+//     fillColor: MaterialStateProperty.all(Colors.white),
+//   ),
+//   fontFamily: 'NotoSans',
+//   elevatedButtonTheme: ElevatedButtonThemeData(
+//       style: ButtonStyle(
+//           backgroundColor:
+//               MaterialStateProperty.all<Color>(ColorStyles.primaryColor))),
+//   textSelectionTheme: const TextSelectionThemeData(
+//     cursorColor: Colors.white,
+//   ),
+//   inputDecorationTheme: InputDecorationTheme(
+//     labelStyle: TextStyle(
+//       color: Colors.white,
+//       fontSize: 16.sp,
+//     ),
+//     border: OutlineInputBorder(
+//       borderRadius: BorderRadius.circular(18),
+//     ),
+//     focusedBorder: OutlineInputBorder(
+//       borderSide: const BorderSide(color: Colors.white, width: 1),
+//       borderRadius: BorderRadius.circular(18),
+//     ),
+//     errorBorder: OutlineInputBorder(
+//       borderSide: const BorderSide(color: Colors.red, width: 1),
+//       borderRadius: BorderRadius.circular(18),
+//     ),
+//   ),
+//   expansionTileTheme: const ExpansionTileThemeData(
+//       textColor: Colors.white, iconColor: Colors.grey
+//       // collapsedTextColor: Colors.white
+//       ),
+//   textButtonTheme: TextButtonThemeData(
+//     style: ButtonStyle(
+//       foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+//       textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(
+//         fontSize: 16,
+//         fontWeight: FontWeight.bold,
+//       )),
+//     ),
+//   ),
+//   tabBarTheme: TabBarTheme(
+//     labelColor: Colors.white,
+//     unselectedLabelColor: Colors.grey,
+//     indicator: BoxDecoration(
+//       borderRadius: const BorderRadius.all(
+//         Radius.circular(10.0),
+//       ),
+//       color: Colors.grey[800]!,
+//     ),
+//     labelStyle: const TextStyle(),
+//   ),
+// );
 
 final lightTheme = ThemeData(
   primaryColor: Colors.white,
   accentColor: Colors.white,
-  canvasColor: const Color.fromRGBO(232, 69, 69, 1),
+  canvasColor:ColorStyles.bodyColor,
   disabledColor: ColorStyles.primaryColor,
   primaryColorLight: Colors.black,
   scaffoldBackgroundColor: ColorStyles.bodyColor,
@@ -121,6 +121,7 @@ final lightTheme = ThemeData(
   ),
   listTileTheme: const ListTileThemeData(
     tileColor: Colors.white,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
   ),
   fontFamily: 'NotoSans',
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -218,10 +219,23 @@ class ColorStyles {
   static Color darkShimmerHighlightColor = Colors.grey[700]!;
 }
 
-class BorderStyles {
-  static MaterialStateProperty<OutlinedBorder> buttonBorder =
-      MaterialStateProperty.all<RoundedRectangleBorder>(
-    RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+class Decorations {
+  static InputDecoration dropdownDecoration = InputDecoration(
+    contentPadding: REdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    filled: true,
+    fillColor: ColorStyles.bodyColor,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    ),
   );
 }
 

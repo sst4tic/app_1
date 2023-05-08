@@ -66,8 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 future: _future,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('data');
-                    // return buildProfileShimmer();
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
                     final user = snapshot.data!;
                     return buildUser(user);

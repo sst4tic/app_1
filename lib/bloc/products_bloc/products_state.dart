@@ -25,7 +25,9 @@ class ProductsLoaded extends ProductsState {
   });
 
   final List<Product> products;
+  @override
   final int page;
+  @override
   final bool hasMore;
 
   List<Object?> get props => [products, page, hasMore];
@@ -53,12 +55,3 @@ class ProductsLoadingMore extends ProductsState {
   List<Object?> get props => [completer, products];
 }
 
-class ProductsLoadingMoreFailure extends ProductsState {
-  ProductsLoadingMoreFailure({
-    this.exception,
-  });
-
-  final Object? exception;
-
-  List<Object?> get props => [exception];
-}

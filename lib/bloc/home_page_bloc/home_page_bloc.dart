@@ -16,7 +16,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           headers: Constants.headers()
       );
       final body = jsonDecode(response.body);
-      print(body);
       final List<dynamic> data = body['data'];
       final services = data.map((item) => Services.fromJson(item)).toList();
       return services;

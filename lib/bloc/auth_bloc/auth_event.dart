@@ -13,10 +13,10 @@ class LoggedIn extends AuthEvent {
 class LoggedOut extends AuthEvent {}
 
 class LoginEvent extends AuthEvent {
-  final context;
+  final BuildContext context;
   final String email;
   final String password;
 
-  LoginEvent({required this.email, required this.password, this.context});
+  LoginEvent({required this.email, required this.password, required this.context});
   List<Object> get props => [email, password, context];
 }
