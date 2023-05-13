@@ -11,14 +11,18 @@ part 'products_state.dart';
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductsBloc() : super(ProductsInitial()) {
     final productsRepo = ProductsRepo();
-    int page = 1;
+    int pageWithFilters = 1;
     List<Product> products = [];
-
     on<LoadProducts>((event, emit) async {
       try {
         if (state is! ProductsLoading) {
           emit(ProductsLoading());
-          products = await productsRepo.getProducts(page: page);
+          products = await productsRepo.getProducts(
+              page: 1,
+              media: event.media,
+              orderby: event.orderby,
+              availability: event.availability);
+          pageWithFilters = 1;
           emit(ProductsLoaded(products: products, page: 1, hasMore: true));
         }
       } catch (e) {
@@ -32,13 +36,17 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       try {
         if (state is ProductsLoaded && state.hasMore) {
           final products = (state as ProductsLoaded).products;
-          final newProducts =
-              await productsRepo.getProducts(page: state.page + 1);
+          final newProducts = await productsRepo.getProducts(
+              page: pageWithFilters + 1,
+              media: event.media,
+              orderby: event.orderby,
+              availability: event.availability);
           products.addAll(newProducts);
           emit(ProductsLoaded(
               products: products,
-              page: state.page + 1,
+              page: pageWithFilters + 1,
               hasMore: newProducts.isNotEmpty));
+          pageWithFilters += 1;
         }
       } catch (e) {
         emit(ProductsLoadingFailure(exception: e));
@@ -46,3 +54,4 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     });
   }
 }
+

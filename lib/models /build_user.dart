@@ -8,7 +8,7 @@ Widget buildUser(user) => ListView.builder(
     final users = user;
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).primaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       padding: const EdgeInsets.only(left: 5, right: 5),

@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'dart:io';
+import 'barcode_scanner_page.dart';
 import 'home_page.dart';
 import 'profile_page.dart';
 
 GlobalKey<MainScreenState> scakey = GlobalKey<MainScreenState>();
 final tabNavKeys = <GlobalKey<NavigatorState>>[
+  GlobalKey<NavigatorState>(),
   GlobalKey<NavigatorState>(),
   GlobalKey<NavigatorState>(),
 ];
@@ -70,7 +72,7 @@ class MainScreenState extends State<MainScreen> {
           controller: _controller,
           key: myKey,
           tabBar: CupertinoTabBar(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
+            backgroundColor: Theme.of(context).primaryColor,
             activeColor: const Color.fromRGBO(232, 69, 69, 1),
             inactiveColor: Theme.of(context).disabledColor,
             iconSize: 27,
@@ -80,6 +82,8 @@ class MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.house),
                   activeIcon: Icon(CupertinoIcons.house_fill)),
+              // create tab for scanner
+              BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner)),
               BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.person),
                   activeIcon: Icon(CupertinoIcons.person_fill)),
@@ -90,6 +94,8 @@ class MainScreenState extends State<MainScreen> {
               case 0:
                 return const HomePage();
               case 1:
+                return const BarcodeScannerPage();
+              case 2:
                 return CupertinoTabView(
                   navigatorKey: tabNavKeys[index],
                   builder: (BuildContext context) => const ProfilePage(),

@@ -167,12 +167,6 @@ class _LoginState extends State<Login> {
                                           password: _passController.text));
                                     }
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
                                   child: const Text(
                                     'Войти',
                                     style: TextStyle(

@@ -35,7 +35,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
         actions: [
           IconButton(
             onPressed: () {
-              showFilter(context);
+              showFilter(context: context, productBloc: productsBloc);
             },
             icon: const Icon(Icons.filter_alt),
           ),
@@ -53,7 +53,8 @@ class _AllProductsPageState extends State<AllProductsPage> {
                 child: CircularProgressIndicator(),
               );
             } else if (state is ProductsLoaded) {
-              return buildProducts(products: state.products, controller: _sController);
+              return buildProducts(
+                  products: state.products, controller: _sController);
             } else if (state is ProductsLoadingFailure) {
               return Center(
                 child: Text(state.exception.toString()),

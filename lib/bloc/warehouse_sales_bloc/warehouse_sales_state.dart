@@ -24,7 +24,7 @@ class WarehouseSalesLoaded extends WarehouseSalesState {
     required this.hasMore,
   });
 
-  final List<WarehouseSalesModel> warehouseSales;
+  final WarehouseSalesModel warehouseSales;
   @override
   final int page;
   @override

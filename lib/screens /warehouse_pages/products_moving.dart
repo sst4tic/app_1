@@ -45,7 +45,7 @@ class _ProductsMovingState extends State<ProductsMoving> {
                 );
               } else if (state is WarehouseMovingLoaded) {
                 return buildMoving(
-                    moving: state.warehouseMoving, controller: _sController);
+                    moving: state.warehouseMoving, controller: _sController, context: context);
               } else if (state is WarehouseMovingLoadingFailure) {
                 return Center(
                   child: Text(state.exception.toString()),

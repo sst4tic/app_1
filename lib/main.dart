@@ -26,15 +26,17 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   importance: Importance.high,
 );
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Permission.notification.request();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   RemoteMessage? initialMessage =
-  await FirebaseMessaging.instance.getInitialMessage();
+      await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     // Future.delayed(const Duration(milliseconds: 100)).then((value) => navKey
     //     .currentState !=
@@ -69,7 +71,7 @@ void main() async {
     }
   });
   FirebaseMessaging.onBackgroundMessage(
-          (message) => _firebaseMessagingBackgroundHandler(message));
+      (message) => _firebaseMessagingBackgroundHandler(message));
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) async {
     if (navKey.currentState != null) {
@@ -81,7 +83,7 @@ void main() async {
   });
 
   var initializationSettingsAndroid =
-  const AndroidInitializationSettings('@drawable/ic_notification');
+      const AndroidInitializationSettings('@drawable/ic_notification');
   var initializationSettingsIOS = const DarwinInitializationSettings();
   var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -94,7 +96,6 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -129,7 +130,9 @@ class _MyAppState extends State<MyApp> {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: lightTheme,
-                home: (state is Authenticated) ? const MainScreen() : const Login(),
+                home: (state is Authenticated)
+                    ? const MainScreen()
+                    : const Login(),
               );
             },
           ),
@@ -138,64 +141,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-/////////
-//User model with role property type UserType
-// class User {
-//   var hasPer = [];
-//
-//   if(in_array(permission, hasPer))
-//    return true;
-//   else
-//    return false;
-// }
-//
-// User::hasPer('addition-article');
-//
-// // enum with cases admin and user
-// enum UserType { admin, user }
-//
-// // interface with isAvailable func
-// abstract class ViewAvailability {
-//   bool isAvailable();
-//
-//   //default implementation of isAvailable func
-//   bool isAvailableDefault() {
-//     switch (User(UserType.admin).role) {
-//       case UserType.admin:
-//         return true;
-//       case UserType.user:
-//         return false;
-//     }
-//   }
-// }
-//
-// // button view confirms to ViewAvailability
-// class ButtonView implements ViewAvailability {
-//   @override
-//   bool isAvailable() {
-//     //switch by User role cases
-//     switch (User(UserType.admin).role) {
-//       case UserType.admin:
-//         return false;
-//       case UserType.user:
-//         return true;
-//     }
-//   }
-// }
-//
-// // textfield confirms to ViewAvailability
-// class TextFieldView implements ViewAvailability {
-//   @override
-//   bool isAvailable() {
-//     //switch by User role cases
-//     switch (User(UserType.user).role) {
-//       case UserType.admin:
-//         return false;
-//       case UserType.user:
-//         return true;
-//     }
-//   }
-// }
-//
-// var button = ButtonView()
-// button.isHidden = button.isAvailableDefault();

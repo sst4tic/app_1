@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/bloc/warehouse_sales_bloc/warehouse_sales_bloc.dart';
-import '../../models /build_warehouse_models.dart';
-import '../../models /search_model.dart';
+import '../../../models /build_warehouse_models.dart';
+import '../../../models /search_model.dart';
 
 class WarehouseSales extends StatefulWidget {
   const WarehouseSales({Key? key}) : super(key: key);
@@ -45,7 +45,9 @@ class _WarehouseSalesState extends State<WarehouseSales> {
                   );
                 } else if (state is WarehouseSalesLoaded) {
                   return buildSales(
-                      salesModel: state.warehouseSales,
+                    context: context,
+                    btnPermission: state.warehouseSales.btnPermission,
+                      salesModel: state.warehouseSales.sales,
                       controller: _sController);
                 } else if (state is WarehouseSalesLoadingFailure) {
                   return Center(

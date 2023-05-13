@@ -45,6 +45,7 @@ class _ProductsArrivalState extends State<ProductsArrival> {
                   );
                 } else if (state is WarehouseArrivalLoaded) {
                   return buildArrival(
+                    context: context,
                       arrival: state.warehouseArrival,
                       controller: _sController);
                 } else if (state is WarehouseArrivalLoadingFailure) {

@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_arrival.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_moving.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_categories.dart';
-import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales.dart';
 import 'package:yiwucloud/util/service.dart';
 
 import '../screens /service_page.dart';

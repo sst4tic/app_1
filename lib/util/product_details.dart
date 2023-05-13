@@ -91,9 +91,9 @@ class Data {
     required this.warehouseId,
   });
 
-  late final String? qty;
+  late final qty;
   late final String message;
-  late final String? qtyNew;
+  late final qtyNew;
   late final int qtyOld;
   late final int typeId;
   late final int? invoiceId;

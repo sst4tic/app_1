@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).primaryColor,
                   borderRadius: const BorderRadius.all(Radius.circular(12))),
               padding: REdgeInsets.symmetric(horizontal: 10),
               height: 80,
@@ -86,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).primaryColor,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12))),
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Container(
                 padding: REdgeInsets.all(10),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).primaryColor,
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(12),
                         bottomRight: Radius.circular(12))),

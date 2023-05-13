@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/service_bloc/service_bloc.dart';
 import '../models /build_services.dart';
+import 'barcode_scanner_page.dart';
 
 class ServicePage extends StatefulWidget {
   const ServicePage({Key? key, required this.name}) : super(key: key);
@@ -26,6 +27,17 @@ final _serviceBloc = ServiceBloc();
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.name),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BarcodeScannerPage()));
+              },
+              icon: const Icon(Icons.qr_code_scanner_sharp),
+            ),
+          ],
         ),
         body: BlocProvider<ServiceBloc>(
           create: (context) => ServiceBloc(),

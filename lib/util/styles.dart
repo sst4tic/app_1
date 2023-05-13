@@ -88,7 +88,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final lightTheme = ThemeData(
   primaryColor: Colors.white,
-  accentColor: Colors.white,
+  hintColor: Colors.white,
   canvasColor:ColorStyles.bodyColor,
   disabledColor: ColorStyles.primaryColor,
   primaryColorLight: Colors.black,
@@ -109,7 +109,7 @@ final lightTheme = ThemeData(
   ),
   textTheme: const TextTheme(
     bodyLarge: TextStyle(color: Colors.black, fontSize: 16),
-    bodyMedium: TextStyle(fontSize: 12, color: Colors.black),
+    bodyMedium: TextStyle(fontSize: 14, color: Colors.black),
     titleMedium: TextStyle(
         fontSize: 14, fontWeight: FontWeight.normal, color: Colors.black),
     // appbar title
@@ -127,36 +127,35 @@ final lightTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
           backgroundColor:
-              MaterialStateProperty.all<Color>(ColorStyles.primaryColor))),
+              MaterialStateProperty.all<Color>(Colors.blue),
+      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      )
+  ),
   textSelectionTheme:
       const TextSelectionThemeData(cursorColor: ColorStyles.primaryColor),
   inputDecorationTheme: InputDecorationTheme(
-    labelStyle: const TextStyle(
+    contentPadding: REdgeInsets.symmetric(horizontal: 20.0),
+    filled: true,
+    fillColor: ColorStyles.bodyColor,
+    labelStyle: TextStyle(
       color: Colors.grey,
+      fontSize: 12.sp,
     ),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      borderSide: BorderSide(
-        color: Colors.grey.withOpacity(0.4),
-      ),
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      borderSide: BorderSide(
-        color: Colors.blue.withOpacity(0.5),
-      ),
+      borderSide: const BorderSide(color: Colors.grey, width: 1),
+      borderRadius: BorderRadius.circular(10),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      borderSide: BorderSide(
-        color: Colors.red.withOpacity(0.5),
-      ),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      borderSide: BorderSide(
-        color: Colors.red.withOpacity(0.5),
-      ),
+      borderSide: const BorderSide(color: Colors.red, width: 1),
+      borderRadius: BorderRadius.circular(10),
     ),
   ),
   expansionTileTheme: const ExpansionTileThemeData(
