@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:loader_overlay/loader_overlay.dart';
 import '../../util/constants.dart';
 import '../../util/sales_details_model.dart';
 import 'package:http/http.dart' as http;
@@ -47,8 +46,10 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
       }
     });
     on<MovingRedirectionEvent>((event, emit) async {
+      event.context.loaderOverlay.show();
       final redirection = await movingRedirection(id: event.id, act: event.act);
       final salesDetails = await loadSalesDetails(id: event.id);
+      event.context.loaderOverlay.hide();
       if (redirection['success']) {
         // ignore: use_build_context_synchronously
         showDialog(context: event.context, builder: (context) {

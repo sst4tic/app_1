@@ -251,7 +251,14 @@ Widget buildSales({required List<Sales> salesModel,
               margin: REdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
+                border: sales.statusName == 'Склад - отпущено'
+                    ? Border.all(color: Colors.green, width: 1.5)
+                    : (sales.statusName == 'Отменено'
+                    ? Border.all(color: Colors.red, width: 1.5)
+                    : Border.all(color: Colors.transparent)),
+                color: Theme
+                    .of(context)
+                    .primaryColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,9 +345,13 @@ Widget buildSales({required List<Sales> salesModel,
                   Container(
                     padding: REdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
-                      color: Theme
+                      color: sales.statusName == 'Склад - отпущено'
+                          ? Colors.green[200]
+                          : (sales.statusName == 'Отменено'
+                          ? Colors.red[200]
+                          : Theme
                           .of(context)
-                          .scaffoldBackgroundColor,
+                          .scaffoldBackgroundColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(

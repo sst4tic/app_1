@@ -130,8 +130,8 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is SalesDetailsLoaded) {
                 printUrl = state.salesDetails.printUrl;
-                return buildDetails(
-                    salesDetails: state.salesDetails, context: context, id: widget.id, detailsBloc: _detailsBloc, );
+                return SalesDetailsWidget(
+                    salesDetails: state.salesDetails, id: widget.id, detailsBloc: _detailsBloc, );
               } else if (state is SalesDetailsLoadingFailure) {
                 return Text(state.exception.toString());
               } else {

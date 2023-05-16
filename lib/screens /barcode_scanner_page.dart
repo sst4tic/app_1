@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:yiwucloud/models%20/new_test_barcode_model.dart';
+import 'package:yiwucloud/models%20/barcode_scanner_model.dart';
 import 'package:yiwucloud/util/barcode_model.dart';
 import 'package:yiwucloud/util/styles.dart';
-
 import '../bloc/scanner_bloc/scanner_bloc.dart';
 
 class BarcodeScannerPage extends StatefulWidget {
@@ -51,7 +50,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
             },
           ),
         ));
-    // buildInitial());
   }
 
   Widget buildInitial() {
@@ -61,7 +59,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
         ElevatedButton.icon(
           icon: const Icon(Icons.keyboard_alt_outlined),
           onPressed: () {
-            // _showBarcodeInput(context);
           },
           label: const Text('Ввести в ручную'),
         ),
@@ -118,63 +115,4 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
       ],
     );
   }
-
-  // Future<void> _showBarcodeInput(BuildContext context) async {
-  //   final barcodeController = TextEditingController();
-  //   await showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Введите баркод'),
-  //         content: SizedBox(
-  //           height: 100,
-  //           child: Column(
-  //             children: <Widget>[
-  //               TextField(
-  //                 controller: barcodeController,
-  //                 autofocus: true,
-  //                 keyboardType: TextInputType.number,
-  //                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-  //                 maxLength: 7,
-  //                 decoration: const InputDecoration(
-  //                   hintText: 'Введите 7-значный баркод',
-  //                   border: OutlineInputBorder(),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text('Отмена'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text('Сохранить'),
-  //             onPressed: () {
-  //               if (barcodeList
-  //                   .any((element) => element.code == barcodeController.text)) {
-  //                 setState(() {
-  //                   barcodeList
-  //                       .firstWhere(
-  //                           (element) => element.code == barcodeController.text)
-  //                       .count++;
-  //                 });
-  //                 Navigator.of(context).pop();
-  //                 return;
-  //               }
-  //               setState(() {
-  //                 barcodeList.add(BarcodeModel(
-  //                     code: barcodeController.text, date: DateTime.now()));
-  //               });
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }

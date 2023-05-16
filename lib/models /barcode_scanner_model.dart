@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:yiwucloud/screens%20/global_scan_screen.dart';
 import 'package:yiwucloud/util/painter_model.dart';
@@ -29,7 +30,6 @@ class QRScannerState extends State<QRScanner> {
         QRView(
           key: qrKey,
           onQRViewCreated: _onQRViewCreated,
-
         ),
         Positioned.fill(
           child: Container(
@@ -39,8 +39,14 @@ class QRScannerState extends State<QRScanner> {
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('|||', style: TextStyle(color: Colors.white, fontSize: 80),),
-                Text('  |||', style: TextStyle(color: Colors.white, fontSize: 80),),
+                Text(
+                  '|||',
+                  style: TextStyle(color: Colors.white, fontSize: 80),
+                ),
+                Text(
+                  '|||',
+                  style: TextStyle(color: Colors.white, fontSize: 80),
+                ),
               ],
             ),
           ),
@@ -74,6 +80,21 @@ class QRScannerState extends State<QRScanner> {
               ),
             ),
           ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: IconButton(
+            icon: const Icon(
+              Icons.flash_on,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() {
+                controller.toggleFlash();
+              });
+            },
+          ),
+        ),
       ],
     );
   }
@@ -84,7 +105,8 @@ class QRScannerState extends State<QRScanner> {
       setState(() {
         _scannedData = scanData.code!;
       });
-      if(scanData != ''){
+      if (scanData != '') {
+        HapticFeedback.mediumImpact();
         controller.pauseCamera();
         Navigator.push(
           context,
