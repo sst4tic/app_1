@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/screens%20/auth/login.dart';
@@ -127,12 +128,14 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AuthBloc(authRepo: AuthRepo()),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: lightTheme,
-                home: (state is Authenticated)
-                    ? const MainScreen()
-                    : const Login(),
+              return GlobalLoaderOverlay(
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  theme: lightTheme,
+                  home: (state is Authenticated)
+                      ? const MainScreen()
+                      : const Login(),
+                ),
               );
             },
           ),

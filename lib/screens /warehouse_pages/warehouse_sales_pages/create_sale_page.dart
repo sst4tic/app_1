@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../util/constants.dart';
@@ -12,6 +13,11 @@ class CreateSalePage extends StatefulWidget {
 
 class _CreateSalePageState extends State<CreateSalePage> {
 
+  @override
+  void initState() {
+    super.initState();
+    context.loaderOverlay.show();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,9 @@ class _CreateSalePageState extends State<CreateSalePage> {
           webViewController.loadUrl('${Constants.BASE_URL_DOMAIN}service/warehouse/products/requests/addition',
               headers: {'Authorization': Constants.bearer}
           );
+        },
+        onPageFinished: (finish) {
+          context.loaderOverlay.hide();
         },
       )
     );

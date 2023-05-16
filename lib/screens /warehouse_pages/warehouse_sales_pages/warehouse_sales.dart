@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/bloc/warehouse_sales_bloc/warehouse_sales_bloc.dart';
 import '../../../models /build_warehouse_models.dart';
 import '../../../models /search_model.dart';
@@ -29,36 +30,40 @@ class _WarehouseSalesState extends State<WarehouseSales> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Склад: продажи'),
-          bottom: searchModel(context),
-        ),
-        body: BlocProvider<WarehouseSalesBloc>(
-            create: (context) => WarehouseSalesBloc(),
-            child: BlocBuilder<WarehouseSalesBloc, WarehouseSalesState>(
-              bloc: _salesBloc,
-              builder: (context, state) {
-                if (state is WarehouseSalesLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is WarehouseSalesLoaded) {
-                  return buildSales(
-                    context: context,
-                    btnPermission: state.warehouseSales.btnPermission,
-                      salesModel: state.warehouseSales.sales,
-                      controller: _sController);
-                } else if (state is WarehouseSalesLoadingFailure) {
-                  return Center(
-                    child: Text(state.exception.toString()),
-                  );
-                } else {
-                  return const Center(
-                    child: Text('Something went wrong'),
-                  );
-                }
-              },
-            )));
+    return LoaderOverlay(
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Склад: продажи'),
+            bottom: searchModel(context),
+          ),
+          body:
+          BlocProvider<WarehouseSalesBloc>(
+              create: (context) => WarehouseSalesBloc(),
+              child: BlocBuilder<WarehouseSalesBloc, WarehouseSalesState>(
+                bloc: _salesBloc,
+                builder: (context, state) {
+                  if (state is WarehouseSalesLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is WarehouseSalesLoaded) {
+                    return buildSales(
+                      context: context,
+                      btnPermission: state.warehouseSales.btnPermission,
+                        salesModel: state.warehouseSales.sales,
+                        controller: _sController);
+                  } else if (state is WarehouseSalesLoadingFailure) {
+                    return Center(
+                      child: Text(state.exception.toString()),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text('Something went wrong'),
+                    );
+                  }
+                },
+              ))
+      ),
+    );
   }
 }

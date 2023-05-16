@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/service_bloc/service_bloc.dart';
 import '../models /build_services.dart';
-import 'barcode_scanner_page.dart';
+import 'invoice_scan_page.dart';
 
 class ServicePage extends StatefulWidget {
   const ServicePage({Key? key, required this.name}) : super(key: key);
@@ -33,7 +33,7 @@ final _serviceBloc = ServiceBloc();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const BarcodeScannerPage()));
+                        builder: (context) => const InvoiceScanPage()));
               },
               icon: const Icon(Icons.qr_code_scanner_sharp),
             ),

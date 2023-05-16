@@ -30,6 +30,11 @@ class MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
   final CupertinoTabController _controller = CupertinoTabController();
   int badgeCount = 0;
+  final List screens = [
+    const HomePage(),
+    const BarcodeScannerPage(),
+    const ProfilePage(),
+  ];
 
   void onItemTapped(int index) {
     setState(() {
@@ -94,7 +99,7 @@ class MainScreenState extends State<MainScreen> {
               case 0:
                 return const HomePage();
               case 1:
-                return const BarcodeScannerPage();
+                return currentIndex != 1 ? Container()  : const BarcodeScannerPage();
               case 2:
                 return CupertinoTabView(
                   navigatorKey: tabNavKeys[index],

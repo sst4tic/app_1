@@ -13,16 +13,16 @@ class ScanResultBloc extends Bloc<ScanResultEvent, ScanResultState> {
     on<CheckScanResult>((event, emit) async {
       if(state is! ScanResultLoading) {
         emit(ScanResultLoading());
-        // try {
+        try {
           final result = await scanResultRepo.getScanResult(event.code);
           if (result.data.type == 'invoice') {
             emit(ScanResultInvoice(id: result.data.id!, invoiceId: result.data.invoiceId ?? ''));
           } else if (result.data.type == 'product') {
             emit(ScanResultProduct(id: result.data.productId!));
           }
-      //   } catch (e) {
-      //     emit(ScanResultLoadingFailure(exception: e));
-      // }
+        } catch (e) {
+          emit(ScanResultLoadingFailure(exception: e));
+      }
       }
     });
   }
