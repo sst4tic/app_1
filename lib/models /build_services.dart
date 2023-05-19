@@ -5,8 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:yiwucloud/models%20/haptic_model.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_arrival.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_moving.dart';
-import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_categories.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_assembling.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_taking.dart';
 import 'package:yiwucloud/util/service.dart';
 import '../screens /service_page.dart';
 import '../screens /warehouse_pages/all_products_page.dart';
@@ -79,9 +80,13 @@ Widget buildServiceChild(List<Services> services) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const ProductsArrival();
             }));
-          } else if (service.name == 'Категории') {
+          } else if (service.name == 'Вывоз') {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const WarehouseCategories();
+              return const WarehouseTaking();
+            }));
+          } else if (service.name == 'Сборка') {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const WarehouseAssembly();
             }));
           }
         },

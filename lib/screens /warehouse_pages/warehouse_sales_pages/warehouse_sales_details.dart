@@ -9,7 +9,9 @@ import '../../../models /build_sales_details.dart';
 import '../../../util/styles.dart';
 
 class WareHouseSalesDetails extends StatefulWidget {
-  const WareHouseSalesDetails({Key? key, required this.id, required this.invoiceId}) : super(key: key);
+  const WareHouseSalesDetails(
+      {Key? key, required this.id, required this.invoiceId})
+      : super(key: key);
   final int id;
   final String invoiceId;
 
@@ -52,9 +54,10 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => DetailsChronology(
-                                            id: widget.id,
-                                          )));
+                                          builder: (context) =>
+                                              DetailsChronology(
+                                                id: widget.id,
+                                              )));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size(double.infinity, 35.h),
@@ -62,7 +65,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                                 ),
                                 child: const Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Хронология'),
                                     Icon(FontAwesomeIcons.codeBranch),
@@ -80,7 +83,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                                 ),
                                 child: const Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Печать'),
                                     Icon(FontAwesomeIcons.print),
@@ -101,7 +104,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                                 ),
                                 child: const Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Отмена заявки'),
                                     Icon(FontAwesomeIcons.ban),
@@ -131,7 +134,11 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
               } else if (state is SalesDetailsLoaded) {
                 printUrl = state.salesDetails.printUrl;
                 return SalesDetailsWidget(
-                    salesDetails: state.salesDetails, id: widget.id, detailsBloc: _detailsBloc, );
+                  salesDetails: state.salesDetails,
+                  invoiceId: widget.invoiceId,
+                  id: widget.id,
+                  detailsBloc: _detailsBloc,
+                );
               } else if (state is SalesDetailsLoadingFailure) {
                 return Text(state.exception.toString());
               } else {

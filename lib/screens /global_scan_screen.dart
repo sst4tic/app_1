@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,16 +37,13 @@ class _GlobalScanScreenState extends State<GlobalScanScreen> {
                   child: CircularProgressIndicator(),
                 );
               } else if (state is ScanResultProduct) {
-                AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
                 return ProductDetail(id: state.id);
               } else if (state is ScanResultInvoice) {
-                AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
                 return WareHouseSalesDetails(
                   invoiceId: state.invoiceId,
                   id: state.id,
                 );
               } else if (state is ScanResultLoadingFailure) {
-                AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));
                 return Center(
                     child: Container(
                         height: 100.h,

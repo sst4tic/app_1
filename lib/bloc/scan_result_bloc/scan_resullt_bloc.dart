@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/bloc/scan_result_bloc/scan_result_repo.dart';
@@ -16,11 +17,14 @@ class ScanResultBloc extends Bloc<ScanResultEvent, ScanResultState> {
         try {
           final result = await scanResultRepo.getScanResult(event.code);
           if (result.data.type == 'invoice') {
+            AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
             emit(ScanResultInvoice(id: result.data.id!, invoiceId: result.data.invoiceId ?? ''));
           } else if (result.data.type == 'product') {
+            AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
             emit(ScanResultProduct(id: result.data.productId!));
           }
         } catch (e) {
+          AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));
           emit(ScanResultLoadingFailure(exception: e));
       }
       }

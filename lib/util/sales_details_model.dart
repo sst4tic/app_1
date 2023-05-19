@@ -9,7 +9,9 @@ class SalesDetailsModel {
     required this.details,
     required this.shipment,
     required this.totalPrice,
-    required this.operationPermission,
+    required this.boxesPermission,
+    this.boxesQty,
+    required this.status,
   });
   late final Client client;
   late final Manager manager;
@@ -20,7 +22,10 @@ class SalesDetailsModel {
   late final Details details;
   late final Shipment shipment;
   late final String totalPrice;
-  late final bool operationPermission;
+  late final bool boxesPermission;
+  late final int? boxesQty;
+  late final int status;
+
 
   SalesDetailsModel.fromJson(Map<String, dynamic> json){
     client = Client.fromJson(json['client']);
@@ -32,7 +37,9 @@ class SalesDetailsModel {
     details = Details.fromJson(json['details']);
     shipment = Shipment.fromJson(json['shipment']);
     totalPrice = json['totalPrice'];
-    operationPermission = json['btnOperationsAdd'];
+    boxesPermission = json['btnBoxesAdd'];
+    boxesQty = json['boxes_qty'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +53,9 @@ class SalesDetailsModel {
     data['details'] = details.toJson();
     data['shipment'] = shipment.toJson();
     data['totalPrice'] = totalPrice;
-    data['btnOperationsAdd'] = operationPermission;
+    data['btnBoxesAdd'] = boxesPermission;
+    data['boxes_qty'] = boxesQty;
+    data['status'] = status;
     return data;
   }
 }

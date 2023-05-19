@@ -23,27 +23,29 @@ class Sales {
   Sales({
     required this.id,
     required this.invoiceId,
-    required this.typeName,
-    required this.statusName,
+    this.typeName,
+    this.statusName,
     this.saleChannelName,
+    this.address,
     this.parentData,
-    required this.managerName,
-    required this.clientName,
-    required this.totalPrice,
-    required this.createdAt,
-    required this.source,
+    this.managerName,
+    this.clientName,
+    this.totalPrice,
+    this.createdAt,
+    this.source,
   });
   late final int id;
   late final String invoiceId;
-  late final String typeName;
-  late final String statusName;
+  late final String? typeName;
+  late final String? statusName;
   late final String? saleChannelName;
+  late final String? address;
   late final String? parentData;
-  late final String managerName;
-  late final String clientName;
+  late final String? managerName;
+  late final String? clientName;
   late final totalPrice;
-  late final String createdAt;
-  late final String source;
+  late final String? createdAt;
+  late final String? source;
 
   Sales.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -51,6 +53,7 @@ class Sales {
     typeName = json['typeName'];
     statusName = json['statusName'];
     saleChannelName = json['saleChannelName'];
+    address = json['address'];
     parentData = json['parent_data'];
     managerName = json['manager_name'];
     clientName = json['client_name'];
