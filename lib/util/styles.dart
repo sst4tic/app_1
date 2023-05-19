@@ -174,16 +174,16 @@ final lightTheme = ThemeData(
       )),
     ),
   ),
-  tabBarTheme: const TabBarTheme(
-    labelColor: Colors.white,
-    unselectedLabelColor: Colors.grey,
-    indicator: BoxDecoration(
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
-      ),
-      color: ColorStyles.primaryColor,
-    ),
-  ),
+  // tabBarTheme: const TabBarTheme(
+  //   labelColor: Colors.white,
+  //   unselectedLabelColor: Colors.grey,
+  //   indicator: BoxDecoration(
+  //     borderRadius: BorderRadius.all(
+  //       Radius.circular(10.0),
+  //     ),
+  //     color: ColorStyles.primaryColor,
+  //   ),
+  // ),
   indicatorColor: Colors.black,
 );
 

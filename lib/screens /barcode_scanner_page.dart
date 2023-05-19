@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiwucloud/models%20/barcode_scanner_model.dart';
 import 'package:yiwucloud/util/barcode_model.dart';
 import 'package:yiwucloud/util/styles.dart';
-import '../bloc/scanner_bloc/scanner_bloc.dart';
+import '../bloc/global_scanner_bloc/scanner_bloc.dart';
 
 class BarcodeScannerPage extends StatefulWidget {
   const BarcodeScannerPage({Key? key}) : super(key: key);

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../bloc/service_bloc/service_bloc.dart';
 import '../models /build_services.dart';
-import 'invoice_scan_page.dart';
 
 class ServicePage extends StatefulWidget {
   const ServicePage({Key? key, required this.name}) : super(key: key);
@@ -27,17 +25,6 @@ final _serviceBloc = ServiceBloc();
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.name),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const InvoiceScanPage()));
-              },
-              icon: const Icon(Icons.qr_code_scanner_sharp),
-            ),
-          ],
         ),
         body: BlocProvider<ServiceBloc>(
           create: (context) => ServiceBloc(),

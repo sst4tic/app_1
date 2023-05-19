@@ -18,11 +18,11 @@ class ChronologyModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['status'] = status;
-    _data['message'] = message;
-    _data['name'] = name;
-    _data['created_at'] = createdAt;
-    return _data;
+    final data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    data['name'] = name;
+    data['created_at'] = createdAt;
+    return data;
   }
 }

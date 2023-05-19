@@ -8,6 +8,7 @@ import 'constants.dart';
 class Func {
   showSnackbar(context, String text, bool success) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(milliseconds: 500),
       content: Text(
         text,
         style:

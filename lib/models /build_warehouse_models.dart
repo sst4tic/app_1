@@ -217,7 +217,9 @@ Widget buildArrival({required List<ArrivalModel> arrival,
 
 Widget buildSales({required List<Sales> salesModel,
   required bool btnPermission,
-  required ScrollController controller, required BuildContext context}) {
+  required ScrollController controller, required BuildContext context,
+  required VoidCallback onRefresh
+}) {
   return CustomScrollView(
     controller: controller,
     slivers: [
@@ -282,7 +284,7 @@ Widget buildSales({required List<Sales> salesModel,
                                       id: sales.id,
                                     ),
                               ),
-                            );
+                            ).then((value) => onRefresh.call());
                           },
                           style: ElevatedButton.styleFrom(
                               primary:
@@ -327,7 +329,7 @@ Widget buildSales({required List<Sales> salesModel,
                     ),
                     child: Center(
                       child: Text(
-                        sales.typeName.toUpperCase(),
+                        sales.typeName!.toUpperCase(),
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -355,7 +357,7 @@ Widget buildSales({required List<Sales> salesModel,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
-                      child: Text(sales.statusName,
+                      child: Text(sales.statusName!,
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -409,7 +411,7 @@ Widget buildSales({required List<Sales> salesModel,
                         const SizedBox(
                           width: 5,
                         ),
-                        Text(sales.managerName,
+                        Text(sales.managerName!,
                             style:
                             const TextStyle(fontWeight: FontWeight.bold)),
                       ],
@@ -432,7 +434,7 @@ Widget buildSales({required List<Sales> salesModel,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
-                      child: Text(sales.clientName,
+                      child: Text(sales.clientName!,
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -469,7 +471,7 @@ Widget buildSales({required List<Sales> salesModel,
                   const Divider(),
                   Center(
                     child: Text(
-                      sales.createdAt,
+                      sales.createdAt!,
                       style: TextStyles.editStyle,
                     ),
                   ),

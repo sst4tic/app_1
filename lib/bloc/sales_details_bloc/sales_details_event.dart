@@ -27,3 +27,15 @@ class MovingRedirectionEvent extends SalesDetailsEvent {
 
   List<Object?> get props => [id, act];
 }
+
+class ChangeBoxQty extends SalesDetailsEvent {
+  ChangeBoxQty({
+    required this.id,
+    required this.context,
+  });
+
+  final int id;
+  final BuildContext context;
+
+  List<Object?> get props => [id, context];
+}
