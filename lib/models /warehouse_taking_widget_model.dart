@@ -19,7 +19,7 @@ Widget buildTakingList(
         margin: REdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: sales.statusName == 'Склад - отпущено'
+          border: sales.statusName == 'Отпущено'
               ? Border.all(color: Colors.green, width: 1.5)
               : (sales.statusName == 'Отменено'
                   ? Border.all(color: Colors.red, width: 1.5)
@@ -103,7 +103,7 @@ Widget buildTakingList(
             Container(
               padding: REdgeInsets.symmetric(vertical: 6),
               decoration: BoxDecoration(
-                color: sales.statusName == 'Склад - отпущено'
+                color: sales.statusName == 'Отпущено'
                     ? Colors.green[200]
                     : (sales.statusName == 'Отменено'
                         ? Colors.red[200]

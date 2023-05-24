@@ -25,6 +25,12 @@ class SalesDetailsModel {
   late final bool boxesPermission;
   late final int? boxesQty;
   late final int status;
+  late final bool btnSheet;
+  late final bool btnChronology;
+  late final bool btnBan;
+  late final bool btnPrint;
+  late final bool btnScan;
+  late final bool btnBoxes;
 
 
   SalesDetailsModel.fromJson(Map<String, dynamic> json){
@@ -40,6 +46,12 @@ class SalesDetailsModel {
     boxesPermission = json['btnBoxesAdd'];
     boxesQty = json['boxes_qty'];
     status = json['status'];
+    btnSheet = json['btnSheet'];
+    btnChronology = json['btnChronology'];
+    btnBan = json['btnBan'];
+    btnPrint = json['btnPrint'];
+    btnScan = json['btnScanProduct'];
+    btnBoxes = json['btnScanBoxes'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +68,11 @@ class SalesDetailsModel {
     data['btnBoxesAdd'] = boxesPermission;
     data['boxes_qty'] = boxesQty;
     data['status'] = status;
+    data['btnSheet'] = btnSheet;
+    data['btnChronology'] = btnChronology;
+    data['btnBan'] = btnBan;
+    data['btnScanProduct'] = btnScan;
+    data['btnScanBoxes'] = btnBoxes;
     return data;
   }
 }

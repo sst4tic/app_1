@@ -20,7 +20,7 @@ class InvoiceScanPage extends StatefulWidget {
 class _InvoiceScanPageState extends State<InvoiceScanPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController controller;
-  String _scannedData = '';
+  final String _scannedData = '';
 
   final _invoiceScannerBloc = InvoiceScannerBloc();
 
@@ -139,7 +139,7 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
                         ),
                         onPressed: () {
                           _invoiceScannerBloc.add(InvoiceInputEvent(
-                              id: widget.id, context: context));
+                              id: widget.id, context: context, type: state.type));
                         },
                         child: const Text('Ввести вручную'),
                       ),

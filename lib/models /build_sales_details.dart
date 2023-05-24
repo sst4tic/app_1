@@ -60,7 +60,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
               )
             : Container(),
         salesDetails.btnAct != null ? SizedBox(height: 5.h) : Container(),
-        salesDetails.status != 5
+        salesDetails.btnScan != false || salesDetails.btnBoxes != false
             ? ElevatedButton.icon(
                 onPressed: () {
                   Navigator.push(
@@ -69,12 +69,12 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                           builder: (context) => InvoiceScanPage(
                                 invoiceId: widget.invoiceId,
                                 id: id,
-                              )));
+                              ))).then((value) => detailsBloc.add(LoadSalesDetails(id: id)));
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 35.h),
                     backgroundColor: Colors.green),
-                label: const Text('Сканировать накладную'),
+                label: Text(salesDetails.btnScan ? 'Сканировать накладную' : 'Сканировать коробки'),
                 icon: const Icon(Icons.qr_code_scanner_sharp),
               )
             : Container(),

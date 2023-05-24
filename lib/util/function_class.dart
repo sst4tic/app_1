@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:yiwucloud/util/product_details.dart';
 import 'package:http/http.dart' as http;
@@ -37,4 +36,11 @@ class Func {
         data: data, warehouses: wareHouse);
   }
 
+ Future loadWarehousesList() async {
+    var url = '${Constants.API_URL_DOMAIN}action=warehouses_list';
+    final response =
+    await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body;
+  }
 }

@@ -7,14 +7,11 @@ class InvoiceScannerInitial extends InvoiceScannerState {}
 class InvoiceScannerLoading extends InvoiceScannerState {}
 
 class InvoiceScannerLoaded extends InvoiceScannerState {
-  // final List<InvoiceScanModel> warehouseSalesModel;
-  //
-  // InvoiceScannerLoaded(this.warehouseSalesModel);
 
   final List<InvoiceScanModel>? products;
   final BoxScanModel? box;
-
-  InvoiceScannerLoaded({this.products, this.box});
+  final String type;
+  InvoiceScannerLoaded({this.products, this.box, required this.type});
 
   List<Object?> get props => [products, box];
 }

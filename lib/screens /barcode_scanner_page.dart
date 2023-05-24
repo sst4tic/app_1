@@ -20,7 +20,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('QR Scanner'),
+          title: const Text('YIWU Scanner'),
         ),
         body: BlocProvider<ScannerBloc>(
           create: (context) => ScannerBloc(),

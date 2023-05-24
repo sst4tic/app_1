@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/home_page_bloc/home_page_bloc.dart';
 import '../models /build_services.dart';
+import 'analytics_pages/analytics_sales_page.dart';
 import 'notification_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,6 +37,15 @@ class _HomePageState extends State<HomePage> {
               },
               icon: const Icon(Icons.notifications),
             ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AnalyticsSalesPage()));
+              },
+              icon: const Icon(Icons.analytics),
+            ),
           ],
         ),
         body: BlocProvider<HomePageBloc>(
@@ -50,9 +60,8 @@ class _HomePageState extends State<HomePage> {
               } else if (state is HomePageLoadingFailure) {
                 return Text(state.exception.toString());
               } else {
-                return const Center(
-                  child: Text('ELSE'),
-                );
+                return const Center(child: CircularProgressIndicator());
+
               }
             }),
         ));

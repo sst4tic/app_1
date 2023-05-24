@@ -35,11 +35,13 @@ class InvoiceInputEvent extends InvoiceScannerEvent {
     this.completer,
     required this.id,
     required this.context,
+    required this.type,
   });
 
   final Completer? completer;
   final int id;
   final BuildContext context;
+  final String type;
 
   List<Object?> get props => [completer, id];
 }
@@ -61,6 +63,7 @@ class InvoiceScanQtyEvent extends InvoiceScannerEvent {
 
   List<Object?> get props => [completer, id, barcode, qty];
 }
+
 class InvoiceScanInputQtyEvent extends InvoiceScannerEvent {
   InvoiceScanInputQtyEvent({
     this.completer,
@@ -78,4 +81,3 @@ class InvoiceScanInputQtyEvent extends InvoiceScannerEvent {
 
   List<Object?> get props => [completer, id, barcode, qty];
 }
-

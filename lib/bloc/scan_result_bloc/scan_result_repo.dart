@@ -32,7 +32,7 @@ class ResultModel {
   ResultModel.fromJson(Map<String, dynamic> json){
     success = json['success'];
     message = json['message'];
-    data = Data.fromJson(json['data']);
+    data = success ? Data.fromJson(json['data']) : Data(type: '');
   }
 
   Map<String, dynamic> toJson() {

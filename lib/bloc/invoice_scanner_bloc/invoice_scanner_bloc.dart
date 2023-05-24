@@ -27,10 +27,10 @@ class InvoiceScannerBloc
                 .map<InvoiceScanModel>(
                     (json) => InvoiceScanModel.fromJson(json))
                 .toList();
-            emit(InvoiceScannerLoaded(products: invoices));
+            emit(InvoiceScannerLoaded(products: invoices, type: data['type']));
           } else {
             final box = BoxScanModel.fromJson(data['data']);
-            emit(InvoiceScannerLoaded(box: box));
+            emit(InvoiceScannerLoaded(box: box, type: data['type']));
           }
         }
       } catch (e) {
@@ -54,10 +54,10 @@ class InvoiceScannerBloc
                 .map<InvoiceScanModel>(
                     (json) => InvoiceScanModel.fromJson(json))
                 .toList();
-            emit(InvoiceScannerLoaded(products: invoices));
+            emit(InvoiceScannerLoaded(products: invoices, type: data['type']));
           } else {
             final box = BoxScanModel.fromJson(data['data']);
-            emit(InvoiceScannerLoaded(box: box));
+            emit(InvoiceScannerLoaded(box: box, type: data['type']));
           }
         } else {
           AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));
@@ -76,18 +76,41 @@ class InvoiceScannerBloc
         context: event.context,
         builder: (BuildContext context) {
           final barcodeController = TextEditingController();
+          final placeController = TextEditingController();
+          placeController.text = '1';
           return CupertinoAlertDialog(
             title: const Padding(
               padding: EdgeInsets.only(bottom: 8.0),
               child: Text('Ввести в ручную'),
             ),
-            content: CupertinoTextField(
+            content:
+            event.type == 'product' ? CupertinoTextField(
               controller: barcodeController,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
               keyboardType: TextInputType.number,
               placeholder: 'Введите число',
+            ) : Row(
+              children: [
+                Expanded(
+                  child: CupertinoTextField(
+                    controller: barcodeController,
+                    placeholder: 'Введите баркод',
+                  ),
+                ),
+                const Text('- M -'),
+                Expanded(
+                  child: CupertinoTextField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    keyboardType: TextInputType.number,
+                    controller: placeController,
+                    placeholder: 'Введите количество мест',
+                  ),
+                ),
+              ],
             ),
             actions: [
               CupertinoDialogAction(
@@ -102,7 +125,7 @@ class InvoiceScannerBloc
                   Navigator.pop(context);
                   add(InvoiceScanEvent(
                       id: event.id,
-                      barcode: barcodeController.text,
+                      barcode: event.type == 'product' ?  barcodeController.text : '${barcodeController.text}-M-${placeController.text}',
                       context: event.context));
                 },
               ),
@@ -125,7 +148,7 @@ class InvoiceScannerBloc
         AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
         // ignore: use_build_context_synchronously
         Func().showSnackbar(event.context, qty['message'], true);
-        emit(InvoiceScannerLoaded(products: invoices));
+        emit(InvoiceScannerLoaded(products: invoices, type: data['type']));
       } else {
         HapticFeedback.mediumImpact();
         AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));

@@ -29,6 +29,13 @@
             {
               "client_id": "116316009624-und2k2delh91hplne82qbij84qhbbppe.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "116316009624-tc8mo38fegcroapkql3t2n4esuittodl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yiwu.yiwucloud.yiwucloud"
+              }
             }
           ]
         }

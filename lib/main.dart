@@ -91,6 +91,7 @@ void main() async {
   await messaging.requestPermission();
   if (Platform.isIOS) {
     var APNS = await messaging.getAPNSToken();
+    print('APNS: $APNS');
   }
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
@@ -104,6 +105,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool isLoading = true;
   getToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
@@ -115,6 +117,18 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     await getToken();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState()  {
+    super.initState();
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance; // Change here
+    firebaseMessaging.getToken().then((token){
+      print("token is $token");
+    });
   }
 
   @override
@@ -124,12 +138,18 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
-        return BlocProvider(
+        return
+          BlocProvider(
           create: (context) => AuthBloc(authRepo: AuthRepo()),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               return GlobalLoaderOverlay(
-                child: MaterialApp(
+                child: isLoading ? const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ) :
+                MaterialApp(
                   debugShowCheckedModeBanner: false,
                   theme: lightTheme,
                   home: (state is Authenticated)

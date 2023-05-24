@@ -55,15 +55,15 @@ class _GlobalScanScreenState extends State<GlobalScanScreen> {
                         ),
                         child: Column(
                           children: [
-                            const Text(
-                              'Такого баркода нет в базе данных',
+                            Text(
+                              state.exception.toString(),
                               style: TextStyles.loginTitle,
                             ),
                             SizedBox(height: 10.h),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  // minimumSize: Size(200.w, 30.h),
-                                ),
+                                    // minimumSize: Size(200.w, 30.h),
+                                    ),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },

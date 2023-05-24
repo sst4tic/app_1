@@ -7,7 +7,6 @@ class ProductDetails {
     this.description,
     this.totalCount,
     required this.price,
-    this.logs,
   });
 
   late final int id;
@@ -17,7 +16,6 @@ class ProductDetails {
   late final int price;
   late final String? description;
   late final int? totalCount;
-  List<Logs>? logs;
 
   ProductDetails.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -27,7 +25,6 @@ class ProductDetails {
     price = json['price_retail'];
     description = json['description'];
     totalCount = json['warehouse_total_count'];
-    logs = json['logs'] != null ? List.from(json['logs']).map((e) => Logs.fromJson(e)).toList() : [];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,43 +36,7 @@ class ProductDetails {
     data['price_retail'] = price;
     data['description'] = description;
     data['warehouse_total_count'] = totalCount;
-    data['logs'] = logs?.map((e) => e.toJson()).toList();
     return data;
-  }
-}
-
-class Logs {
-  Logs({
-    required this.id,
-    required this.productId,
-    required this.name,
-    required this.data,
-    required this.createdAt,
-  });
-
-  late final int id;
-  late final int productId;
-  late final String name;
-  late final Data data;
-  late final String createdAt;
-
-  Logs.fromJson(Map<String, dynamic> json){
-    id = json['id'];
-    productId = json['product_id'];
-    name = json['name'];
-    data = Data.fromJson(json['data']);
-    createdAt = json['created_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['product_id'] = productId;
-    _data['name'] = name;
-    _data['data'] = data.toJson();
-    _data['created_at'] = createdAt;
-    return _data;
   }
 }
 

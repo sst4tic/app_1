@@ -17,9 +17,10 @@ import '../util/product.dart';
 import '../util/styles.dart';
 import '../util/warehouse_sale.dart';
 
-Widget buildArrival({required List<ArrivalModel> arrival,
-  required ScrollController controller,
-  required BuildContext context}) {
+Widget buildArrival(
+    {required List<ArrivalModel> arrival,
+    required ScrollController controller,
+    required BuildContext context}) {
   return CustomScrollView(
     controller: controller,
     slivers: [
@@ -88,17 +89,13 @@ Widget buildArrival({required List<ArrivalModel> arrival,
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                               primary:
-                              Theme
-                                  .of(context)
-                                  .scaffoldBackgroundColor,
+                                  Theme.of(context).scaffoldBackgroundColor,
                               elevation: 0),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.visibility,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColorLight,
+                                color: Theme.of(context).primaryColorLight,
                               ),
                               SizedBox(
                                 width: 5.w,
@@ -106,9 +103,7 @@ Widget buildArrival({required List<ArrivalModel> arrival,
                               Text(
                                 'Открыть',
                                 style: TextStyle(
-                                  color: Theme
-                                      .of(context)
-                                      .primaryColorLight,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                               )
                             ],
@@ -203,7 +198,7 @@ Widget buildArrival({required List<ArrivalModel> arrival,
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return SizedBox(
               height: 20.h,
             );
@@ -215,30 +210,33 @@ Widget buildArrival({required List<ArrivalModel> arrival,
   );
 }
 
-Widget buildSales({required List<Sales> salesModel,
-  required bool btnPermission,
-  required ScrollController controller, required BuildContext context,
-  required VoidCallback onRefresh
-}) {
+// TODO: Исправить статус нейм на обычный статус
+Widget buildSales(
+    {required List<Sales> salesModel,
+    required bool btnPermission,
+    required ScrollController controller,
+    required BuildContext context,
+    required VoidCallback onRefresh}) {
   return CustomScrollView(
     controller: controller,
     slivers: [
-      if (btnPermission) SliverToBoxAdapter(
-        child: Padding(
-          padding: REdgeInsets.symmetric(horizontal: 8),
-          child: ElevatedButton(onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CreateSalePage(),
-                ));
-          },
-            style: ElevatedButton.styleFrom(
-                elevation: 0),
-            child: const Text('Создать продажу'),
+      if (btnPermission)
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: REdgeInsets.symmetric(horizontal: 8),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreateSalePage(),
+                    ));
+              },
+              style: ElevatedButton.styleFrom(elevation: 0),
+              child: const Text('Создать продажу'),
+            ),
           ),
         ),
-      ),
       SliverToBoxAdapter(
         child: ListView.builder(
           padding: REdgeInsets.all(8),
@@ -253,14 +251,12 @@ Widget buildSales({required List<Sales> salesModel,
               margin: REdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border: sales.statusName == 'Склад - отпущено'
+                border: sales.statusName == 'Отпущено'
                     ? Border.all(color: Colors.green, width: 1.5)
                     : (sales.statusName == 'Отменено'
-                    ? Border.all(color: Colors.red, width: 1.5)
-                    : Border.all(color: Colors.transparent)),
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                        ? Border.all(color: Colors.red, width: 1.5)
+                        : Border.all(color: Colors.transparent)),
+                color: Theme.of(context).primaryColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,27 +274,22 @@ Widget buildSales({required List<Sales> salesModel,
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    WareHouseSalesDetails(
-                                      invoiceId: sales.invoiceId,
-                                      id: sales.id,
-                                    ),
+                                builder: (context) => WareHouseSalesDetails(
+                                  invoiceId: sales.invoiceId,
+                                  id: sales.id,
+                                ),
                               ),
                             ).then((value) => onRefresh.call());
                           },
                           style: ElevatedButton.styleFrom(
                               primary:
-                              Theme
-                                  .of(context)
-                                  .scaffoldBackgroundColor,
+                                  Theme.of(context).scaffoldBackgroundColor,
                               elevation: 0),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.visibility,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColorLight,
+                                color: Theme.of(context).primaryColorLight,
                               ),
                               SizedBox(
                                 width: 5.w,
@@ -306,9 +297,7 @@ Widget buildSales({required List<Sales> salesModel,
                               Text(
                                 'Открыть',
                                 style: TextStyle(
-                                  color: Theme
-                                      .of(context)
-                                      .primaryColorLight,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                               )
                             ],
@@ -347,13 +336,11 @@ Widget buildSales({required List<Sales> salesModel,
                   Container(
                     padding: REdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
-                      color: sales.statusName == 'Склад - отпущено'
+                      color: sales.statusName == 'Отпущено'
                           ? Colors.green[200]
                           : (sales.statusName == 'Отменено'
-                          ? Colors.red[200]
-                          : Theme
-                          .of(context)
-                          .scaffoldBackgroundColor),
+                              ? Colors.red[200]
+                              : Theme.of(context).scaffoldBackgroundColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
@@ -374,9 +361,7 @@ Widget buildSales({required List<Sales> salesModel,
                   Container(
                     padding: REdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
-                      color: Theme
-                          .of(context)
-                          .scaffoldBackgroundColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
@@ -413,7 +398,7 @@ Widget buildSales({required List<Sales> salesModel,
                         ),
                         Text(sales.managerName!,
                             style:
-                            const TextStyle(fontWeight: FontWeight.bold)),
+                                const TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
@@ -508,7 +493,7 @@ Widget buildSales({required List<Sales> salesModel,
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return SizedBox(
               height: 20.h,
             );
@@ -527,7 +512,7 @@ Widget buildProducts(
     slivers: [
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return const Divider(height: 0);
           },
           childCount: 1,
@@ -542,48 +527,71 @@ Widget buildProducts(
           itemBuilder: (context, index) {
             final product = products[index];
             final availabilityString = product.availability
-                ?.map((item) => '${item.name} - ${item.qty}')
-                .join('\n') ??
+                    ?.map((item) => '${item.name} - ${item.qty} | ${item.location}')
+                    .join('\n') ??
                 'Нет в наличии';
-            return ListTile(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ProductDetail(id: product.id);
-                }));
-              },
-              contentPadding: REdgeInsets.symmetric(
-                horizontal: 11,
-                vertical: 5,
+            return Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              title: Text(
-                product.name,
-                maxLines: 2,
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Theme
-                            .of(context)
-                            .scaffoldBackgroundColor,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ProductDetail(id: product.id);
+                  }));
+                },
+                child: Padding(
+                  padding: REdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      child: Text(product.categoryName!)),
-                  Text('Артикул: ${product.sku}'),
-                  Text(
-                    availabilityString,
-                    style: TextStyle(
-                        color: availabilityString == 'Нет в наличии'
-                            ? Colors.red
-                            : Colors.green),
+                      SizedBox(height: 8.h),
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                        child: Text(product.categoryName!),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        'Артикул: ${product.sku}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        availabilityString,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: availabilityString == 'Нет в наличии'
+                              ? Colors.red
+                              : Colors.green,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        '${product.price.toString()} ₸',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              trailing: Text(
-                '${product.price.toString()} ₸',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             );
           },
@@ -611,7 +619,7 @@ Widget buildProducts(
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return SizedBox(
               height: 20.h,
             );
@@ -623,15 +631,16 @@ Widget buildProducts(
   );
 }
 
-Widget buildMoving({required List<MovingModel> moving,
-  required ScrollController controller,
-  required BuildContext context}) {
+Widget buildMoving(
+    {required List<MovingModel> moving,
+    required ScrollController controller,
+    required BuildContext context}) {
   return CustomScrollView(
     controller: controller,
     slivers: [
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return const Divider(height: 0);
           },
           childCount: 1,
@@ -677,226 +686,214 @@ Widget buildMoving({required List<MovingModel> moving,
       ),
       SliverToBoxAdapter(
           child: ListView.builder(
-            padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),
-            scrollDirection: Axis.vertical,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: moving.length,
-            itemBuilder: (context, index) {
-              final movingItem = moving[index];
-              return Container(
-                padding: REdgeInsets.symmetric(horizontal: 12),
-                margin: REdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: movingItem.statusName == 'Выполнено'
-                      ? Border.all(color: Colors.green, width: 1.5)
-                      : (movingItem.statusName == 'Отменено'
+        padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),
+        scrollDirection: Axis.vertical,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: moving.length,
+        itemBuilder: (context, index) {
+          final movingItem = moving[index];
+          return Container(
+            padding: REdgeInsets.symmetric(horizontal: 12),
+            margin: REdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: movingItem.statusName == 'Выполнено'
+                  ? Border.all(color: Colors.green, width: 1.5)
+                  : (movingItem.statusName == 'Отменено'
                       ? Border.all(color: Colors.red, width: 1.5)
                       : Border.all(color: Colors.transparent)),
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              color: Theme.of(context).primaryColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '# ${movingItem.movingId}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13),
-                        ),
-                        ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                                primary: Theme
-                                    .of(context)
-                                    .scaffoldBackgroundColor,
-                                elevation: 0),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.visibility,
-                                  color: Theme
-                                      .of(context)
-                                      .primaryColorLight,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Text(
-                                  'Открыть',
-                                  style: TextStyle(
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColorLight,
-                                  ),
-                                )
-                              ],
-                            ))
-                      ],
-                    ),
-                    const Divider(
-                      height: 0,
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
                     Text(
-                      'статус'.toUpperCase(),
-                      style: TextStyles.editStyle,
+                      '# ${movingItem.movingId}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 13),
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Container(
-                      padding: REdgeInsets.symmetric(vertical: 6),
-                      decoration: BoxDecoration(
-                        color: movingItem.statusName == 'Выполнено'
-                            ? Colors.green[200]
-                            : (movingItem.statusName == 'Отменено'
-                            ? Colors.red[200]
-                            : Theme
-                            .of(context)
-                            .scaffoldBackgroundColor),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(movingItem.statusName,
-                            style: const TextStyle(fontWeight: FontWeight
-                                .bold)),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'откуда '.toUpperCase(),
-                          style: TextStyles.editStyle,
-                        ),
-                        const FaIcon(
-                          FontAwesomeIcons.circleArrowRight,
-                          size: 12,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Container(
-                      padding: REdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(movingItem.warehouseFromData,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 13)),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'куда '.toUpperCase(),
-                          style: TextStyles.editStyle,
-                        ),
-                        const FaIcon(
-                          FontAwesomeIcons.circleArrowLeft,
-                          size: 12,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Container(
-                      padding: REdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(movingItem.warehouseToData,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 13)),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text('создал'.toUpperCase(), style: TextStyles.editStyle),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Container(
-                      padding: REdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.circle,
-                            size: 12,
-                            color: Colors.red,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(movingItem.senderData,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 13)),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      'сообщения'.toUpperCase(),
-                      style: TextStyles.editStyle,
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Container(
-                      padding: REdgeInsets.symmetric(
-                          vertical: 6, horizontal: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text('Нет сообщений',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    const Divider(),
-                    Center(
-                      child: Text(
-                        'Создано: ${movingItem.createdAt}',
-                        style: TextStyles.editStyle,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).scaffoldBackgroundColor,
+                            elevation: 0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.visibility,
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                            SizedBox(
+                              width: 5.w,
+                            ),
+                            Text(
+                              'Открыть',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColorLight,
+                              ),
+                            )
+                          ],
+                        ))
                   ],
                 ),
-              );
-            },
-          )),
+                const Divider(
+                  height: 0,
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Text(
+                  'статус'.toUpperCase(),
+                  style: TextStyles.editStyle,
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Container(
+                  padding: REdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: movingItem.statusName == 'Выполнено'
+                        ? Colors.green[200]
+                        : (movingItem.statusName == 'Отменено'
+                            ? Colors.red[200]
+                            : Theme.of(context).scaffoldBackgroundColor),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(movingItem.statusName,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'откуда '.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    const FaIcon(
+                      FontAwesomeIcons.circleArrowRight,
+                      size: 12,
+                      color: Colors.grey,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Container(
+                  padding: REdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(movingItem.warehouseFromData,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 13)),
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'куда '.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    const FaIcon(
+                      FontAwesomeIcons.circleArrowLeft,
+                      size: 12,
+                      color: Colors.grey,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Container(
+                  padding: REdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(movingItem.warehouseToData,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 13)),
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Text('создал'.toUpperCase(), style: TextStyles.editStyle),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Container(
+                  padding: REdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.circle,
+                        size: 12,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(movingItem.senderData,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13)),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Text(
+                  'сообщения'.toUpperCase(),
+                  style: TextStyles.editStyle,
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Container(
+                  padding: REdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text('Нет сообщений',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                const Divider(),
+                Center(
+                  child: Text(
+                    'Создано: ${movingItem.createdAt}',
+                    style: TextStyles.editStyle,
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+              ],
+            ),
+          );
+        },
+      )),
       BlocBuilder<WarehouseMovingBloc, WarehouseMovingState>(
         builder: (context, state) {
           if (state is ProductsLoadingMore) {
@@ -914,7 +911,7 @@ Widget buildMoving({required List<MovingModel> moving,
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return SizedBox(
               height: 20.h,
             );

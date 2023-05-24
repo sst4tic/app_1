@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yiwucloud/util/function_class.dart';
 
 import '../screens /warehouse_pages/product_history.dart';
 import '../util/product_details.dart';
@@ -105,12 +106,13 @@ Widget buildProdDetails(ProductDetailsWithWarehouses product, BuildContext conte
             borderRadius: BorderRadius.circular(8),
           ),
           child: TextButton(
-            onPressed: () {
+            onPressed: () async {
+             final logs = await Func().loadWarehousesList();
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ProductHistory(logs: data.logs!)));
+                          ProductHistory(logs: logs['data'], prodId: data.id,)));
             },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
