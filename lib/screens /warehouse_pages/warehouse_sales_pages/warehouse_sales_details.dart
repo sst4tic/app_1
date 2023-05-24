@@ -32,41 +32,53 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SalesDetailsBloc>(
-          create: (context) => SalesDetailsBloc(),
-          child: BlocBuilder<SalesDetailsBloc, SalesDetailsState>(
-            bloc: _detailsBloc,
-            builder: (context, state) {
-              if (state is SalesDetailsLoading) {
-                return const Scaffold(body: Center(child: CircularProgressIndicator()));
-              } else if (state is SalesDetailsLoaded) {
-                printUrl = state.salesDetails.printUrl;
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text('Накладная № ${widget.invoiceId}'),
-                    actions: [
-                      state.salesDetails.btnSheet ?  IconButton(onPressed: () {
-                        bottomSheet(btnChronology: state.salesDetails.btnChronology, btnBan: state.salesDetails.btnBan, btnPrint: state.salesDetails.btnPrint);
-                }, icon: const Icon(Icons.more_horiz),) : const SizedBox(),
-                    ],
-                  ),
-                  body: SalesDetailsWidget(
-                    salesDetails: state.salesDetails,
-                    invoiceId: widget.invoiceId,
-                    id: widget.id,
-                    detailsBloc: _detailsBloc,
-                  ),
-                );
-              } else if (state is SalesDetailsLoadingFailure) {
-                return
-                  const Scaffold(body: Center(child: Text('Ошибка сервера')));
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
-        );
+      create: (context) => SalesDetailsBloc(),
+      child: BlocBuilder<SalesDetailsBloc, SalesDetailsState>(
+        bloc: _detailsBloc,
+        builder: (context, state) {
+          if (state is SalesDetailsLoading) {
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
+          } else if (state is SalesDetailsLoaded) {
+            printUrl = state.salesDetails.printUrl;
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Накладная № ${widget.invoiceId}'),
+                actions: [
+                  state.salesDetails.btnSheet
+                      ? IconButton(
+                          onPressed: () {
+                            bottomSheet(
+                                btnChronology: state.salesDetails.btnChronology,
+                                btnBan: state.salesDetails.btnBan,
+                                btnPrint: state.salesDetails.btnPrint);
+                          },
+                          icon: const Icon(Icons.more_horiz),
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+              body: SalesDetailsWidget(
+                salesDetails: state.salesDetails,
+                invoiceId: widget.invoiceId,
+                id: widget.id,
+                detailsBloc: _detailsBloc,
+              ),
+            );
+          } else if (state is SalesDetailsLoadingFailure) {
+            return const Scaffold(body: Center(child: Text('Ошибка сервера')));
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    );
   }
-  bottomSheet({required bool btnChronology, required bool btnBan, required bool btnPrint}) {
+
+  bottomSheet(
+      {required bool btnChronology,
+      required bool btnBan,
+      required bool btnPrint}) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -79,68 +91,70 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                   const Text('Дополнительные действия',
                       style: TextStyles.loginTitle),
                   SizedBox(height: 10.h),
-                  btnChronology ? ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailsChronology(
-                                    id: widget.id,
-                                  )));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 35.h),
-                      backgroundColor: Colors.blue[400],
-                    ),
-                    child: const Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Хронология'),
-                        Icon(FontAwesomeIcons.codeBranch),
-                      ],
-                    ),
-                  ) : const SizedBox(),
+                  btnChronology
+                      ? ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailsChronology(
+                                          id: widget.id,
+                                        )));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, 35.h),
+                            backgroundColor: Colors.blue[400],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text('Хронология'),
+                              Icon(FontAwesomeIcons.codeBranch),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
                   SizedBox(height: 10.h),
-                 btnPrint ? ElevatedButton(
-                    onPressed: () {
-                      launchUrlString(printUrl);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 35.h),
-                      backgroundColor: Colors.blue[400],
-                    ),
-                    child: const Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Печать'),
-                        Icon(FontAwesomeIcons.print),
-                      ],
-                    ),
-                  ) : const SizedBox(),
+                  btnPrint
+                      ? ElevatedButton(
+                          onPressed: () {
+                            launchUrlString(printUrl);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, 35.h),
+                            backgroundColor: Colors.blue[400],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text('Печать'),
+                              Icon(FontAwesomeIcons.print),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
                   SizedBox(height: 10.h),
-                btnBan ? ElevatedButton(
-                    onPressed: () {
-                      _detailsBloc.add(MovingRedirectionEvent(
-                          id: widget.id,
-                          act: 'canceledRequest',
-                          context: context));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 35.h),
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Отмена заявки'),
-                        Icon(FontAwesomeIcons.ban),
-                      ],
-                    ),
-                  ) : const SizedBox(),
+                  btnBan
+                      ? ElevatedButton(
+                          onPressed: () {
+                            _detailsBloc.add(MovingRedirectionEvent(
+                                id: widget.id,
+                                act: 'canceledRequest',
+                                context: context));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, 35.h),
+                            backgroundColor: Colors.red,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text('Отмена заявки'),
+                              Icon(FontAwesomeIcons.ban),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),

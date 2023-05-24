@@ -59,10 +59,10 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.6),
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: [
+                                children: const [
                                   Text(
                                     '|||',
                                     style: TextStyle(

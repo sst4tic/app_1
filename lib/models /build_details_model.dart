@@ -114,9 +114,9 @@ Widget buildProdDetails(ProductDetailsWithWarehouses product, BuildContext conte
                       builder: (context) =>
                           ProductHistory(logs: logs['data'], prodId: data.id,)));
             },
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: const [
                 Text(
                   'Посмотреть историю действий',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
