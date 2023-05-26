@@ -59,22 +59,6 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.6),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text(
-                                    '|||',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 80),
-                                  ),
-                                  Text(
-                                    '|||',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 80),
-                                  ),
-                                ],
-                              ),
                             ),
                           ),
                           const CustomPaintContainer(),
@@ -144,7 +128,6 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
                         child: const Text('Ввести вручную'),
                       ),
                     ),
-                    const SizedBox(height: 5),
                     state.box != null
                         ? Padding(
                             padding: REdgeInsets.all(8.0),

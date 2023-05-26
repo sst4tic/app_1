@@ -55,9 +55,11 @@ class _GlobalScanScreenState extends State<GlobalScanScreen> {
                         ),
                         child: Column(
                           children: [
-                            Text(
-                              state.exception.toString(),
-                              style: TextStyles.loginTitle,
+                            Center(
+                              child: Text(
+                                state.exception.toString(),
+                                style: TextStyles.loginTitle,
+                              ),
                             ),
                             SizedBox(height: 10.h),
                             ElevatedButton(

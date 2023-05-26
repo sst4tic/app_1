@@ -39,3 +39,30 @@ class ChangeBoxQty extends SalesDetailsEvent {
 
   List<Object?> get props => [id, context];
 }
+
+class PostponeEvent extends SalesDetailsEvent {
+  PostponeEvent({
+    required this.id,
+    required this.context,
+    this.reasonId
+  });
+
+  final int id;
+  final BuildContext context;
+  final int? reasonId;
+  List<Object?> get props => [id, context];
+}
+
+class PostponeSendEvent extends SalesDetailsEvent {
+  PostponeSendEvent({
+    required this.id,
+    required this.context,
+    required this.reasonId,
+  });
+
+  final int id;
+  final BuildContext context;
+  final int reasonId;
+
+  List<Object?> get props => [id, context, reasonId];
+}

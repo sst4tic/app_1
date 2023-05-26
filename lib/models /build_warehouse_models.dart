@@ -396,7 +396,7 @@ Widget buildSales(
                         const SizedBox(
                           width: 5,
                         ),
-                        Text(sales.managerName!,
+                        Text(sales.managerName ?? 'Сотрудник не указан',
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold)),
                       ],
@@ -419,7 +419,7 @@ Widget buildSales(
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
-                      child: Text(sales.clientName!,
+                      child: Text(sales.clientName ?? 'Клиент не указан',
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -527,7 +527,8 @@ Widget buildProducts(
           itemBuilder: (context, index) {
             final product = products[index];
             final availabilityString = product.availability
-                    ?.map((item) => '${item.name} - ${item.qty} | ${item.location}')
+                    ?.map((item) =>
+                        '${item.name} - ${item.qty} | ${item.location}')
                     .join('\n') ??
                 'Нет в наличии';
             return Card(

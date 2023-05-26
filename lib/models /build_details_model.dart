@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiwucloud/util/function_class.dart';
@@ -8,7 +6,8 @@ import '../screens /warehouse_pages/product_history.dart';
 import '../util/product_details.dart';
 import 'image_list_model.dart';
 
-Widget buildProdDetails(ProductDetailsWithWarehouses product, BuildContext context) {
+Widget buildProdDetails(
+    ProductDetailsWithWarehouses product, BuildContext context) {
   final imgList = <String>[
     'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/350_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
     'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/350_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
@@ -27,18 +26,25 @@ Widget buildProdDetails(ProductDetailsWithWarehouses product, BuildContext conte
   for (var warehouse in warehouses) {
     warehouseTiles.addAll([
       ListTile(
-        leading: const Icon(
-          Icons.calendar_month,
-          size: 35,
-          color: Colors.blue,
+        leading: const CircleAvatar(
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.warehouse,
+            size: 25,
+            color: Colors.white,
+          ),
         ),
         title: Text(
-          '${warehouse.count} ${warehouse.name}',
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          '${warehouse.name} - ${warehouse.count}',
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           'Последние изменения: ${warehouse.updatedAt}',
-          style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side:  BorderSide(color: Colors.blue[200]!, width: 1),
         ),
       ),
       SizedBox(height: 7.h),
@@ -107,12 +113,14 @@ Widget buildProdDetails(ProductDetailsWithWarehouses product, BuildContext conte
           ),
           child: TextButton(
             onPressed: () async {
-             final logs = await Func().loadWarehousesList();
+              final logs = await Func().loadWarehousesList();
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ProductHistory(logs: logs['data'], prodId: data.id,)));
+                      builder: (context) => ProductHistory(
+                            logs: logs['data'],
+                            prodId: data.id,
+                          )));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

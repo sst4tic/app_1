@@ -188,6 +188,10 @@ final lightTheme = ThemeData(
 );
 
 class TextStyles {
+  static const TextStyle dialogContentStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+  );
   static const TextStyle appBarTitle =
       TextStyle(color: Colors.black, fontWeight: FontWeight.bold);
   static const TextStyle headerStyle =

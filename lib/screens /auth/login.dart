@@ -62,6 +62,7 @@ class _LoginState extends State<Login> {
             ),
           ),
           ListView(
+            physics: const BouncingScrollPhysics(),
             children: <Widget>[
               SizedBox(
                 height: 100.h,
@@ -86,7 +87,6 @@ class _LoginState extends State<Login> {
                   elevation: 3,
                   child: Container(
                     padding: REdgeInsets.all(8),
-                    height: 260.h,
                     width: double.infinity,
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -191,4 +191,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-

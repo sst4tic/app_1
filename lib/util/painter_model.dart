@@ -8,8 +8,8 @@ class CustomPaintContainer extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        height: MediaQuery.of(context).size.width * 0.7,
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.width * 0.4,
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
@@ -29,11 +29,11 @@ class _CustomPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     double sh = size.height; // for convenient shortage
     double sw = size.width; // for convenient shortage
-    double cornerSide = sh * 0.1; // desirable value for corners side
+    double cornerSide = sh * 0.13; // desirable value for corners side
 
     Paint paint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 1.5
+      ..color = Colors.green
+      ..strokeWidth = 7.5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 

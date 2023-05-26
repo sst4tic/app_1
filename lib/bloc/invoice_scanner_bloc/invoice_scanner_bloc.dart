@@ -3,6 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/function_class.dart';
 
 import '../../util/box_scan_model.dart';
@@ -78,54 +79,58 @@ class InvoiceScannerBloc
           final barcodeController = TextEditingController();
           final placeController = TextEditingController();
           placeController.text = '1';
-          return CupertinoAlertDialog(
-            title: const Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: Text('Ввести в ручную'),
-            ),
-            content:
-            event.type == 'product' ? CupertinoTextField(
-              controller: barcodeController,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              keyboardType: TextInputType.number,
-              placeholder: 'Введите число',
-            ) : Row(
-              children: [
-                Expanded(
-                  child: CupertinoTextField(
+          return CustomAlertDialog(
+            title: 'Ввести в ручную',
+            content: event.type == 'product'
+                ? CustomTextField(
                     controller: barcodeController,
-                    placeholder: 'Введите баркод',
-                  ),
-                ),
-                const Text('- M -'),
-                Expanded(
-                  child: CupertinoTextField(
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                     ],
                     keyboardType: TextInputType.number,
-                    controller: placeController,
-                    placeholder: 'Введите количество мест',
+                    placeholder: 'Введите число',
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          controller: barcodeController,
+                          placeholder: 'Введите баркод',
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      const Text('- M -'),
+                      Expanded(
+                        child: CustomTextField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.number,
+                          controller: placeController,
+                          placeholder: 'Введите количество мест',
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
             actions: [
-              CupertinoDialogAction(
-                child: const Text('Отмена'),
+              CustomDialogAction(
+                text: 'Отмена',
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              CupertinoDialogAction(
-                child: const Text('Подтвердить'),
+              CustomDialogAction(
+                text: 'Подтвердить',
                 onPressed: () {
                   Navigator.pop(context);
                   add(InvoiceScanEvent(
                       id: event.id,
-                      barcode: event.type == 'product' ?  barcodeController.text : '${barcodeController.text}-M-${placeController.text}',
+                      barcode: event.type == 'product'
+                          ? barcodeController.text
+                          : '${barcodeController.text}-M-${placeController.text}',
                       context: event.context));
                 },
               ),
@@ -162,42 +167,37 @@ class InvoiceScannerBloc
         builder: (BuildContext context) {
           final qtyController = TextEditingController();
           qtyController.text = event.qty.toString();
-          return CupertinoAlertDialog(
-            title: const Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: Text('Ввести в ручную'),
-            ),
-            content: CupertinoTextField(
-              controller: qtyController,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              keyboardType: TextInputType.number,
-              placeholder: 'Введите число',
-            ),
-            actions: [
-              CupertinoDialogAction(
-                child: const Text('Отмена'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+          return CustomAlertDialog(
+              title: 'Ввести в ручную',
+              content: CustomTextField(
+                controller: qtyController,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                keyboardType: TextInputType.number,
+                placeholder: 'Введите число',
               ),
-              CupertinoDialogAction(
-                child: const Text('Подтвердить'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  add(InvoiceScanQtyEvent(
-                      id: event.id,
-                      barcode: event.barcode,
-                      context: event.context,
-                      qty: qtyController.text));
-                },
-              ),
-            ],
-          );
+              actions: [
+                CustomDialogAction(
+                  text: 'Отмена',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                CustomDialogAction(
+                  text: 'Подтвердить',
+                  onPressed: () {
+                    Navigator.pop(context);
+                    add(InvoiceScanQtyEvent(
+                        id: event.id,
+                        barcode: event.barcode,
+                        context: event.context,
+                        qty: qtyController.text));
+                  },
+                ),
+              ]);
         },
       );
     });
-
   }
 }

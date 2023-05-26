@@ -43,6 +43,7 @@ dependencies:
   percent_indicator: ^4.2.3
   syncfusion_flutter_datepicker: ^21.2.3
   flutter_datetime_picker: ^1.5.1
+  accordion: ^2.5.1
 
 
 dev_dependencies:

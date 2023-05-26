@@ -19,17 +19,22 @@ class AnalyticsTopSalesBloc
       final response =
           await http.get(Uri.parse(url), headers: Constants.headers());
       final body = jsonDecode(response.body);
-      print(body);
       final data = body['data'];
       final analytics = AnalyticsTopSalesModel.fromJson(data);
       return analytics;
     }
 
     on<LoadAnalyticsTopSales>((event, emit) async {
+      try {
       if (state is! AnalyticsTopSalesLoading) {
         emit(AnalyticsTopSalesLoading());
         var analytics = await getAnalytics(date: event.date);
         emit(AnalyticsTopSalesLoaded(analytics: analytics, date: event.date));
+      }
+      } catch (e) {
+        emit(AnalyticsTopSalesLoadingFailure(exception: e));
+      } finally {
+        event.completer?.complete();
       }
     });
   }

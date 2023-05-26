@@ -11,8 +11,8 @@ part 'service_state.dart';
 
 class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
   ServiceBloc() : super(ServiceInitial()) {
-    Future<List<Services>> loadServices() async {
-      var url = '${Constants.API_URL_DOMAIN}action=products_services';
+    Future<List<Services>> loadServices({required int id}) async {
+      var url = '${Constants.API_URL_DOMAIN}action=user_services&parent_id=$id';
       final response = await http.get(
           Uri.parse(url),
           headers: Constants.headers()
@@ -26,7 +26,7 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
       try {
         if (state is! ServiceLoading) {
           emit(ServiceLoading());
-          var services = await loadServices();
+          var services = await loadServices(id: event.id);
           emit(ServiceLoaded(services: services));
         }
       } catch (e) {

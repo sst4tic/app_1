@@ -3,7 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'dart:io';
+import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'barcode_scanner_page.dart';
 import 'home_page.dart';
 import 'profile_page.dart';
@@ -99,7 +99,9 @@ class MainScreenState extends State<MainScreen> {
               case 0:
                 return const HomePage();
               case 1:
-                return currentIndex != 1 ? Container()  : const BarcodeScannerPage();
+                return currentIndex != 1
+                    ? Container()
+                    : const BarcodeScannerPage();
               case 2:
                 return CupertinoTabView(
                   navigatorKey: tabNavKeys[index],
@@ -113,44 +115,27 @@ class MainScreenState extends State<MainScreen> {
   }
 
   showDialogBox() => showCupertinoDialog<String>(
-        context: context,
-        builder: (BuildContext context) => Platform.isIOS
-            ? CupertinoAlertDialog(
-                title: const Text('Нет интернет соединения'),
-                content: const Text('Пожалуйста проверьте интернет соедниение'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () async {
-                      Navigator.pop(context, 'Cancel');
-                      setState(() => isAlertSet = false);
-                      isDeviceConnected =
-                          await InternetConnectionChecker().hasConnection;
-                      if (!isDeviceConnected && isAlertSet == false) {
-                        showDialogBox();
-                        setState(() => isAlertSet = true);
-                      }
-                    },
-                    child: const Text('Повторить'),
-                  ),
-                ],
-              )
-            : AlertDialog(
-                title: const Text('Нет интернет соединения'),
-                content: const Text('Пожалуйста проверьте интернет соедниение'),
-                actions: <Widget>[
-                    TextButton(
-                      onPressed: () async {
-                        Navigator.pop(context, 'Cancel');
-                        setState(() => isAlertSet = false);
-                        isDeviceConnected =
-                            await InternetConnectionChecker().hasConnection;
-                        if (!isDeviceConnected && isAlertSet == false) {
-                          showDialogBox();
-                          setState(() => isAlertSet = true);
-                        }
-                      },
-                      child: const Text('Повторить'),
-                    ),
-                  ]),
-      );
+      context: context,
+      builder: (BuildContext context) => CustomAlertDialog(
+          title: 'Нет интернет соединения',
+          content: const Text(
+              'Пожалуйста проверьте интернет соедниение!',
+          ),
+          actions: [
+            CustomDialogAction(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              text: 'Повторить',
+            ),
+          ],
+      ),
+  );
 }

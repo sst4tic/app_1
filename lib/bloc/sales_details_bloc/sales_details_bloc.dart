@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/bloc/sales_details_bloc/sales_details_repo.dart';
+import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
+import '../../models /postpone_dialog_model.dart';
 import '../../util/sales_details_model.dart';
 
 part 'sales_details_event.dart';
@@ -40,9 +42,9 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
         showDialog(
             context: event.context,
             builder: (context) {
-              return AlertDialog(
-                title: const Text('Успешно'),
-                content: Text(redirection['message']),
+              return CustomAlertDialog(
+                title: 'Успешно',
+                content: redirection['message'],
                 actions: [
                   TextButton(
                     onPressed: () async {
@@ -60,15 +62,15 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
         showDialog(
             context: event.context,
             builder: (context) {
-              return AlertDialog(
-                title: const Text('Произошла ошибка'),
+              return CustomAlertDialog(
+                title: 'Произошла ошибка',
                 content: Text(redirection['message']),
                 actions: [
-                  TextButton(
+                  CustomDialogAction(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Ок'),
+                    text: 'Ок',
                   )
                 ],
               );
@@ -80,14 +82,10 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
       var qty = await showCupertinoDialog(
         context: event.context,
         builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: const Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: Text('Укажите количество мест'),
-            ),
-            content: CupertinoTextField(
+          return CustomAlertDialog(
+            title: 'Укажите количество мест',
+            content: CustomTextField(
               controller: qtyController,
-              // controller: passwordController,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -95,14 +93,14 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
               placeholder: 'Введите число',
             ),
             actions: [
-              CupertinoDialogAction(
-                child: const Text('Отмена'),
+              CustomDialogAction(
+                text: 'Отмена',
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              CupertinoDialogAction(
-                child: const Text('Подтвердить'),
+              CustomDialogAction(
+                text: 'Подтвердить',
                 onPressed: () {
                   Navigator.of(context).pop(qtyController.text);
                 },
@@ -123,8 +121,8 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
           showDialog(
               context: event.context,
               builder: (context) {
-                return AlertDialog(
-                  title: const Text('Успешно'),
+                return CustomAlertDialog(
+                  title: 'Успешно',
                   content: Text(changeBoxQty['message']),
                   actions: [
                     TextButton(
@@ -143,20 +141,76 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
           showDialog(
               context: event.context,
               builder: (context) {
-                return AlertDialog(
-                  title: const Text('Произошла ошибка'),
+                return CustomAlertDialog(
+                  title: 'Произошла ошибка',
                   content: Text(changeBoxQty['message']),
                   actions: [
-                    TextButton(
+                    CustomDialogAction(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Ок'),
+                      text: 'Ок',
                     )
                   ],
                 );
               });
         }
+      }
+    });
+    on<PostponeEvent>((event, emit) async {
+      final reasons = await salesDetailsRepo.getPostponeReasons();
+      // ignore: use_build_context_synchronously
+      showDialog(
+              context: event.context,
+              builder: (context) {
+                return PostponeDialog(
+                  reasons: reasons,
+                  invoiceId: event.id,
+                );
+              })
+          .then((value) => add(PostponeSendEvent(
+              id: event.id, context: event.context, reasonId: value)));
+    });
+
+    on<PostponeSendEvent>((event, emit) async {
+      var resp = await salesDetailsRepo.sendPostpone(
+          reasonId: event.reasonId, id: event.id);
+      if (resp['success']) {
+        // ignore: use_build_context_synchronously
+        showDialog(
+            context: event.context,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: 'Успешно!',
+                content: Text(resp['message']),
+                actions: [
+                  CustomDialogAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Ок',
+                  )
+                ],
+              );
+            });
+      } else {
+        // ignore: use_build_context_synchronously
+        showDialog(
+            context: event.context,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: 'Произошла ошибка',
+                content: Text(resp['message']),
+                actions: [
+                  CustomDialogAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Ок',
+                  )
+                ],
+              );
+            });
       }
     });
   }

@@ -36,19 +36,6 @@ class QRScannerState extends State<QRScanner> {
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.6),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  '|||',
-                  style: TextStyle(color: Colors.white, fontSize: 80),
-                ),
-                Text(
-                  '|||',
-                  style: TextStyle(color: Colors.white, fontSize: 80),
-                ),
-              ],
-            ),
           ),
         ),
         const CustomPaintContainer(),

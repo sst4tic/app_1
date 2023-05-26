@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:yiwucloud/models%20/haptic_model.dart';
+import 'package:yiwucloud/screens%20/analytics_pages/analytics_sales_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_arrival.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_moving.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_assembling.dart';
@@ -28,6 +29,7 @@ Widget buildServices(List<Services> services) {
             CupertinoPageRoute(
                 builder: (context) => ServicePage(
                       name: service.name,
+                      id: service.id!,
                     ),
                 fullscreenDialog: true)),
         child: Card(
@@ -61,32 +63,36 @@ Widget buildServiceChild(List<Services> services) {
       var limSubtitles = Func().strLimit(service.desc!, 20);
       return SizeTapAnimation(
         onTap: () {
-          if (service.name == 'Все товары') {
+          if (service.id == 19) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const AllProductsPage()));
-          } else if (service.name == 'Продажи') {
+          } else if (service.id == 21) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const WarehouseSales()));
-          } else if (service.name == 'Перемещение') {
+          } else if (service.id == 22) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const ProductsMoving()));
-          } else if (service.name == 'Приход') {
+          } else if (service.id == 20) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const ProductsArrival();
             }));
-          } else if (service.name == 'Вывоз') {
+          } else if (service.id == 40) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const WarehouseTaking();
             }));
-          } else if (service.name == 'Сборка') {
+          } else if (service.id == 39) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const WarehouseAssembly();
+            }));
+          } else if (service.id == 33) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const AnalyticsSalesPage();
             }));
           }
         },

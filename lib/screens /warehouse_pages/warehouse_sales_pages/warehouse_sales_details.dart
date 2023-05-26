@@ -6,7 +6,6 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_details_chronology.dart';
 import '../../../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../../../models /build_sales_details.dart';
-import '../../../util/styles.dart';
 
 class WareHouseSalesDetails extends StatefulWidget {
   const WareHouseSalesDetails(
@@ -80,85 +79,109 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
       required bool btnBan,
       required bool btnPrint}) {
     return showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return SizedBox(
-            height: 0.4.sh,
-            child: Padding(
-              padding: REdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  const Text('Дополнительные действия',
-                      style: TextStyles.loginTitle),
-                  SizedBox(height: 10.h),
-                  btnChronology
-                      ? ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailsChronology(
-                                          id: widget.id,
-                                        )));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, 35.h),
-                            backgroundColor: Colors.blue[400],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text('Хронология'),
-                              Icon(FontAwesomeIcons.codeBranch),
-                            ],
-                          ),
-                        )
-                      : const SizedBox(),
-                  SizedBox(height: 10.h),
-                  btnPrint
-                      ? ElevatedButton(
-                          onPressed: () {
-                            launchUrlString(printUrl);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, 35.h),
-                            backgroundColor: Colors.blue[400],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text('Печать'),
-                              Icon(FontAwesomeIcons.print),
-                            ],
-                          ),
-                        )
-                      : const SizedBox(),
-                  SizedBox(height: 10.h),
-                  btnBan
-                      ? ElevatedButton(
-                          onPressed: () {
-                            _detailsBloc.add(MovingRedirectionEvent(
-                                id: widget.id,
-                                act: 'canceledRequest',
-                                context: context));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, 35.h),
-                            backgroundColor: Colors.red,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text('Отмена заявки'),
-                              Icon(FontAwesomeIcons.ban),
-                            ],
-                          ),
-                        )
-                      : const SizedBox(),
-                ],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: REdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                'Дополнительные действия',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-          );
-        });
+              SizedBox(height: 12.h),
+              if (btnChronology)
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailsChronology(id: widget.id),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue[400],
+                    minimumSize: const Size(double.infinity, 40),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('Хронология'),
+                      Icon(FontAwesomeIcons.codeBranch)
+                    ],
+                  )
+                ),
+               SizedBox(height: 4.h),
+              if (btnPrint)
+                ElevatedButton(
+                  onPressed: () {
+                    launchUrlString(printUrl);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue[400],
+                    minimumSize: const Size(double.infinity, 40),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('Печать накладной'),
+                      Icon(FontAwesomeIcons.print)
+                    ],
+                  )
+                ),
+              SizedBox(height: 4.h),
+                ElevatedButton(
+                  onPressed: () {
+                    _detailsBloc.add(PostponeEvent(id: widget.id, context: context));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.yellow[700],
+                    minimumSize: const Size(double.infinity, 40),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('Отложить накладную'),
+                      Icon(FontAwesomeIcons.pause)
+                    ],
+                  )
+                ),
+              SizedBox(height: 4.h),
+              if (btnBan)
+                ElevatedButton(
+                  onPressed: () {
+                    _detailsBloc.add(MovingRedirectionEvent(
+                      id: widget.id,
+                      act: 'canceledRequest',
+                      context: context,
+                    ));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red[900],
+                    minimumSize: const Size(double.infinity, 40),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('Отменить накладную'),
+                      Icon(FontAwesomeIcons.ban)
+                    ],
+                  )
+                ),
+            ],
+          ),
+        );
+      },
+    );
+
   }
 }

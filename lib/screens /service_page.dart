@@ -4,8 +4,9 @@ import '../bloc/service_bloc/service_bloc.dart';
 import '../models /build_services.dart';
 
 class ServicePage extends StatefulWidget {
-  const ServicePage({Key? key, required this.name}) : super(key: key);
+  const ServicePage({Key? key, required this.name, required this.id}) : super(key: key);
   final String name;
+  final int id;
 
   @override
   State<ServicePage> createState() => _ServicePageState();
@@ -17,7 +18,7 @@ final _serviceBloc = ServiceBloc();
 @override
   void initState() {
     super.initState();
-    _serviceBloc.add(LoadServices());
+    _serviceBloc.add(LoadServices(id: widget.id));
   }
 
   @override
