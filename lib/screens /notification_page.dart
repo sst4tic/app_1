@@ -5,6 +5,11 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Уведомления')
+      ),
+      body: const Center(child: Text('Нет уведомлений')),
+    );
   }
 }

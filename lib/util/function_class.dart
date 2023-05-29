@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:yiwucloud/util/comment_model.dart';
 import 'package:yiwucloud/util/product_details.dart';
 import 'package:http/http.dart' as http;
 import 'constants.dart';
@@ -42,5 +43,22 @@ class Func {
     await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
     return body;
+  }
+
+  Future<List<CommentModel>> getComments({required int id}) async {
+    var url =
+        '${Constants.API_URL_DOMAIN}action=comments_list_of_invoice&id=$id';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body['data'].map<CommentModel>((json) => CommentModel.fromJson(json)).toList();
+  }
+  Future postComment({required int id, required String message}) async {
+    var url =
+        '${Constants.API_URL_DOMAIN}action=comments_post_of_invoice&id=$id&message=$message';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body['data'];
   }
 }

@@ -29,8 +29,18 @@ class _CreateSalePageState extends State<CreateSalePage> {
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController) {
           webViewController.loadUrl('${Constants.BASE_URL_DOMAIN}service/warehouse/products/requests/addition',
-              headers: {'Authorization': Constants.bearer}
+              headers: Constants.headers()
           );
+        },
+        javascriptChannels: <JavascriptChannel>{
+          JavascriptChannel(
+              name: 'WebViewMessage',
+              onMessageReceived: (JavascriptMessage message) {
+                if (message.message != '') {
+                  Navigator.pop(context);
+                }
+              }
+          ),
         },
         onPageFinished: (finish) {
           context.loaderOverlay.hide();

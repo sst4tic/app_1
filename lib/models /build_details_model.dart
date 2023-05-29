@@ -8,18 +8,9 @@ import 'image_list_model.dart';
 
 Widget buildProdDetails(
     ProductDetailsWithWarehouses product, BuildContext context) {
-  final imgList = <String>[
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/350_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/350_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/350_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/350_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-  ];
-  final fullImgList = <String>[
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/750_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/750_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/750_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-    'https://cdn.yiwumart.org/storage/warehouse/products/images/9674/750_g70Ij5PEVuECZZjG4jHUdBnC6JyJVA48U6Upc19C.jpg',
-  ];
+  final imgList = product.data.media.map((e) => e.thumbnails.s350.toString()).toList();
+  final fullImgList = product.data.media.map((e) => e.full.toString()).toList();
+  const noImage = 'https://cdn.yiwumart.org/storage/warehouse/products/images/no-image-ru.jpg';
   final data = product.data;
   final warehouses = product.warehouses.map((e) => e).toList();
   List<Widget> warehouseTiles = [];
@@ -39,7 +30,7 @@ Widget buildProdDetails(
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
-          'Последние изменения: ${warehouse.updatedAt}',
+          'Локация: ${warehouse.location}',
           style: TextStyle(fontSize: 12, color: Colors.grey[600]),
         ),
         shape: RoundedRectangleBorder(
@@ -98,8 +89,8 @@ Widget buildProdDetails(
             SizedBox(
                 height: 200,
                 child: ImageList(
-                  imageUrls: imgList,
-                  fullImageUrl: fullImgList,
+                  imageUrls: imgList.isEmpty ? [noImage] : imgList,
+                  fullImageUrl: fullImgList.isEmpty ? [noImage] : fullImgList,
                 ))
           ],
         ),
@@ -114,6 +105,7 @@ Widget buildProdDetails(
           child: TextButton(
             onPressed: () async {
               final logs = await Func().loadWarehousesList();
+              // ignore: use_build_context_synchronously
               Navigator.push(
                   context,
                   MaterialPageRoute(

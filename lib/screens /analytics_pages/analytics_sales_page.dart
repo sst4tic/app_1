@@ -116,7 +116,7 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
                     controller: _tabController,
                     children: [
                       buildChannels(channelsList: state.analytics.channelsList),
-                      buildManagers(managersList: state.analytics.managersList),
+                      state.analytics.managersList.isNotEmpty ? buildManagers(managersList: state.analytics.managersList) : const Center(child: Text('Нет данных')),
                     ],
                   ),
                 );

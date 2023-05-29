@@ -3,6 +3,7 @@ import 'package:accordion/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiwucloud/screens%20/invoice_scan_page.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_comments_page.dart';
 import 'package:yiwucloud/util/styles.dart';
 import '../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../util/sales_details_model.dart';
@@ -68,7 +69,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                 ),
               )
             : Container(),
-        SizedBox(height: 5.h),
+        SizedBox(height: salesDetails.btnAct != null ? 5.h : 0),
         salesDetails.btnAct != null
             ? ElevatedButton(
                 onPressed: () async {
@@ -117,7 +118,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                 child: Text(
                     'Указать количество мест (${salesDetails.boxesQty ?? '0'})'))
             : Container(),
-        SizedBox(height: 10.h),
+        SizedBox(height: salesDetails.boxesPermission ? 10.h : 0),
         Accordion(
           disableScrolling: true,
           paddingListHorizontal: 0,
@@ -355,6 +356,12 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
             ),
           ],
         ),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SalesCommentsPage(id: id,)));
+            },
+            child: const Text('Посмотреть комментарии')),
         SizedBox(height: 25.h),
       ],
     );

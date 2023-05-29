@@ -35,28 +35,28 @@ Widget buildChannels({required List<ChannelsList> channelsList}) {
                         fontSize: 12),
                   ),
                   const Spacer(),
-                  Container(
-                    padding: REdgeInsets.only(left: 0, right: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.green[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_drop_up,
-                          color: Colors.green[800],
-                          size: 20,
-                        ),
-                        Text(
-                          '${channel.totalSumDifferencePercentage}%',
-                          style: TextStyle(
-                              color: Colors.green[800],
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   padding: REdgeInsets.only(left: 0, right: 6),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.green[200],
+                  //     borderRadius: BorderRadius.circular(8),
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Icon(
+                  //         Icons.arrow_drop_up,
+                  //         color: Colors.green[800],
+                  //         size: 20,
+                  //       ),
+                  //       Text(
+                  //         '${channel.totalSumDifferencePercentage}%',
+                  //         style: TextStyle(
+                  //             color: Colors.green[800],
+                  //             fontWeight: FontWeight.bold),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 8.h),
@@ -173,28 +173,28 @@ Widget buildManagers({required List<ManagersList> managersList}) {
                     ],
                   ),
                   const Spacer(),
-                  Container(
-                    padding: REdgeInsets.only(left: 0, right: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.green[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_drop_up,
-                          color: Colors.green[800],
-                          size: 20,
-                        ),
-                        Text(
-                          '${manager.totalSumDifferencePercentage}%',
-                          style: TextStyle(
-                              color: Colors.green[800],
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   padding: REdgeInsets.only(left: 0, right: 6),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.green[200],
+                  //     borderRadius: BorderRadius.circular(8),
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Icon(
+                  //         Icons.arrow_drop_up,
+                  //         color: Colors.green[800],
+                  //         size: 20,
+                  //       ),
+                  //       Text(
+                  //         '${manager.totalSumDifferencePercentage}%',
+                  //         style: TextStyle(
+                  //             color: Colors.green[800],
+                  //             fontWeight: FontWeight.bold),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 8.h),
