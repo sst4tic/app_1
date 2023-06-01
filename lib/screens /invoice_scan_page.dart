@@ -6,7 +6,6 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:yiwucloud/util/box_scan_model.dart';
 import '../bloc/invoice_scanner_bloc/invoice_scanner_bloc.dart';
 import '../util/invoice_scan_model.dart';
-import '../util/painter_model.dart';
 
 class InvoiceScanPage extends StatefulWidget {
   const InvoiceScanPage({Key? key, required this.id, required this.invoiceId}) : super(key: key);
@@ -20,8 +19,6 @@ class InvoiceScanPage extends StatefulWidget {
 class _InvoiceScanPageState extends State<InvoiceScanPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController controller;
-  final String _scannedData = '';
-
   final _invoiceScannerBloc = InvoiceScannerBloc();
 
   @override
@@ -51,46 +48,17 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
                       child: Stack(
                         children: [
                           QRView(
+                            overlay: QrScannerOverlayShape(
+                              borderColor: Colors.green,
+                              borderRadius: 10,
+                              borderLength: 30,
+                              borderWidth: 10,
+                              cutOutHeight: 150,
+                              cutOutWidth: 300,
+                            ),
                             key: qrKey,
                             onQRViewCreated: _onQRViewCreated,
                           ),
-                          Positioned.fill(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                              ),
-                            ),
-                          ),
-                          const CustomPaintContainer(),
-                          if (_scannedData.isNotEmpty)
-                            Positioned(
-                              bottom: 16,
-                              left: 16,
-                              right: 16,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.8),
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Text(
-                                  _scannedData,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
                           Positioned(
                             bottom: 16,
                             right: 16,
@@ -157,6 +125,11 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
         itemCount: barcodeList.length,
         itemBuilder: (context, index) {
           final barcode = barcodeList[index];
+          final availabilityString = barcode.availability
+              ?.map((item) =>
+          '${item.name} - ${item.qty} | ${item.location}')
+              .join('\n') ??
+          'Нет в наличии';
           return Container(
             padding: REdgeInsets.all(8),
             margin: REdgeInsets.only(bottom: 8),
@@ -174,6 +147,11 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  availabilityString,
+                  style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 4.h),
                 Row(

@@ -11,15 +11,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/screens%20/auth/login.dart';
 import 'package:yiwucloud/screens%20/main_screen.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/styles.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_repo.dart';
 import 'firebase_options.dart';
-
 GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
@@ -29,6 +27,9 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,12 +41,16 @@ void main() async {
   RemoteMessage? initialMessage =
       await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
-    // Future.delayed(const Duration(milliseconds: 100)).then((value) => navKey
-    //     .currentState !=
-    //     null
-    //     ? navKey.currentState!.push(
-    //     MaterialPageRoute(builder: (context) => const NotificationScreen()))
-    //     : null);
+    if (initialMessage.data['invoice_id'] != null) {
+      Future.delayed(const Duration(milliseconds: 1250)).then((value) => navKey.currentState!.push(
+        MaterialPageRoute(
+            builder: (context) => WareHouseSalesDetails(
+              id: int.parse(initialMessage.data['id']),
+              invoiceId: '0${initialMessage.data['invoice_id']}',
+            )),
+      ));
+
+    }
   }
   await messaging.setForegroundNotificationPresentationOptions(
     alert: true,
@@ -71,17 +76,34 @@ void main() async {
         ),
       );
     }
+    if (message.data['invoice_id'] != null) {
+      navKey.currentState!.push(
+        MaterialPageRoute(
+            builder: (context) => WareHouseSalesDetails(
+              id: int.parse(message.data['id']),
+              invoiceId: '0${message.data['invoice_id']}',
+            )),
+      );
+    }
   });
-  FirebaseMessaging.onBackgroundMessage(
-      (message) => _firebaseMessagingBackgroundHandler(message));
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) async {
-    if (navKey.currentState != null) {
-      if (Constants.USER_TOKEN.isNotEmpty) {
-        // navKey.currentState!.push(MaterialPageRoute(
-        //     builder: (context) => const NotificationScreen()));
-      }
-    }
+    // if (navKey.currentState != null) {
+    // if (message!.data['invoice_id'] != null) {
+    //   navKey.currentState!.push(
+    //     MaterialPageRoute(
+    //         builder: (context) => WareHouseSalesDetails(
+    //               id: int.parse(message.data['id']),
+    //               invoiceId: '0${message.data['invoice_id']}',
+    //             )),
+    //   );
+    // }
+    // if (Constants.USER_TOKEN.isNotEmpty) {
+    //
+    //   navKey.currentState!.push(MaterialPageRoute(
+    //       builder: (context) => const NotificationScreen()));
+    // }
+    // }
   });
 
   var initializationSettingsAndroid =
@@ -92,9 +114,18 @@ void main() async {
   await messaging.requestPermission();
   if (Platform.isIOS) {
     var APNS = await messaging.getAPNSToken();
-    print('APNS: $APNS');
   }
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //
+  // List<CameraDescription> cameras = await availableCameras();
+  //
+  // CameraController cameraController = CameraController(
+  //   cameras[0],
+  //   ResolutionPreset.medium,
+  // );
+  //
+  // cameraController.setFocusMode(FocusMode.locked);
+
   runApp(const MyApp());
 }
 
@@ -107,6 +138,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isLoading = true;
+
   getToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
@@ -123,14 +155,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  @override
-  void initState()  {
-    super.initState();
-    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance; // Change here
-    firebaseMessaging.getToken().then((token){
-      print("token is $token");
-    });
-  }
+  // @override
+  // void initState()  {
+  //   super.initState();
+  //   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance; // Change here
+  //   firebaseMessaging.getToken().then((token){
+  //     print("token is $token");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -143,24 +175,25 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
-        return
-          BlocProvider(
+        return BlocProvider(
           create: (context) => AuthBloc(authRepo: AuthRepo()),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               return GlobalLoaderOverlay(
-                child: isLoading ? const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ) :
-                MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  theme: lightTheme,
-                  home: (state is Authenticated)
-                      ? const MainScreen()
-                      : const Login(),
-                ),
+                child: isLoading
+                    ? const Scaffold(
+                        body: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : MaterialApp(
+                        navigatorKey: navKey,
+                        debugShowCheckedModeBanner: false,
+                        theme: lightTheme,
+                        home: (state is Authenticated)
+                            ? const MainScreen()
+                            : const Login(),
+                      ),
               );
             },
           ),

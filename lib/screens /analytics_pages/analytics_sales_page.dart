@@ -52,6 +52,10 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
       },
       firstDate: DateTime(2021),
       lastDate: DateTime.now(),
+      initialDateRange: DateTimeRange(
+        start: DateTime.now().subtract(const Duration(days: 30)),
+        end: DateTime.now(),
+      ),
     );
     if (picked != null) {
       final pickedDate =

@@ -9,6 +9,7 @@ import 'package:yiwucloud/util/function_class.dart';
 import 'abstract_auth.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -21,17 +22,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoggedIn>((event, emit) {
       emit(Authenticated(token: event.token));
     });
-    on<LoggedOut>((event, emit) {
+    on<LoggedOut>((event, emit) async {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.remove('login');
       emit(Unauthenticated(token: ''));
+      authRepo.getFirebaseToken(true);
     });
     on<LoginEvent>((event, emit) async {
-      authRepo.getFirebaseToken();
-      final response = await authRepo.login(event.email, event.password, event.context);
-      Func().showSnackbar(event.context, response.data['message'], response.data['success']);
+      final response =
+          await authRepo.login(event.email, event.password, event.context);
+      Func().showSnackbar(
+          event.context, response.data['message'], response.data['success']);
       if (response.data['success'] == true) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('login', response.data['api_token']);
         Constants.USER_TOKEN = response.data['api_token'];
+        authRepo.getFirebaseToken(false);
         emit(Authenticated(token: response.data['api_token']));
       } else {
         emit(Unauthenticated(token: ''));
@@ -50,14 +56,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     _authenticationStatusSubscription =
         Stream.periodic(const Duration(seconds: 30)).listen((_) async {
-          final isAuthenticated = await authRepo.getToken();
-          if (isAuthenticated.isNotEmpty) {
-            add(LoggedIn(token: isAuthenticated));
-          } else {
-            add(LoggedOut());
-          }
-        });
+      final isAuthenticated = await authRepo.getToken();
+      if (isAuthenticated.isNotEmpty) {
+        add(LoggedIn(token: isAuthenticated));
+      } else {
+        add(LoggedOut());
+      }
+    });
   }
+
   @override
   Future<void> close() {
     _authenticationStatusSubscription.cancel();

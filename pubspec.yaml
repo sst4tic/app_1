@@ -2,7 +2,7 @@ name: yiwucloud
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.0.2+3
+version: 1.0.5+6
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
@@ -43,6 +43,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^21.2.3
   flutter_datetime_picker: ^1.5.1
   accordion: ^2.5.1
+  expandable_text: ^2.3.0
 
 
 dev_dependencies:

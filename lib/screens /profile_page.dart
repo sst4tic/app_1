@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/util/constants.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../models /build_user.dart';
@@ -124,11 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             GestureDetector(
               onTap: () async {
-                SharedPreferences pref = await SharedPreferences.getInstance();
-                setState(() {
-                  pref.remove('login');
                   _authBloc.add(LoggedOut());
-                });
               },
               child: Container(
                 padding: REdgeInsets.all(10),

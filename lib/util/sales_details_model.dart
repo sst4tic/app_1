@@ -1,3 +1,5 @@
+import 'package:yiwucloud/util/product.dart';
+
 class SalesDetailsModel {
   SalesDetailsModel({
     required this.client,
@@ -134,6 +136,7 @@ class Products {
     required this.discount,
     required this.price,
     required this.qty,
+    this.availability,
   });
 
   late final id;
@@ -141,6 +144,7 @@ class Products {
   late final discount;
   late final String price;
   late final qty;
+  late final List<Availability>? availability;
 
   Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -148,6 +152,11 @@ class Products {
     discount = json['discount'] ?? 0;
     price = json['price'];
     qty = json['qty'];
+    availability = json['availability'] != null
+        ? List.from(json['availability'])
+        .map((e) => Availability.fromJson(e))
+        .toList()
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -157,6 +166,7 @@ class Products {
     data['discount'] = discount;
     data['price'] = price;
     data['qty'] = qty;
+    data['availability'] = availability?.map((e) => e.toJson()).toList();
     return data;
   }
 }

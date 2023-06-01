@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:yiwucloud/screens%20/global_scan_screen.dart';
-import 'package:yiwucloud/util/painter_model.dart';
-
 class QRScanner extends StatefulWidget {
   const QRScanner({Key? key}) : super(key: key);
 
@@ -28,45 +26,17 @@ class QRScannerState extends State<QRScanner> {
     return Stack(
       children: [
         QRView(
+          overlay: QrScannerOverlayShape(
+            borderColor: Colors.green,
+            borderRadius: 10,
+            borderLength: 30,
+            borderWidth: 10,
+            cutOutHeight: 150,
+            cutOutWidth: 300,
+          ),
           key: qrKey,
           onQRViewCreated: _onQRViewCreated,
         ),
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.6),
-            ),
-          ),
-        ),
-        const CustomPaintContainer(),
-        if (_scannedData.isNotEmpty)
-          Positioned(
-            bottom: 16,
-            left: 16,
-            right: 16,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Text(
-                _scannedData,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
         Positioned(
           bottom: 16,
           right: 16,

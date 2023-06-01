@@ -30,7 +30,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                 return Column(
                   children: [
                      SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.65,
+                      height: MediaQuery.of(context).size.height * 0.35,
                       child: const QRScanner(),
                     ),
                     const Spacer(),
@@ -50,69 +50,5 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
             },
           ),
         ));
-  }
-
-  Widget buildInitial() {
-    return ListView(
-      padding: REdgeInsets.all(8.0),
-      children: [
-        ElevatedButton.icon(
-          icon: const Icon(Icons.keyboard_alt_outlined),
-          onPressed: () {
-          },
-          label: const Text('Ввести в ручную'),
-        ),
-        const SizedBox(height: 10),
-        const Text(
-          'История сканирования :',
-          style: TextStyles.loginTitle,
-        ),
-        const SizedBox(height: 5),
-        // Expanded(
-        //   child: ListView.builder(
-        //     physics: const BouncingScrollPhysics(),
-        //     shrinkWrap: true,
-        //     padding: const EdgeInsets.all(8),
-        //     itemCount: barcodeList.length,
-        //     itemBuilder: (context, index) {
-        //       return ListTile(
-        //         title: Text(barcodeList[index].code),
-        //         subtitle: Text(DateFormat('Добавлено в dd-MM-yy, в HH:mm')
-        //             .format(barcodeList[index].date)
-        //             .toString()),
-        //         trailing: Row(
-        //           mainAxisSize: MainAxisSize.min,
-        //           children: [
-        //             IconButton(
-        //               onPressed: () {
-        //                 if (barcodeList[index].count > 1) {
-        //                   setState(() {
-        //                     barcodeList[index].count--;
-        //                   });
-        //                 } else {
-        //                   setState(() {
-        //                     barcodeList.remove(barcodeList[index]);
-        //                   });
-        //                 }
-        //               },
-        //               icon: const Icon(Icons.remove),
-        //             ),
-        //             Text(barcodeList[index].count.toString()),
-        //             IconButton(
-        //               onPressed: () {
-        //                 setState(() {
-        //                   barcodeList[index].count++;
-        //                 });
-        //               },
-        //               icon: const Icon(Icons.add),
-        //             ),
-        //           ],
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ),
-      ],
-    );
   }
 }

@@ -1,6 +1,6 @@
 
 abstract class AbstractAuth {
   getToken();
-  getFirebaseToken();
+  Future<void> getFirebaseToken(val);
   Future login(String email, String password, context);
 }

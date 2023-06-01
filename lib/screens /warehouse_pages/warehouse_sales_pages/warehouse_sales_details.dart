@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_comments_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_details_chronology.dart';
 import '../../../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../../../models /build_sales_details.dart';
@@ -109,7 +110,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue[400],
+                    backgroundColor: Colors.blue[400],
                     minimumSize: const Size(double.infinity, 40),
                   ),
                   child: Row(
@@ -127,7 +128,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                     launchUrlString(printUrl);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue[400],
+                    backgroundColor: Colors.blue[400],
                     minimumSize: const Size(double.infinity, 40),
                   ),
                   child: Row(
@@ -139,12 +140,35 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                   )
                 ),
               SizedBox(height: 4.h),
+             // create button for comments
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SalesCommentsPage(id: widget.id),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[400],
+                    minimumSize: const Size(double.infinity, 40),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('Комментарии'),
+                      Icon(FontAwesomeIcons.comment)
+                    ],
+                  )
+                ),
+              SizedBox(height: 4.h),
                 ElevatedButton(
                   onPressed: () {
                     _detailsBloc.add(PostponeEvent(id: widget.id, context: context));
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.yellow[700],
+                    backgroundColor: Colors.yellow[700],
                     minimumSize: const Size(double.infinity, 40),
                   ),
                   child: Row(
@@ -166,7 +190,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                     ));
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red[900],
+                    backgroundColor: Colors.red[900],
                     minimumSize: const Size(double.infinity, 40),
                   ),
                   child: Row(

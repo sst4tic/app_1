@@ -110,7 +110,7 @@ class _CreateMovingPageState extends State<CreateMovingPage> {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                backgroundColor: Colors.green,
                 minimumSize: Size(double.infinity, 30.h),
               ),
               child: const Text(

@@ -11,16 +11,6 @@ class SalesCommentsBloc extends Bloc<SalesCommentsEvent, SalesCommentsState> {
   set id(int value) => _id = value;
 
   SalesCommentsBloc() : super(SalesCommentsInitial()) {
-    late StreamSubscription subscription;
-    subscription = Stream.periodic(const Duration(seconds: 1)).listen((_) async {
-      if (state is SalesCommentsLoaded) {
-        final comments = (state as SalesCommentsLoaded).salesComments;
-        final newComments = await Func().getComments(id: _id);
-        if (newComments.length > comments.length) {
-          emit(SalesCommentsLoaded(newComments));
-        }
-      }
-    });
     on<LoadCommentsEvent>((event, emit) async {
       try {
         if (state is! SalesCommentsLoading) {

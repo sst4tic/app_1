@@ -44,7 +44,7 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
             builder: (context) {
               return CustomAlertDialog(
                 title: 'Успешно',
-                content: redirection['message'],
+                content: Text(redirection['message']),
                 actions: [
                   TextButton(
                     onPressed: () async {

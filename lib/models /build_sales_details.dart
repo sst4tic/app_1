@@ -3,7 +3,6 @@ import 'package:accordion/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiwucloud/screens%20/invoice_scan_page.dart';
-import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_comments_page.dart';
 import 'package:yiwucloud/util/styles.dart';
 import '../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../util/sales_details_model.dart';
@@ -326,18 +325,35 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
               itemCount: salesDetails.products!.length,
               itemBuilder: (context, index) {
                 final product = salesDetails.products![index];
+                final availabilityString = product.availability
+                    ?.map((item) =>
+                '${item.name} - ${item.qty} | ${item.location}')
+                    .join('\n') ??
+                    'Нет в наличии';
                 return ListTile(
+                  isThreeLine: true,
                   shape: index == salesDetails.products!.length - 1
                       ? const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
-                        ))
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
+                  )
                       : const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                  title: Text(
-                    product.name,
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        availabilityString,
+                        style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                   subtitle: Text(
                     'Количество: ${product.qty.toString()} | Скидка: ${product.discount.toString()} %',
@@ -356,12 +372,6 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
             ),
           ],
         ),
-        ElevatedButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SalesCommentsPage(id: id,)));
-            },
-            child: const Text('Посмотреть комментарии')),
         SizedBox(height: 25.h),
       ],
     );

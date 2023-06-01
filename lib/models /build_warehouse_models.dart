@@ -313,13 +313,21 @@ Widget buildSales(
                   Container(
                     padding: REdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.blue[100],
+                      color: sales.typeName == 'Возвратная'
+                          ? Colors.blue
+                          : sales.typeName == 'Предзаказ'
+                              ? Colors.black
+                              : Colors.blue[100],
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
                       child: Text(
                         sales.typeName!.toUpperCase(),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: sales.typeName == 'Предзаказ'
+                                ? Colors.white
+                                : Colors.black),
                       ),
                     ),
                   ),
