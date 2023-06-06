@@ -11,10 +11,13 @@ class SalesDetailsModel {
     required this.details,
     required this.shipment,
     required this.totalPrice,
+    this.contacts,
     required this.boxesPermission,
     this.boxesQty,
     required this.status,
+    required this.isPostponed,
     required this.btnPostpone,
+    this.country,
   });
 
   late final Client client;
@@ -26,6 +29,7 @@ class SalesDetailsModel {
   late final Details details;
   late final Shipment shipment;
   late final String totalPrice;
+  late final List<String>? contacts;
   late final bool boxesPermission;
   late final int? boxesQty;
   late final int status;
@@ -35,7 +39,9 @@ class SalesDetailsModel {
   late final bool btnPrint;
   late final bool btnScan;
   late final bool btnBoxes;
+  late final bool isPostponed;
   late final bool btnPostpone;
+  late final String? country;
 
   SalesDetailsModel.fromJson(Map<String, dynamic> json) {
     client = Client.fromJson(json['client']);
@@ -49,6 +55,7 @@ class SalesDetailsModel {
     details = Details.fromJson(json['details']);
     shipment = Shipment.fromJson(json['shipment']);
     totalPrice = json['totalPrice'];
+    contacts = json['contacts'] != null ? List.from(json['contacts']) : null;
     boxesPermission = json['btnBoxesAdd'];
     boxesQty = json['boxes_qty'];
     status = json['status'];
@@ -58,7 +65,9 @@ class SalesDetailsModel {
     btnPrint = json['btnPrint'];
     btnScan = json['btnScanProduct'];
     btnBoxes = json['btnScanBoxes'];
-    btnPostpone = json['isPostponed'];
+    isPostponed = json['isPostponed'];
+    btnPostpone = json['btnPostponed'];
+    country = json['countryAndCity'];
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +81,7 @@ class SalesDetailsModel {
     data['details'] = details.toJson();
     data['shipment'] = shipment.toJson();
     data['totalPrice'] = totalPrice;
+    data['contacts'] = contacts;
     data['btnBoxesAdd'] = boxesPermission;
     data['boxes_qty'] = boxesQty;
     data['status'] = status;
@@ -80,7 +90,9 @@ class SalesDetailsModel {
     data['btnBan'] = btnBan;
     data['btnScanProduct'] = btnScan;
     data['btnScanBoxes'] = btnBoxes;
-    data['isPostponed'] = btnPostpone;
+    data['isPostponed'] = isPostponed;
+    data['btnPostponed'] = btnPostpone;
+    data['countryAndCity'] = country;
     return data;
   }
 }
@@ -175,18 +187,20 @@ class Details {
   Details({
     required this.discountName,
     required this.paymentsMethodName,
-    required this.servicePoint,
+    this.servicePoint,
     required this.saleChannelName,
     required this.prepayment,
     required this.withDocs,
+    this.kaspiNum
   });
 
-  late final String discountName;
+  late final discountName;
   late final String paymentsMethodName;
-  late final String servicePoint;
+  late final String? servicePoint;
   late final String saleChannelName;
   late final String prepayment;
   late final String withDocs;
+  late final String? kaspiNum;
 
   Details.fromJson(Map<String, dynamic> json) {
     discountName = json['discountName'];
@@ -195,6 +209,7 @@ class Details {
     saleChannelName = json['saleChannelName'];
     prepayment = json['prepayment'];
     withDocs = json['withDocs'];
+    kaspiNum = json['kaspi_num'];
   }
 
   Map<String, dynamic> toJson() {
@@ -205,6 +220,7 @@ class Details {
     data['saleChannelName'] = saleChannelName;
     data['prepayment'] = prepayment;
     data['withDocs'] = withDocs;
+    data['kaspi_num'] = kaspiNum;
     return data;
   }
 }

@@ -126,10 +126,10 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
         itemBuilder: (context, index) {
           final barcode = barcodeList[index];
           final availabilityString = barcode.availability
-              ?.map((item) =>
-          '${item.name} - ${item.qty} | ${item.location}')
+              ?.where((item) => item.location != '')
+              .map((item) => '${item.name} | ${item.location}')
               .join('\n') ??
-          'Нет в наличии';
+              'Нет в наличии';
           return Container(
             padding: REdgeInsets.all(8),
             margin: REdgeInsets.only(bottom: 8),
@@ -151,7 +151,7 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
                 SizedBox(height: 4.h),
                 Text(
                   availabilityString,
-                  style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 4.h),
                 Row(

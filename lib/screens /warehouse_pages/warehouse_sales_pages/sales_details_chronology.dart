@@ -61,9 +61,9 @@ class _DetailsChronologyState extends State<DetailsChronology> {
                                     color: Colors.grey)
                                 : const Icon(FontAwesomeIcons.pen,
                                     color: Colors.grey),
-                    title: Text(chronology.name),
+                    title: Text(chronology.message),
                     subtitle:
-                        Text('${chronology.createdAt}\n${chronology.message}'),
+                        Text('${chronology.createdAt}\n${chronology.name}'),
                   );
                 },
                 separatorBuilder: (context, index) {

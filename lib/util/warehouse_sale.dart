@@ -33,6 +33,7 @@ class Sales {
     this.totalPrice,
     this.createdAt,
     this.source,
+    this.kaspiNum,
   });
   late final int id;
   late final String invoiceId;
@@ -46,6 +47,7 @@ class Sales {
   late final totalPrice;
   late final String? createdAt;
   late final String? source;
+  late final String? kaspiNum;
 
   Sales.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -60,6 +62,7 @@ class Sales {
     totalPrice = json['totalPrice'];
     createdAt = json['created_at'];
     source = json['source'];
+    kaspiNum = json['kaspi_num'];
   }
 
   Map<String, dynamic> toJson() {
@@ -75,6 +78,7 @@ class Sales {
     data['totalPrice'] = totalPrice;
     data['created_at'] = createdAt;
     data['source'] = source;
+    data['kaspi_num'] = kaspiNum;
     return data;
   }
 }

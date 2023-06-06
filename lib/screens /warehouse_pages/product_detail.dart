@@ -34,7 +34,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   child: CircularProgressIndicator(),
                 );
               } else if (state is ProductDetailLoaded) {
-                return buildProdDetails(state.product, context);
+                return buildProdDetails(state.product, context, _detailBloc);
               } else if (state is ProductDetailLoadingFailure) {
                 return Center(
                   child: Text(state.exception.toString()),

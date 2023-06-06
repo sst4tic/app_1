@@ -38,6 +38,18 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
     detailsBloc = widget.detailsBloc;
   }
 
+  final Set<int> _isLoading = {};
+
+  void _onSubmit(int index) {
+    setState(() {
+      if (_isLoading.contains(index)) {
+        _isLoading.remove(index);
+      } else {
+        _isLoading.add(index);
+      }
+    });
+  }
+
   bool isDetailsExpanded = false;
   bool isDeliveryExpanded = false;
 
@@ -46,7 +58,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
     return ListView(
       padding: REdgeInsets.all(8),
       children: [
-        salesDetails.btnPostpone
+        salesDetails.isPostponed
             ? Container(
                 padding: REdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -100,7 +112,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                     minimumSize: Size(double.infinity, 35.h),
                     backgroundColor: Colors.green),
                 label: Text(salesDetails.btnScan
-                    ? 'Сканировать накладную'
+                    ? 'Сканировать товары'
                     : 'Сканировать коробки'),
                 icon: const Icon(Icons.qr_code_scanner_sharp),
               )
@@ -117,7 +129,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                 child: Text(
                     'Указать количество мест (${salesDetails.boxesQty ?? '0'})'))
             : Container(),
-        SizedBox(height: salesDetails.boxesPermission ? 10.h : 0),
+        SizedBox(height: 10.h),
         Accordion(
           disableScrolling: true,
           paddingListHorizontal: 0,
@@ -151,17 +163,32 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                           const Text('Клиент:'),
                           Flexible(
                               child: Text(
-                            salesDetails.client.name!,
+                            salesDetails.client.name ?? 'Клиент не указан',
                             overflow: TextOverflow.ellipsis,
                           )),
                         ],
                       ),
+                      salesDetails.contacts != null
+                          ? Column(
+                              children: salesDetails.contacts!
+                                  .map((e) => Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // create text with index
+                                          Text('Номер телефона ${salesDetails.contacts!.indexOf(e) + 1}'),
+                                          Text(e),
+                                        ],
+                                      ))
+                                  .toList(),
+                            )
+                          : Container(),
                       const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Менеджер:'),
-                          Text(salesDetails.manager.name!),
+                          Text(salesDetails.manager.name ?? 'Не указано'),
                         ],
                       ),
                       const Divider(),
@@ -193,7 +220,8 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Точка обслуживания:'),
-                          Text(salesDetails.details.servicePoint),
+                          Text(salesDetails.details.servicePoint ??
+                              'Не указано'),
                         ],
                       ),
                       const Divider(),
@@ -212,6 +240,18 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                           Text('${salesDetails.details.discountName} %'),
                         ],
                       ),
+                      salesDetails.details.kaspiNum != null
+                          ? const Divider()
+                          : const SizedBox(),
+                      salesDetails.details.kaspiNum != null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Заявка kaspi:'),
+                                Text('${salesDetails.details.kaspiNum}'),
+                              ],
+                            )
+                          : const SizedBox(),
                       const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,6 +307,14 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          const Text('Страна:'),
+                          Text(salesDetails.country ?? 'Страна не указана'),
+                        ],
+                      ),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           const Text('Метод доставки:'),
                           Flexible(
                               child: Text(
@@ -279,22 +327,19 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Адрес доставки:'),
-                          Flexible(
-                            child: Text(
-                              salesDetails.shipment.address,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
+                          const Text('Срочная доставка:'),
+                          Text(salesDetails.shipment.urgency),
                         ],
                       ),
                       const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Срочная доставка:'),
-                          Text(salesDetails.shipment.urgency),
+                        children: const [
+                          Text('Адрес доставки:'),
                         ],
+                      ),
+                      Text(
+                        salesDetails.shipment.address,
                       ),
                     ],
                   ),
@@ -326,22 +371,24 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
               itemBuilder: (context, index) {
                 final product = salesDetails.products![index];
                 final availabilityString = product.availability
-                    ?.map((item) =>
-                '${item.name} - ${item.qty} | ${item.location}')
-                    .join('\n') ??
+                        ?.where((item) => item.location != '')
+                        .map((item) => '${item.name} | ${item.location}')
+                        .join('\n') ??
                     'Нет в наличии';
                 return ListTile(
-                  isThreeLine: true,
+                  onTap: () {
+                    availabilityString != '' ? _onSubmit(index) : null;
+                  },
                   shape: index == salesDetails.products!.length - 1
                       ? const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                  )
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8),
+                          ),
+                        )
                       : const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
+                          borderRadius: BorderRadius.zero,
+                        ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -349,9 +396,13 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                         product.name,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        availabilityString,
-                        style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                      Visibility(
+                        visible: _isLoading.contains(index),
+                        child: Text(
+                          availabilityString,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
+                        ),
                       ),
                     ],
                   ),

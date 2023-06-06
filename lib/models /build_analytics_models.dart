@@ -101,7 +101,7 @@ Widget buildChannels({required List<ChannelsList> channelsList}) {
                     '${channel.plan.toString()} ₸ план продаж',
                     style: TextStyles.editStyle,
                   ),
-                  Text('${channel.planPercentage} %',
+                  Text('${channel.planPercentage.round()} %',
                       style: TextStyles.editStyle)
                 ],
               ),

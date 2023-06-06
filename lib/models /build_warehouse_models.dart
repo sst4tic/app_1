@@ -9,8 +9,6 @@ import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/wareh
 import 'package:yiwucloud/util/moving_model.dart';
 import '../bloc/products_bloc/products_bloc.dart';
 import '../bloc/warehouse_arrival_bloc/warehouse_arrival_bloc.dart';
-import '../bloc/warehouse_sales_bloc/warehouse_sales_bloc.dart';
-import '../screens /warehouse_pages/warehouse_sales_pages/create_sale_page.dart';
 import '../screens /warehouse_pages/product_detail.dart';
 import '../util/arrival_model.dart';
 import '../util/product.dart';
@@ -210,311 +208,340 @@ Widget buildArrival(
   );
 }
 
-// TODO: Исправить статус нейм на обычный статус
 Widget buildSales(
     {required List<Sales> salesModel,
     required bool btnPermission,
     required ScrollController controller,
     required BuildContext context,
-    required VoidCallback onRefresh}) {
-  return CustomScrollView(
-    controller: controller,
-    slivers: [
-      if (btnPermission)
+    required VoidCallback onRefresh,
+    required bool hasMore}) {
+  return RefreshIndicator(
+    onRefresh: () async {
+      onRefresh();
+    },
+    child: CustomScrollView(
+      controller: controller,
+      slivers: [
+        if (btnPermission)
+          // SliverToBoxAdapter(
+          //   child: Padding(
+          //     padding: REdgeInsets.only(left: 8, right: 8, top: 8),
+          //     child: ElevatedButton(
+          //       onPressed: () {
+          //         Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //               builder: (context) => const CreateSalePage(),
+          //             ));
+          //       },
+          //       style: ElevatedButton.styleFrom(elevation: 0),
+          //       child: const Text('Создать продажу'),
+          //     ),
+          //   ),
+          // ),
         SliverToBoxAdapter(
-          child: Padding(
-            padding: REdgeInsets.symmetric(horizontal: 8),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CreateSalePage(),
-                    ));
-              },
-              style: ElevatedButton.styleFrom(elevation: 0),
-              child: const Text('Создать продажу'),
-            ),
-          ),
-        ),
-      SliverToBoxAdapter(
-        child: ListView.builder(
-          padding: REdgeInsets.all(8),
-          scrollDirection: Axis.vertical,
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: salesModel.length,
-          itemBuilder: (context, index) {
-            final sales = salesModel[index];
-            return Container(
-              padding: REdgeInsets.symmetric(horizontal: 12),
-              margin: REdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: sales.statusName == 'Отпущено'
-                    ? Border.all(color: Colors.green, width: 1.5)
-                    : (sales.statusName == 'Отменено'
-                        ? Border.all(color: Colors.red, width: 1.5)
-                        : Border.all(color: Colors.transparent)),
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '# ${sales.invoiceId}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => WareHouseSalesDetails(
-                                  invoiceId: sales.invoiceId,
-                                  id: sales.id,
+          child: ListView.builder(
+            padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),
+            scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: salesModel.length,
+            itemBuilder: (context, index) {
+              print('HAS MORE: $hasMore');
+              final sales = salesModel[index];
+              return Container(
+                padding: REdgeInsets.symmetric(horizontal: 12),
+                margin: REdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: sales.statusName == 'Отпущено'
+                      ? Border.all(color: Colors.green, width: 1.5)
+                      : (sales.statusName == 'Отменено'
+                          ? Border.all(color: Colors.red, width: 1.5)
+                          : Border.all(color: Colors.transparent)),
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '# ${sales.invoiceId}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13),
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WareHouseSalesDetails(
+                                    invoiceId: sales.invoiceId,
+                                    id: sales.id,
+                                  ),
                                 ),
-                              ),
-                            ).then((value) => onRefresh.call());
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary:
-                                  Theme.of(context).scaffoldBackgroundColor,
-                              elevation: 0),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.visibility,
-                                color: Theme.of(context).primaryColorLight,
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'Открыть',
-                                style: TextStyle(
+                              ).then((value) => onRefresh.call());
+                            },
+                            style: ElevatedButton.styleFrom(
+                                primary:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                elevation: 0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.visibility,
                                   color: Theme.of(context).primaryColorLight,
                                 ),
-                              )
-                            ],
-                          ))
-                    ],
-                  ),
-                  const Divider(
-                    height: 0,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: sales.typeName == 'Возвратная'
-                          ? Colors.blue
-                          : sales.typeName == 'Предзаказ'
-                              ? Colors.black
-                              : Colors.blue[100],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        sales.typeName!.toUpperCase(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: sales.typeName == 'Предзаказ'
-                                ? Colors.white
-                                : Colors.black),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'статус'.toUpperCase(),
-                    style: TextStyles.editStyle,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: sales.statusName == 'Отпущено'
-                          ? Colors.green[200]
-                          : (sales.statusName == 'Отменено'
-                              ? Colors.red[200]
-                              : Theme.of(context).scaffoldBackgroundColor),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(sales.statusName!,
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'канал'.toUpperCase(),
-                    style: TextStyles.editStyle,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(sales.saleChannelName ?? 'Канал не указан',
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'сотрудник'.toUpperCase(),
-                    style: TextStyles.editStyle,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.circle,
-                          size: 12,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(sales.managerName ?? 'Сотрудник не указан',
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Text(
+                                  'Открыть',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                )
+                              ],
+                            ))
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'клиент'.toUpperCase(),
-                    style: TextStyles.editStyle,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
+                    const Divider(
+                      height: 0,
                     ),
-                    child: Center(
-                      child: Text(sales.clientName ?? 'Клиент не указан',
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 5.h,
                     ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'сообщения'.toUpperCase(),
-                    style: TextStyles.editStyle,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 6, horizontal: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: sales.typeName == 'Возвратная'
+                            ? Colors.blue
+                            : sales.typeName == 'Предзаказ'
+                                ? Colors.black
+                                : Colors.blue[100],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(
+                          sales.typeName!.toUpperCase(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: sales.typeName == 'Предзаказ'
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                      ),
                     ),
-                    child: const Text('Нет сообщений',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                  const Divider(),
-                  Text(
-                    'сумма'.toUpperCase(),
-                    style: TextStyles.editStyle,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text('${sales.totalPrice ?? 0} ₸',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20)),
-                  const Divider(),
-                  Center(
-                    child: Text(
-                      sales.createdAt!,
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'статус'.toUpperCase(),
                       style: TextStyles.editStyle,
                     ),
-                  ),
-                  const Divider(),
-                  Center(
-                    child: Text(
-                      'via www.yiwumart.org / guest',
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: sales.statusName == 'Отпущено'
+                            ? Colors.green[200]
+                            : (sales.statusName == 'Отменено'
+                                ? Colors.red[200]
+                                : Theme.of(context).scaffoldBackgroundColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(sales.statusName!,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'канал'.toUpperCase(),
                       style: TextStyles.editStyle,
                     ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                ],
-              ),
-            );
-          },
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(sales.saleChannelName ?? 'Канал не указан',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'сотрудник'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.circle,
+                            size: 12,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(sales.managerName ?? 'Сотрудник не указан',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'клиент'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(sales.clientName ?? 'Клиент не указан',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    sales.kaspiNum != null
+                        ? Text(
+                            'заявка kaspi'.toUpperCase(),
+                            style: TextStyles.editStyle,
+                          )
+                        : const SizedBox(),
+                    SizedBox(
+                      height: sales.kaspiNum != null ? 5.h : 0,
+                    ),
+                    sales.kaspiNum != null
+                        ? Container(
+                            padding: REdgeInsets.symmetric(vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(sales.kaspiNum ?? '',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          )
+                        : const SizedBox(),
+                    SizedBox(
+                      height: sales.kaspiNum != null ? 5.h : 0,
+                    ),
+                    Text(
+                      'сообщения'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding:
+                          REdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text('Нет сообщений',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                    const Divider(),
+                    Text(
+                      'сумма'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text('${sales.totalPrice ?? 0} ₸',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+                    const Divider(),
+                    Center(
+                      child: Text(
+                        sales.createdAt!,
+                        style: TextStyles.editStyle,
+                      ),
+                    ),
+                    const Divider(),
+                    Center(
+                      child: Text(
+                        sales.source ?? '',
+                        style: TextStyles.editStyle,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
-      ),
-      BlocBuilder<WarehouseSalesBloc, WarehouseSalesState>(
-        builder: (context, state) {
-          if (state is WarehouseSalesLoadingMore) {
-            return const SliverToBoxAdapter(
-              child: Text('Больше нет данных'),
-            );
-          } else {
-            return const SliverToBoxAdapter(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-        },
-      ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return SizedBox(
-              height: 20.h,
-            );
-          },
-          childCount: 1,
+        SliverToBoxAdapter(
+          child: Center(
+              child: salesModel.length <= 5 || hasMore == false
+                  ? Text('Больше нет данных')
+                  : CircularProgressIndicator()),
         ),
-      ),
-    ],
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return SizedBox(
+                height: 20.h,
+              );
+            },
+            childCount: 1,
+          ),
+        ),
+      ],
+    ),
   );
 }
 
 Widget buildProducts(
-    {required List<Product> products, required ScrollController controller}) {
+    {required List<Product> products,
+    required ScrollController controller,
+    required bool hasMore}) {
   return CustomScrollView(
     controller: controller,
     slivers: [
@@ -531,12 +558,12 @@ Widget buildProducts(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
+          padding: REdgeInsets.all(8),
           itemCount: products.length,
           itemBuilder: (context, index) {
             final product = products[index];
             final availabilityString = product.availability
-                    ?.map((item) =>
-                        '${item.name} - ${item.qty} | ${item.location}')
+                    ?.map((item) => '${item.name} | ${item.location}')
                     .join('\n') ??
                 'Нет в наличии';
             return Card(
@@ -583,11 +610,8 @@ Widget buildProducts(
                       SizedBox(height: 4.h),
                       Text(
                         availabilityString,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
-                          color: availabilityString == 'Нет в наличии'
-                              ? Colors.red
-                              : Colors.green,
                         ),
                       ),
                       SizedBox(height: 8.h),
@@ -611,20 +635,11 @@ Widget buildProducts(
           },
         ),
       ),
-      BlocBuilder<ProductsBloc, ProductsState>(
-        builder: (context, state) {
-          if (state is ProductsLoadingMore) {
-            return const SliverToBoxAdapter(
-              child: Text('Больше нет данных'),
-            );
-          } else {
-            return const SliverToBoxAdapter(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-        },
+      SliverToBoxAdapter(
+        child: Center(
+            child: products.length <= 5 || hasMore == false
+                ? Text('Больше нет данных')
+                : CircularProgressIndicator()),
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(

@@ -11,12 +11,14 @@ class WarehouseSalesBloc extends Bloc<WarehouseSalesEvent, WarehouseSalesState> 
   WarehouseSalesBloc() : super(WarehouseSalesInitial()) {
     final salesRepo = SalesRepo();
     int page = 1;
+    String query = '';
     WarehouseSalesModel warehouseSales = WarehouseSalesModel(btnPermission: false, sales: []);
     on<LoadWarehouseSales>((event, emit) async {
       try {
         if (state is! WarehouseSalesLoading) {
           emit(WarehouseSalesLoading());
-          warehouseSales = await salesRepo.getSales(page: page);
+          warehouseSales = await salesRepo.getSales(page: page, query: event.query);
+          query = event.query ?? '';
           emit(WarehouseSalesLoaded(
               warehouseSales: warehouseSales, page: 1, hasMore: true));
         }
@@ -32,12 +34,12 @@ class WarehouseSalesBloc extends Bloc<WarehouseSalesEvent, WarehouseSalesState> 
         if (state is WarehouseSalesLoaded && state.hasMore) {
           final warehouseSales = (state as WarehouseSalesLoaded).warehouseSales;
           final newWarehouseSales =
-             await salesRepo.getSales(page: state.page + 1);
+             await salesRepo.getSales(page: state.page + 1, query: query);
           warehouseSales.sales.addAll(newWarehouseSales.sales);
           emit(WarehouseSalesLoaded(
               warehouseSales: warehouseSales,
               page: state.page + 1,
-              hasMore: newWarehouseSales.sales.isNotEmpty));
+              hasMore: false));
         }
       } catch (e) {
         emit(WarehouseSalesLoadingFailure(exception: e));

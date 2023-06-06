@@ -54,15 +54,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       add(LoggedOut());
     }
-    _authenticationStatusSubscription =
-        Stream.periodic(const Duration(seconds: 30)).listen((_) async {
-      final isAuthenticated = await authRepo.getToken();
-      if (isAuthenticated.isNotEmpty) {
-        add(LoggedIn(token: isAuthenticated));
-      } else {
-        add(LoggedOut());
-      }
-    });
+    // _authenticationStatusSubscription =
+    //     Stream.periodic(const Duration(seconds: 30)).listen((_) async {
+    //   final isAuthenticated = await authRepo.getToken();
+    //   if (isAuthenticated.isNotEmpty) {
+    //     add(LoggedIn(token: isAuthenticated));
+    //   } else {
+    //     add(LoggedOut());
+    //   }
+    // });
   }
 
   @override

@@ -36,7 +36,7 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly> {
             } else if (state is WarehouseAssemblyLoaded) {
               return buildTakingList(
                   taking: state.warehouseAssembly,
-                  onRefresh: () => context.read<WarehouseAssemblyBloc>().add(LoadWarehouseAssembly()));
+                  onRefresh: () => _assemblyBloc.add(LoadWarehouseAssembly()));
             } else {
               return const Center(child: Text('Ошибка'));
             }

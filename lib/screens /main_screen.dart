@@ -115,11 +115,11 @@ class MainScreenState extends State<MainScreen> {
   }
 
   showDialogBox() => showCupertinoDialog<String>(
-      context: context,
-      builder: (BuildContext context) => CustomAlertDialog(
+        context: context,
+        builder: (BuildContext context) => CustomAlertDialog(
           title: 'Нет интернет соединения',
           content: const Text(
-              'Пожалуйста проверьте интернет соедниение!',
+            'Пожалуйста проверьте интернет соедниение!',
           ),
           actions: [
             CustomDialogAction(
@@ -127,7 +127,7 @@ class MainScreenState extends State<MainScreen> {
                 Navigator.pop(context, 'Cancel');
                 setState(() => isAlertSet = false);
                 isDeviceConnected =
-                await InternetConnectionChecker().hasConnection;
+                    await InternetConnectionChecker().hasConnection;
                 if (!isDeviceConnected && isAlertSet == false) {
                   showDialogBox();
                   setState(() => isAlertSet = true);
@@ -136,6 +136,6 @@ class MainScreenState extends State<MainScreen> {
               text: 'Повторить',
             ),
           ],
-      ),
-  );
+        ),
+      );
 }

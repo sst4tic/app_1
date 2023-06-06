@@ -12,6 +12,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductsBloc() : super(ProductsInitial()) {
     final productsRepo = ProductsRepo();
     int pageWithFilters = 1;
+    String query = '';
     List<Product> products = [];
     on<LoadProducts>((event, emit) async {
       try {
@@ -19,10 +20,9 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           emit(ProductsLoading());
           products = await productsRepo.getProducts(
               page: 1,
-              media: event.media,
-              orderby: event.orderby,
-              availability: event.availability);
+              query: event.query);
           pageWithFilters = 1;
+          query = event.query ?? '';
           emit(ProductsLoaded(products: products, page: 1, hasMore: true));
         }
       } catch (e) {
@@ -37,10 +37,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         if (state is ProductsLoaded && state.hasMore) {
           final products = (state as ProductsLoaded).products;
           final newProducts = await productsRepo.getProducts(
-              page: pageWithFilters + 1,
-              media: event.media,
-              orderby: event.orderby,
-              availability: event.availability);
+              page: pageWithFilters + 1, query: query);
           products.addAll(newProducts);
           emit(ProductsLoaded(
               products: products,
@@ -54,4 +51,3 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     });
   }
 }
-

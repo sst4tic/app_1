@@ -88,22 +88,15 @@ void main() async {
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) async {
-    // if (navKey.currentState != null) {
-    // if (message!.data['invoice_id'] != null) {
-    //   navKey.currentState!.push(
-    //     MaterialPageRoute(
-    //         builder: (context) => WareHouseSalesDetails(
-    //               id: int.parse(message.data['id']),
-    //               invoiceId: '0${message.data['invoice_id']}',
-    //             )),
-    //   );
-    // }
-    // if (Constants.USER_TOKEN.isNotEmpty) {
-    //
-    //   navKey.currentState!.push(MaterialPageRoute(
-    //       builder: (context) => const NotificationScreen()));
-    // }
-    // }
+    if (message!.data['invoice_id'] != null) {
+      navKey.currentState!.push(
+        MaterialPageRoute(
+            builder: (context) => WareHouseSalesDetails(
+                  id: int.parse(message.data['id']),
+                  invoiceId: '0${message.data['invoice_id']}',
+                )),
+      );
+    }
   });
 
   var initializationSettingsAndroid =
@@ -116,16 +109,6 @@ void main() async {
     var APNS = await messaging.getAPNSToken();
   }
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  //
-  // List<CameraDescription> cameras = await availableCameras();
-  //
-  // CameraController cameraController = CameraController(
-  //   cameras[0],
-  //   ResolutionPreset.medium,
-  // );
-  //
-  // cameraController.setFocusMode(FocusMode.locked);
-
   runApp(const MyApp());
 }
 
@@ -154,15 +137,6 @@ class _MyAppState extends State<MyApp> {
       isLoading = false;
     });
   }
-
-  // @override
-  // void initState()  {
-  //   super.initState();
-  //   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance; // Change here
-  //   firebaseMessaging.getToken().then((token){
-  //     print("token is $token");
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

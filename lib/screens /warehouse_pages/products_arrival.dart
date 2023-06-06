@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/bloc/warehouse_arrival_bloc/warehouse_arrival_bloc.dart';
 import '../../models /build_warehouse_models.dart';
-import '../../models /search_model.dart';
 
 class ProductsArrival extends StatefulWidget {
   const ProductsArrival({Key? key}) : super(key: key);
@@ -32,7 +31,6 @@ class _ProductsArrivalState extends State<ProductsArrival> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Склад: приход'),
-          bottom: searchModel(context),
         ),
         body: BlocProvider<WarehouseArrivalBloc>(
             create: (context) => WarehouseArrivalBloc(),

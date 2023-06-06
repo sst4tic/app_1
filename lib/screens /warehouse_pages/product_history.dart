@@ -150,18 +150,16 @@ class _ProductHistoryState extends State<ProductHistory> {
           ),
         ),
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: 20.h,
-            child: Center(
-              child: hasMore && list.length >= 15
-                  ? const CircularProgressIndicator()
-                  : const Text('Нет данных'),
-            ),
-          ),
+          child: Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.01,
+                  bottom: MediaQuery.of(context).size.height * 0.04),
+              child: Center(
+                  child:
+                      hasMore
+                      ? const CircularProgressIndicator()
+                      : const Text('Больше данных нет')))
         ),
-        SliverToBoxAdapter(
-          child: SizedBox(height: 20.h),
-        )
       ],
     );
   }

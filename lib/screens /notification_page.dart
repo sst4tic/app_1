@@ -54,7 +54,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 final not = snapshot.data!;
                 return buildNotifications(not);
               } else {
-                // show stack trace
                 return const Text("No widget to build");
               }
             }),

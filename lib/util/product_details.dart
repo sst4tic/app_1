@@ -8,6 +8,7 @@ class ProductDetails {
     required this.media,
     this.totalCount,
     required this.price,
+    required this.editPermission,
   });
 
   late final int id;
@@ -18,6 +19,7 @@ class ProductDetails {
   late final String? description;
   late final List<Media> media;
   late final int? totalCount;
+  late final bool editPermission;
 
   ProductDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -30,6 +32,7 @@ class ProductDetails {
         .map<Media>((json) => Media.fromJson(json))
         .toList();
     totalCount = json['warehouse_total_count'];
+    editPermission = json['locationEditBtn'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +45,7 @@ class ProductDetails {
     data['description'] = description;
     data['media'] = media.map((e) => e.toJson()).toList();
     data['warehouse_total_count'] = totalCount;
+    data['locationEditBtn'] = editPermission;
     return data;
   }
 }
@@ -96,18 +100,21 @@ class Thumbnails {
 
 class Warehouses {
   Warehouses({
+    required this.id,
     required this.count,
     required this.name,
     required this.updatedAt,
     this.location
   });
 
+  late final int id;
   late final int count;
   late final String name;
   late final String updatedAt;
   late final String? location;
 
   Warehouses.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     count = json['count'];
     name = json['warehouse_name'];
     updatedAt = json['updated_at'];
@@ -116,6 +123,7 @@ class Warehouses {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
+    data['id'] = id;
     data['count'] = count;
     data['warehouse_name'] = name;
     data['updated_at'] = updatedAt;

@@ -40,19 +40,17 @@ class Product {
 }
 
 class Availability {
-  final int? qty;
   final String? name;
   final String? location;
 
   Availability({
-    this.qty,
     this.name,
     this.location
   });
 
   Availability.fromJson(Map<String, dynamic> json)
-      : qty = json['qty'] as int?,
+      :
         name = json['name'] as String?,
         location = json['location'] ?? '';
-  Map<String, dynamic> toJson() => {'qty': qty, 'name': name, 'location': location};
+  Map<String, dynamic> toJson() => {'name': name, 'location': location};
 }

@@ -5,11 +5,13 @@ abstract class WarehouseSalesEvent {}
 class LoadWarehouseSales extends WarehouseSalesEvent {
   LoadWarehouseSales({
     this.completer,
+    this.query,
   });
 
   final Completer? completer;
+  final String? query;
 
-  List<Object?> get props => [completer];
+  List<Object?> get props => [completer, query];
 }
 
 class LoadMore extends WarehouseSalesEvent {
@@ -20,6 +22,5 @@ class LoadMore extends WarehouseSalesEvent {
 
   final Completer? completer;
   final bool? hasMore;
-
   List<Object?> get props => [];
 }
