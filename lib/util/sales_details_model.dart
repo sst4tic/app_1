@@ -15,6 +15,9 @@ class SalesDetailsModel {
     required this.boxesPermission,
     this.boxesQty,
     required this.status,
+    required this.statusName,
+    this.assemblerName,
+    this.courierName,
     required this.isPostponed,
     required this.btnPostpone,
     this.country,
@@ -33,6 +36,9 @@ class SalesDetailsModel {
   late final bool boxesPermission;
   late final int? boxesQty;
   late final int status;
+  late final String statusName;
+  late final String? assemblerName;
+  late final String? courierName;
   late final bool btnSheet;
   late final bool btnChronology;
   late final bool btnBan;
@@ -59,6 +65,9 @@ class SalesDetailsModel {
     boxesPermission = json['btnBoxesAdd'];
     boxesQty = json['boxes_qty'];
     status = json['status'];
+    statusName = json['status_name'];
+    assemblerName = json['assembler_name'];
+    courierName = json['courier_name'];
     btnSheet = json['btnSheet'];
     btnChronology = json['btnChronology'];
     btnBan = json['btnBan'];
@@ -85,6 +94,9 @@ class SalesDetailsModel {
     data['btnBoxesAdd'] = boxesPermission;
     data['boxes_qty'] = boxesQty;
     data['status'] = status;
+    data['status_name'] = statusName;
+    data['assembler_name'] = assemblerName;
+    data['courier_name'] = courierName;
     data['btnSheet'] = btnSheet;
     data['btnChronology'] = btnChronology;
     data['btnBan'] = btnBan;
@@ -100,17 +112,21 @@ class SalesDetailsModel {
 class Client {
   Client({
     this.name,
+    this.phone,
   });
 
   String? name;
+  String? phone;
 
   Client.fromJson(Map<String, dynamic> json) {
     name = json['name'];
+    phone = json['phone'];
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['name'] = name;
+    data['phone'] = phone;
     return data;
   }
 }

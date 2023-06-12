@@ -11,8 +11,9 @@ part 'warehouse_assembly_state.dart';
 
 class WarehouseAssemblyBloc extends Bloc<WarehouseAssemblyEvent, WarehouseAssemblyState> {
   WarehouseAssemblyBloc() : super(WarehouseAssemblyInitial()) {
-    Future<List<Sales>> loadAssembly() async {
-      var url = '${Constants.API_URL_DOMAIN}action=invoices_of_assembler_list';
+    Future<List<Sales>> loadAssembly({String? smart, String? filters}) async {
+      var url = '${Constants.API_URL_DOMAIN}action=invoices_of_assembler_list&smart=${smart ?? ''}&${filters ?? ''}';
+      print(url);
       final response =
       await http.get(Uri.parse(url), headers: Constants.headers());
       final body = jsonDecode(response.body);
@@ -22,7 +23,7 @@ class WarehouseAssemblyBloc extends Bloc<WarehouseAssemblyEvent, WarehouseAssemb
       try {
       if(state is! WarehouseAssemblyLoading) {
         emit(WarehouseAssemblyLoading());
-        final warehouseAssembly = await loadAssembly();
+        final warehouseAssembly = await loadAssembly(smart: event.query, filters: event.filters);
         emit(WarehouseAssemblyLoaded(warehouseAssembly: warehouseAssembly));
       }
       } catch (e) {

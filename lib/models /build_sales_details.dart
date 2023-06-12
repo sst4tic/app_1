@@ -1,7 +1,9 @@
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:yiwucloud/screens%20/invoice_scan_page.dart';
 import 'package:yiwucloud/util/styles.dart';
 import '../bloc/sales_details_bloc/sales_details_bloc.dart';
@@ -130,6 +132,40 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                     'Указать количество мест (${salesDetails.boxesQty ?? '0'})'))
             : Container(),
         SizedBox(height: 10.h),
+        Container(
+          padding: REdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: salesDetails.status == 5
+                ? Colors.green[200]
+                : salesDetails.status == 6
+                    ? Colors.red[200]
+                    : Theme.of(context).primaryColor,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Статус: ${salesDetails.statusName}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 5.h),
+              salesDetails.courierName != null
+                  ? Text(
+                      'Курьер: ${salesDetails.courierName!}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : const SizedBox(),
+              salesDetails.assemblerName != null
+                  ? Text(
+                      'Сборщик: ${salesDetails.assemblerName!}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : const SizedBox(),
+            ],
+          ),
+        ),
+        SizedBox(height: 10.h),
         Accordion(
           disableScrolling: true,
           paddingListHorizontal: 0,
@@ -168,6 +204,30 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                           )),
                         ],
                       ),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Номер телефона:'),
+                          Flexible(
+                              child: salesDetails.client.phone != null
+                                  ? RichText(
+                                      text: TextSpan(
+                                        text: salesDetails.client.phone,
+                                        style: const TextStyle(
+                                          color: Colors.blue,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            launchUrlString(
+                                                'tel://${salesDetails.client.phone}');
+                                          },
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  : const Text('Не указано')),
+                        ],
+                      ),
                       salesDetails.contacts != null
                           ? Column(
                               children: salesDetails.contacts!
@@ -175,8 +235,8 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          // create text with index
-                                          Text('Номер телефона ${salesDetails.contacts!.indexOf(e) + 1}'),
+                                          Text(
+                                              'Номер телефона ${salesDetails.contacts!.indexOf(e) + 1}'),
                                           Text(e),
                                         ],
                                       ))
@@ -301,6 +361,14 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                         children: [
                           const Text('Точка отгрузки:'),
                           Text(salesDetails.shipment.shipmentPoint),
+                        ],
+                      ),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Дата отгрузки:'),
+                          Text(salesDetails.shipment.date ?? 'Не указано'),
                         ],
                       ),
                       const Divider(),

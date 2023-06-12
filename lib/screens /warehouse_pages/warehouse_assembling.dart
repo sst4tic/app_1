@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yiwucloud/models%20/build_filter.dart';
+import 'package:yiwucloud/models%20/search_model.dart';
 import 'package:yiwucloud/models%20/warehouse_taking_widget_model.dart';
-
+import 'package:yiwucloud/util/constants.dart';
+import 'package:yiwucloud/util/filter_list_model.dart';
 import '../../bloc/warehouse_assembly_bloc/warehouse_assembly_bloc.dart';
+import '../../util/function_class.dart';
 
 class WarehouseAssembly extends StatefulWidget {
   const WarehouseAssembly({Key? key}) : super(key: key);
@@ -13,6 +17,7 @@ class WarehouseAssembly extends StatefulWidget {
 
 class _WarehouseAssemblyState extends State<WarehouseAssembly> {
   final _assemblyBloc = WarehouseAssemblyBloc();
+  late final FilterModel filterData;
 
   @override
   void initState() {
@@ -21,28 +26,51 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly> {
   }
 
   @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    filterData = await Func().getFilters();
+    print(Constants.USER_TOKEN);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Склад: Сборка'),
-      ),
-      body: BlocProvider<WarehouseAssemblyBloc>(
-        create: (context) => WarehouseAssemblyBloc(),
-        child: BlocBuilder<WarehouseAssemblyBloc, WarehouseAssemblyState>(
-          bloc: _assemblyBloc,
-          builder: (context, state) {
-            if(state is WarehouseAssemblyLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is WarehouseAssemblyLoaded) {
-              return buildTakingList(
-                  taking: state.warehouseAssembly,
-                  onRefresh: () => _assemblyBloc.add(LoadWarehouseAssembly()));
-            } else {
-              return const Center(child: Text('Ошибка'));
-            }
-          },
+        appBar: AppBar(
+          title: const Text('Склад: Сборка'),
+          bottom: searchModel(
+              context: context,
+              onSubmitted: (value) =>
+                  _assemblyBloc.add(LoadWarehouseAssembly(query: value))),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showFilter(
+                    context: context,
+                    filterData: filterData,
+                    onSubmitted: (filter) => _assemblyBloc
+                        .add(LoadWarehouseAssembly(filters: filter)));
+              },
+              icon: const Icon(Icons.filter_alt),
+            )
+          ],
         ),
-      )
-    );
+        body: BlocProvider<WarehouseAssemblyBloc>(
+          create: (context) => WarehouseAssemblyBloc(),
+          child: BlocBuilder<WarehouseAssemblyBloc, WarehouseAssemblyState>(
+            bloc: _assemblyBloc,
+            builder: (context, state) {
+              if (state is WarehouseAssemblyLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is WarehouseAssemblyLoaded) {
+                return buildTakingList(
+                    taking: state.warehouseAssembly,
+                    onRefresh: () =>
+                        _assemblyBloc.add(LoadWarehouseAssembly()));
+              } else {
+                return const Center(child: Text('Ошибка'));
+              }
+            },
+          ),
+        ));
   }
 }

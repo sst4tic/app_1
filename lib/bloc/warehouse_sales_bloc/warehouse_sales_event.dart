@@ -6,12 +6,14 @@ class LoadWarehouseSales extends WarehouseSalesEvent {
   LoadWarehouseSales({
     this.completer,
     this.query,
+    this.filters
   });
 
   final Completer? completer;
   final String? query;
+  final String? filters;
 
-  List<Object?> get props => [completer, query];
+  List<Object?> get props => [completer, query, filters];
 }
 
 class LoadMore extends WarehouseSalesEvent {

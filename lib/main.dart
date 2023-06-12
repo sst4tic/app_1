@@ -1,9 +1,14 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datawedge/flutter_datawedge.dart';
+import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -28,8 +33,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,14 +46,14 @@ void main() async {
       await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     if (initialMessage.data['invoice_id'] != null) {
-      Future.delayed(const Duration(milliseconds: 1250)).then((value) => navKey.currentState!.push(
-        MaterialPageRoute(
-            builder: (context) => WareHouseSalesDetails(
-              id: int.parse(initialMessage.data['id']),
-              invoiceId: '0${initialMessage.data['invoice_id']}',
-            )),
-      ));
-
+      Future.delayed(const Duration(milliseconds: 1250))
+          .then((value) => navKey.currentState!.push(
+                MaterialPageRoute(
+                    builder: (context) => WareHouseSalesDetails(
+                          id: int.parse(initialMessage.data['id']),
+                          invoiceId: '0${initialMessage.data['invoice_id']}',
+                        )),
+              ));
     }
   }
   await messaging.setForegroundNotificationPresentationOptions(
@@ -80,9 +84,9 @@ void main() async {
       navKey.currentState!.push(
         MaterialPageRoute(
             builder: (context) => WareHouseSalesDetails(
-              id: int.parse(message.data['id']),
-              invoiceId: '0${message.data['invoice_id']}',
-            )),
+                  id: int.parse(message.data['id']),
+                  invoiceId: '0${message.data['invoice_id']}',
+                )),
       );
     }
   });
@@ -111,6 +115,8 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
+FlutterDataWedge fdw = FlutterDataWedge(profileName: 'DataWedgeFlutterDemo');
+late StreamSubscription<ScanResult> onScanResultListener;
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -121,7 +127,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isLoading = true;
-
   getToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
@@ -136,6 +141,26 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       isLoading = false;
     });
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        setState(() {
+          Constants.useragent = androidInfo.model;
+        });
+      } else if (Platform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        setState(() {
+          Constants.useragent = iosInfo.utsname.machine;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    onScanResultListener.cancel();
   }
 
   @override
@@ -153,6 +178,9 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AuthBloc(authRepo: AuthRepo()),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
+              if(Platform.isAndroid && Constants.useragent == 'TC26') {
+                fdw.enableScanner(false);
+              }
               return GlobalLoaderOverlay(
                 child: isLoading
                     ? const Scaffold(

@@ -25,7 +25,6 @@ class SalesDetailsRepo implements AbstractSalesDetails {
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
-    print(body);
     return body;
   }
 

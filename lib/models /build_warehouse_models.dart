@@ -247,7 +247,6 @@ Widget buildSales(
             shrinkWrap: true,
             itemCount: salesModel.length,
             itemBuilder: (context, index) {
-              print('HAS MORE: $hasMore');
               final sales = salesModel[index];
               return Container(
                 padding: REdgeInsets.symmetric(horizontal: 12),
@@ -520,8 +519,8 @@ Widget buildSales(
         SliverToBoxAdapter(
           child: Center(
               child: salesModel.length <= 5 || hasMore == false
-                  ? Text('Больше нет данных')
-                  : CircularProgressIndicator()),
+                  ? const Text('Больше нет данных')
+                  : const CircularProgressIndicator()),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -638,8 +637,8 @@ Widget buildProducts(
       SliverToBoxAdapter(
         child: Center(
             child: products.length <= 5 || hasMore == false
-                ? Text('Больше нет данных')
-                : CircularProgressIndicator()),
+                ? const Text('Больше нет данных')
+                : const CircularProgressIndicator()),
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(

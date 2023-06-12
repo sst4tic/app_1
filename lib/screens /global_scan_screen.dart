@@ -46,7 +46,7 @@ class _GlobalScanScreenState extends State<GlobalScanScreen> {
               } else if (state is ScanResultLoadingFailure) {
                 return Center(
                     child: Container(
-                        height: 100.h,
+                        height: 150.h,
                         padding: REdgeInsets.all(8),
                         margin: REdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -63,9 +63,6 @@ class _GlobalScanScreenState extends State<GlobalScanScreen> {
                             ),
                             SizedBox(height: 10.h),
                             ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    // minimumSize: Size(200.w, 30.h),
-                                    ),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },

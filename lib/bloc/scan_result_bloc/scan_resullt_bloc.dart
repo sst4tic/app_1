@@ -17,19 +17,24 @@ class ScanResultBloc extends Bloc<ScanResultEvent, ScanResultState> {
         emit(ScanResultLoading());
         try {
           final result = await scanResultRepo.getScanResult(event.code);
+          if(result.success) {
+            AudioPlayer().play(AssetSource('sounds/success-sound.mp3'),
+                mode: PlayerMode.lowLatency
+            );
+          } else {
+            AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'),
+                mode: PlayerMode.lowLatency
+            );
+          }
           if (result.data.type == 'invoice') {
-            AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
             emit(ScanResultInvoice(
                 id: result.data.id!, invoiceId: result.data.invoiceId ?? ''));
           } else if (result.data.type == 'product') {
-            AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
             emit(ScanResultProduct(id: result.data.productId!));
           } else {
-            AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));
             emit(ScanResultLoadingFailure(exception: result.message));
           }
         } catch (e) {
-          AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));
           emit(ScanResultLoadingFailure(exception: e));
         }
       }

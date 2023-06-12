@@ -47,7 +47,9 @@ class InvoiceScannerBloc
       final data = await invoiceScannerRepo.loadData(id: event.id);
       try {
         if (scanData['success']) {
-          AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
+          AudioPlayer().play(AssetSource('sounds/success-sound.mp3'),
+              mode: PlayerMode.lowLatency
+          );
           // ignore: use_build_context_synchronously
           Func().showSnackbar(event.context, scanData['message'], true);
           if (data['type'] == 'product') {
@@ -61,7 +63,9 @@ class InvoiceScannerBloc
             emit(InvoiceScannerLoaded(box: box, type: data['type']));
           }
         } else {
-          AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));
+          AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'),
+              mode: PlayerMode.lowLatency
+          );
           // ignore: use_build_context_synchronously
           Func().showSnackbar(event.context, scanData['message'], false);
         }
@@ -147,16 +151,20 @@ class InvoiceScannerBloc
       final invoices = data['data']
           .map<InvoiceScanModel>((json) => InvoiceScanModel.fromJson(json))
           .toList();
-      // final box = BoxScanModel.fromJson(data['data'] ?? {});
       if (qty['success']) {
         HapticFeedback.mediumImpact();
-        AudioPlayer().play(AssetSource('sounds/success-sound.mp3'));
+
+        AudioPlayer().play(AssetSource('sounds/success-sound.mp3'),
+            mode: PlayerMode.lowLatency
+        );
         // ignore: use_build_context_synchronously
         Func().showSnackbar(event.context, qty['message'], true);
         emit(InvoiceScannerLoaded(products: invoices, type: data['type']));
       } else {
         HapticFeedback.mediumImpact();
-        AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'));
+        AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'),
+            mode: PlayerMode.lowLatency
+        );
         // ignore: use_build_context_synchronously
         Func().showSnackbar(event.context, qty['message'], false);
       }

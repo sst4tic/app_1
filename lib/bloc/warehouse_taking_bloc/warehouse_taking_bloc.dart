@@ -13,8 +13,8 @@ part 'warehouse_taking_state.dart';
 class WarehouseTakingBloc
     extends Bloc<WarehouseTakingEvent, WarehouseTakingState> {
   WarehouseTakingBloc() : super(WarehouseTakingInitial()) {
-    Future loadTaking() async {
-      var url = '${Constants.API_URL_DOMAIN}action=invoices_of_courier_list';
+    Future loadTaking({String? smart, String? filters}) async {
+      var url = '${Constants.API_URL_DOMAIN}action=invoices_of_courier_list&smart=${smart ?? ''}&${filters ?? ''}';
       final response =
           await http.get(Uri.parse(url), headers: Constants.headers());
       final body = jsonDecode(response.body);
@@ -25,7 +25,7 @@ class WarehouseTakingBloc
       try {
         if (state is! WarehouseTakingLoading) {
           emit(WarehouseTakingLoading());
-          final body = await loadTaking();
+          final body = await loadTaking(smart: event.query, filters: event.filters);
           final taking =
               body['data'].map<Sales>((json) => Sales.fromJson(json)).toList();
           final completed = body['data_completed']

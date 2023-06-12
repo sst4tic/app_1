@@ -13,7 +13,6 @@ class QRScanner extends StatefulWidget {
 class QRScannerState extends State<QRScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController controller;
-  String _scannedData = '';
 
   @override
   void dispose() {
@@ -59,9 +58,6 @@ class QRScannerState extends State<QRScanner> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        _scannedData = scanData.code!;
-      });
       if (scanData != '') {
         HapticFeedback.mediumImpact();
         controller.pauseCamera();

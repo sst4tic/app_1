@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
-
 import 'abstract_auth.dart';
 
 part 'auth_event.dart';
