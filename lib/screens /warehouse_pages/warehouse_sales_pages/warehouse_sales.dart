@@ -49,8 +49,9 @@ class _WarehouseSalesState extends State<WarehouseSales> {
               showFilter(
                   context: context,
                   filterData: filterData,
-                  onSubmitted: (value) => _salesBloc.add(LoadWarehouseSales(filters: value))
-                  );
+                  onSubmitted: (value) {
+                    _salesBloc.add(LoadWarehouseSales(filters: value));
+                  });
             },
             icon: const Icon(Icons.filter_alt),
           ),
@@ -62,17 +63,17 @@ class _WarehouseSalesState extends State<WarehouseSales> {
             bloc: _salesBloc,
             builder: (context, state) {
               if (state is WarehouseSalesLoading) {
-                return  const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               } else if (state is WarehouseSalesLoaded) {
-                return  buildSales(
-                        onRefresh: () => _salesBloc.add(LoadWarehouseSales()),
-                        context: context,
-                        btnPermission: state.warehouseSales.btnPermission,
-                        salesModel: state.warehouseSales.sales,
-                        controller: _sController,
-                        hasMore: state.hasMore);
+                return buildSales(
+                    onRefresh: () => _salesBloc.add(LoadWarehouseSales()),
+                    context: context,
+                    btnPermission: state.warehouseSales.btnPermission,
+                    salesModel: state.warehouseSales.sales,
+                    controller: _sController,
+                    hasMore: state.hasMore);
               } else if (state is WarehouseSalesLoadingFailure) {
                 return Center(
                   child: Text(state.exception.toString()),

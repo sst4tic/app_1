@@ -58,6 +58,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      shrinkWrap: true,
       padding: REdgeInsets.all(8),
       children: [
         salesDetails.isPostponed

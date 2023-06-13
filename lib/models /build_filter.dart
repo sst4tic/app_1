@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../util/filter_list_model.dart';
 import '../util/styles.dart';
 
-showFilter(
-        {required BuildContext context,
-        required FilterModel filterData,
-        Function(String)? onSubmitted
-        }) =>
+showFilter({
+  required BuildContext context,
+  required FilterModel filterData,
+  Function(String)? onSubmitted,
+}) =>
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -61,7 +61,7 @@ showFilter(
                 ),
                 SizedBox(height: 10.h),
                 Text(
-                  filterData.saleChannel!.name.toUpperCase(),
+                  filterData.saleChannel!.name!.toUpperCase(),
                   style: TextStyles.editStyle,
                 ),
                 SizedBox(height: 10.h),
@@ -86,7 +86,7 @@ showFilter(
                   )),
                 SizedBox(height: 10.h),
                 Text(
-                  filterData.shipmentType!.name.toUpperCase(),
+                  filterData.shipmentType!.name!.toUpperCase(),
                   style: TextStyles.editStyle,
                 ),
                 SizedBox(height: 10.h),
@@ -111,7 +111,7 @@ showFilter(
                   )),
                 SizedBox(height: 10.h),
                 Text(
-                  filterData.shipmentPoint!.name.toUpperCase(),
+                  filterData.shipmentPoint!.name!.toUpperCase(),
                   style: TextStyles.editStyle,
                 ),
                 SizedBox(height: 10.h),
@@ -139,11 +139,11 @@ showFilter(
                     onPressed: () {
                       innerSetState(() {
                         saleChannelInitialVal =
-                            filterData.saleChannel!.initialValue;
+                            filterData.saleChannel!.childData[0].value;
                         shipmentInitialVal =
-                            filterData.shipmentType!.initialValue;
+                            filterData.shipmentType!.childData[0].value;
                         shipmentPointInitialVal =
-                            filterData.shipmentPoint!.initialValue;
+                            filterData.shipmentPoint!.childData[0].value;
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -161,6 +161,9 @@ showFilter(
                       final apiFilter = filter.entries
                           .map((e) => '${e.key}=${e.value}')
                           .join('&');
+                      filterData.shipmentPoint!.initialValue = shipmentPointInitialVal;
+                      filterData.saleChannel!.initialValue = saleChannelInitialVal;
+                      filterData.shipmentType!.initialValue = shipmentInitialVal;
                       onSubmitted!(apiFilter);
                       Navigator.pop(context);
                     },
