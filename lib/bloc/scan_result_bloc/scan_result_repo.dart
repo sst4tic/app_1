@@ -7,16 +7,13 @@ class ScanResultRepo implements AbstractScanResult {
   @override
   Future<ResultModel> getScanResult(code) async {
     var url = '${Constants.API_URL_DOMAIN}action=global_scan&code=$code';
-    final response = await http.get(
-        Uri.parse(url),
-        headers: Constants.headers()
-    );
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
     final result = ResultModel.fromJson(body);
     return result;
   }
 }
-
 
 ////////////////////////////////////////
 class ResultModel {
@@ -25,11 +22,12 @@ class ResultModel {
     required this.message,
     required this.data,
   });
+
   late final bool success;
   late final String message;
   late final Data data;
 
-  ResultModel.fromJson(Map<String, dynamic> json){
+  ResultModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
     data = success ? Data.fromJson(json['data']) : Data(type: '');
@@ -45,18 +43,14 @@ class ResultModel {
 }
 
 class Data {
-  Data({
-    required this.type,
-     this.invoiceId,
-     this.productId,
-     this.id
-  });
+  Data({required this.type, this.invoiceId, this.productId, this.id});
+
   late final String type;
   late final String? invoiceId;
   late final int? id;
   late final int? productId;
 
-  Data.fromJson(Map<String, dynamic> json){
+  Data.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     invoiceId = json['invoice_id'];
     id = json['id'];

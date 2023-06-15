@@ -73,6 +73,7 @@ class _WarehouseSalesState extends State<WarehouseSales> {
                     btnPermission: state.warehouseSales.btnPermission,
                     salesModel: state.warehouseSales.sales,
                     controller: _sController,
+                    total: state.warehouseSales.total,
                     hasMore: state.hasMore);
               } else if (state is WarehouseSalesLoadingFailure) {
                 return Center(

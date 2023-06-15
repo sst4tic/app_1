@@ -211,6 +211,7 @@ Widget buildArrival(
 Widget buildSales(
     {required List<Sales> salesModel,
     required bool btnPermission,
+    required int total,
     required ScrollController controller,
     required BuildContext context,
     required VoidCallback onRefresh,
@@ -239,6 +240,30 @@ Widget buildSales(
           //     ),
           //   ),
           // ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: Colors.white,
+              padding: REdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Количество накладных:'.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '$total',
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         SliverToBoxAdapter(
           child: ListView.builder(
             padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),

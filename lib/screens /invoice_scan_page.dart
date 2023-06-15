@@ -316,16 +316,20 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
     );
   }
 
+  bool isScanned = false;
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      if (scanData != '') {
-        HapticFeedback.mediumImpact();
+      if (scanData != '' && !isScanned) {
+        isScanned = true;
         controller.pauseCamera();
+        HapticFeedback.mediumImpact();
         _invoiceScannerBloc.add(InvoiceScanEvent(
             id: widget.id, context: context, barcode: scanData.code!));
         Future.delayed(const Duration(milliseconds: 500), () {
           controller.resumeCamera();
+          isScanned = false;
         });
       }
     });

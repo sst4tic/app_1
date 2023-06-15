@@ -18,12 +18,20 @@ class _WarehouseTakingState extends State<WarehouseTaking>
     with TickerProviderStateMixin {
   final _takingBloc = WarehouseTakingBloc();
   TabController? _tabController;
+  final ScrollController _sController = ScrollController();
+
 
   @override
   void initState() {
     super.initState();
     _takingBloc.add(LoadWarehouseTaking());
     _tabController = TabController(length: 2, vsync: this);
+    _sController.addListener(() {
+      if (_sController.position.pixels ==
+          _sController.position.maxScrollExtent) {
+        _takingBloc.add(LoadMore());
+      }
+    });
   }
 
   late final FilterModel filterData;
@@ -86,11 +94,17 @@ class _WarehouseTakingState extends State<WarehouseTaking>
                       buildTakingList(
                           taking: state.warehouseTaking,
                           onRefresh: () =>
-                              _takingBloc.add(LoadWarehouseTaking())),
+                              _takingBloc.add(LoadWarehouseTaking()),
+                          total: state.totalCount,
+                          sController: _sController,
+                          hasMore: state.hasMore),
                       buildTakingList(
                           taking: state.warehouseCompleted,
                           onRefresh: () =>
-                              _takingBloc.add(LoadWarehouseTaking())),
+                              _takingBloc.add(LoadWarehouseTaking()),
+                          total: state.totalCountCompleted,
+                          sController: _sController,
+                          hasMore: state.hasMore)
                     ],
                   ));
             } else {

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/models%20/build_filter.dart';
 import 'package:yiwucloud/models%20/search_model.dart';
 import 'package:yiwucloud/models%20/warehouse_taking_widget_model.dart';
-import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/filter_list_model.dart';
 import '../../bloc/warehouse_assembly_bloc/warehouse_assembly_bloc.dart';
 import '../../util/function_class.dart';
@@ -15,21 +14,30 @@ class WarehouseAssembly extends StatefulWidget {
   State<WarehouseAssembly> createState() => _WarehouseAssemblyState();
 }
 
-class _WarehouseAssemblyState extends State<WarehouseAssembly> {
+class _WarehouseAssemblyState extends State<WarehouseAssembly> with TickerProviderStateMixin {
   final _assemblyBloc = WarehouseAssemblyBloc();
   late final FilterModel filterData;
+  TabController? _tabController;
+  final ScrollController _sController = ScrollController();
+
 
   @override
   void initState() {
     super.initState();
     _assemblyBloc.add(LoadWarehouseAssembly());
+    _tabController = TabController(length: 2, vsync: this);
+    _sController.addListener(() {
+      if (_sController.position.pixels ==
+          _sController.position.maxScrollExtent) {
+        _assemblyBloc.add(LoadMore());
+      }
+    });
   }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     filterData = await Func().getFilters();
-    print(Constants.USER_TOKEN);
   }
 
   @override
@@ -37,10 +45,25 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Склад: Сборка'),
-          bottom: searchModel(
-              context: context,
-              onSubmitted: (value) =>
-                  _assemblyBloc.add(LoadWarehouseAssembly(query: value))),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(100),
+            child: Column(
+              children: [
+                searchModel(
+                    context: context,
+                    onSubmitted: (value) =>
+                        _assemblyBloc.add(LoadWarehouseAssembly(query: value))),
+                TabBar(
+                  controller: _tabController,
+                  indicatorColor: Colors.blue,
+                  tabs: const [
+                    Tab(text: 'Сборка'),
+                    Tab(text: 'Отложенные'),
+                  ],
+                ),
+              ],
+            ),
+          ),
           actions: [
             IconButton(
               onPressed: () {
@@ -62,10 +85,28 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly> {
               if (state is WarehouseAssemblyLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is WarehouseAssemblyLoaded) {
-                return buildTakingList(
-                    taking: state.warehouseAssembly,
-                    onRefresh: () =>
-                        _assemblyBloc.add(LoadWarehouseAssembly()));
+                return DefaultTabController(
+                  length: 2,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      buildTakingList(
+                          taking: state.warehouseAssembly,
+                          hasMore: state.hasMore,
+                          sController: _sController,
+                          total: state.totalCount,
+                          onRefresh: () =>
+                              _assemblyBloc.add(LoadWarehouseAssembly())),
+                      buildTakingList(
+                          taking: state.warehouseAssemblyPostponed,
+                          hasMore: state.hasMore,
+                          sController: _sController,
+                          total: state.totalCountPostponed,
+                          onRefresh: () =>
+                              _assemblyBloc.add(LoadWarehouseAssembly())),
+                    ],
+                  ),
+                );
               } else {
                 return const Center(child: Text('Ошибка'));
               }

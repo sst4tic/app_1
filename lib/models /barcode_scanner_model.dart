@@ -55,10 +55,13 @@ class QRScannerState extends State<QRScanner> {
     );
   }
 
+  bool isScanned = false;
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      if (scanData != '') {
+      if (!isScanned && scanData != '') {
+        isScanned = true;
         HapticFeedback.mediumImpact();
         controller.pauseCamera();
         Navigator.push(
@@ -69,7 +72,10 @@ class QRScannerState extends State<QRScanner> {
               scanData: scanData.code!,
             ),
           ),
-        ).then((value) => controller.resumeCamera());
+        ).then((value) {
+          controller.resumeCamera();
+          isScanned = false;
+        });
       }
     });
   }

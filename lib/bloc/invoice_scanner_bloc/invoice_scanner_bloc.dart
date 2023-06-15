@@ -48,8 +48,7 @@ class InvoiceScannerBloc
       try {
         if (scanData['success']) {
           AudioPlayer().play(AssetSource('sounds/success-sound.mp3'),
-              mode: PlayerMode.lowLatency
-          );
+              mode: PlayerMode.lowLatency);
           // ignore: use_build_context_synchronously
           Func().showSnackbar(event.context, scanData['message'], true);
           if (data['type'] == 'product') {
@@ -64,8 +63,7 @@ class InvoiceScannerBloc
           }
         } else {
           AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'),
-              mode: PlayerMode.lowLatency
-          );
+              mode: PlayerMode.lowLatency);
           // ignore: use_build_context_synchronously
           Func().showSnackbar(event.context, scanData['message'], false);
         }
@@ -152,19 +150,16 @@ class InvoiceScannerBloc
           .map<InvoiceScanModel>((json) => InvoiceScanModel.fromJson(json))
           .toList();
       if (qty['success']) {
-        HapticFeedback.mediumImpact();
-
         AudioPlayer().play(AssetSource('sounds/success-sound.mp3'),
-            mode: PlayerMode.lowLatency
-        );
+            mode: PlayerMode.lowLatency);
+        HapticFeedback.mediumImpact();
         // ignore: use_build_context_synchronously
         Func().showSnackbar(event.context, qty['message'], true);
         emit(InvoiceScannerLoaded(products: invoices, type: data['type']));
       } else {
-        HapticFeedback.mediumImpact();
         AudioPlayer().play(AssetSource('sounds/fail-sound.mp3'),
-            mode: PlayerMode.lowLatency
-        );
+            mode: PlayerMode.lowLatency);
+        HapticFeedback.mediumImpact();
         // ignore: use_build_context_synchronously
         Func().showSnackbar(event.context, qty['message'], false);
       }

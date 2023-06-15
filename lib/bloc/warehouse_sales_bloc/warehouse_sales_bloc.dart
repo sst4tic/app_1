@@ -12,7 +12,7 @@ class WarehouseSalesBloc extends Bloc<WarehouseSalesEvent, WarehouseSalesState> 
     int page = 1;
     String query = '';
     String filters = '';
-    WarehouseSalesModel warehouseSales = WarehouseSalesModel(btnPermission: false, sales: []);
+    WarehouseSalesModel warehouseSales = WarehouseSalesModel(btnPermission: false, sales: [], total: 0);
     on<LoadWarehouseSales>((event, emit) async {
       try {
         if (state is! WarehouseSalesLoading) {

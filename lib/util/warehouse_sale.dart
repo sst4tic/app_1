@@ -1,19 +1,23 @@
 class WarehouseSalesModel {
   WarehouseSalesModel({
     required this.btnPermission,
+    required this.total,
     required this.sales,
   });
   late final bool btnPermission;
+  late final int total;
   late final List<Sales> sales;
 
   WarehouseSalesModel.fromJson(Map<String, dynamic> json){
     btnPermission = json['AddRequestPermission'];
+    total = json['total'];
     sales = List.from(json['sales']).map((e)=>Sales.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['AddRequestPermission'] = btnPermission;
+    data['total'] = total;
     data['sales'] = sales.map((e)=>e.toJson()).toList();
     return data;
   }
@@ -34,7 +38,6 @@ class Sales {
     this.createdAt,
     this.source,
     this.kaspiNum,
-    this.postponed
   });
   late final int id;
   late final String invoiceId;
@@ -49,7 +52,6 @@ class Sales {
   late final String? createdAt;
   late final String? source;
   late final String? kaspiNum;
-  late final bool? postponed;
 
   Sales.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -65,7 +67,6 @@ class Sales {
     createdAt = json['created_at'];
     source = json['source'];
     kaspiNum = json['kaspi_num'];
-    postponed = json['postponed'];
   }
 
   Map<String, dynamic> toJson() {
@@ -82,7 +83,6 @@ class Sales {
     data['created_at'] = createdAt;
     data['source'] = source;
     data['kaspi_num'] = kaspiNum;
-    data['postponed'] = postponed;
     return data;
   }
 }
