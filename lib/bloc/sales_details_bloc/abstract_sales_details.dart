@@ -5,4 +5,6 @@ abstract class AbstractSalesDetails {
   Future movingRedirection({required int id, required String act});
   Future changeBoxQty({required int id, required boxQty});
   Future getPostponeReasons();
+  Future sendPostpone({required int reasonId, required int id});
+  Future defineCourier({required int invoiceId, required int courierId});
 }

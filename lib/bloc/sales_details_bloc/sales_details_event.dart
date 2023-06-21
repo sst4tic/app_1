@@ -66,3 +66,17 @@ class PostponeSendEvent extends SalesDetailsEvent {
 
   List<Object?> get props => [id, context, reasonId];
 }
+
+class DefineCourierEvent extends SalesDetailsEvent {
+  DefineCourierEvent({
+    required this.context,
+    required this.courierId,
+    required this.invoiceId
+  });
+
+  final BuildContext context;
+  final int courierId;
+  final int invoiceId;
+
+  List<Object?> get props => [ context, courierId, invoiceId];
+}

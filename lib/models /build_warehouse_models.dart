@@ -223,7 +223,7 @@ Widget buildSales(
     child: CustomScrollView(
       controller: controller,
       slivers: [
-        if (btnPermission)
+        // if (btnPermission)
           // SliverToBoxAdapter(
           //   child: Padding(
           //     padding: REdgeInsets.only(left: 8, right: 8, top: 8),
@@ -306,7 +306,7 @@ Widget buildSales(
                                     id: sales.id,
                                   ),
                                 ),
-                              ).then((value) => onRefresh.call());
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                                 primary:
@@ -543,7 +543,7 @@ Widget buildSales(
         ),
         SliverToBoxAdapter(
           child: Center(
-              child: salesModel.length <= 5 || hasMore == false
+              child: salesModel.length <= 10 || hasMore == false
                   ? const Text('Больше нет данных')
                   : const CircularProgressIndicator()),
         ),

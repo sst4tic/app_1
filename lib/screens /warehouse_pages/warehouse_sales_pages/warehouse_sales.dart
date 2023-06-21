@@ -31,6 +31,14 @@ class _WarehouseSalesState extends State<WarehouseSales> {
     });
   }
 
+  void onAppBarTap() {
+    _sController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -42,6 +50,9 @@ class _WarehouseSalesState extends State<WarehouseSales> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Склад: продажи'),
+        flexibleSpace: GestureDetector(
+          onTap: onAppBarTap,
+        ),
         bottom: searchModel(context: context, onSubmitted: (value) => _salesBloc.add(LoadWarehouseSales(query: value))),
         actions: [
           IconButton(

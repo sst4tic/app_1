@@ -47,6 +47,7 @@ class WarehouseTakingBloc
             completed: 1,
             page: page,
           );
+          filters = event.filters ?? '';
           final taking = body['invoices']
               .map<Sales>((json) => Sales.fromJson(json))
               .toList();

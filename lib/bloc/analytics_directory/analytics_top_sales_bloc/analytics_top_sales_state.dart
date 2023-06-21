@@ -16,14 +16,16 @@ class AnalyticsTopSalesLoading extends AnalyticsTopSalesState {
 
 class AnalyticsTopSalesLoaded extends AnalyticsTopSalesState {
   AnalyticsTopSalesLoaded({
-    required this.analytics,
+    required this.channels,
+    required this.managers,
     required this.date,
   });
 
-  final AnalyticsTopSalesModel analytics;
+  final AnalyticsTopSalesModel channels;
+  final AnalyticsTopSalesModel managers;
   final String date;
 
-  List<Object?> get props => [analytics];
+  List<Object?> get props => [channels, managers];
 }
 
 class AnalyticsTopSalesLoadingFailure extends AnalyticsTopSalesState {

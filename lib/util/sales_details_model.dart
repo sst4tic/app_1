@@ -12,6 +12,7 @@ class SalesDetailsModel {
     required this.shipment,
     required this.totalPrice,
     this.contacts,
+    this.couriers,
     required this.boxesPermission,
     this.boxesQty,
     required this.status,
@@ -21,6 +22,7 @@ class SalesDetailsModel {
     required this.isPostponed,
     required this.btnPostpone,
     this.country,
+    this.zone,
   });
 
   late final Client client;
@@ -33,6 +35,7 @@ class SalesDetailsModel {
   late final Shipment shipment;
   late final String totalPrice;
   late final List<String>? contacts;
+  late final Couriers? couriers;
   late final bool boxesPermission;
   late final int? boxesQty;
   late final int status;
@@ -48,6 +51,9 @@ class SalesDetailsModel {
   late final bool isPostponed;
   late final bool btnPostpone;
   late final String? country;
+  late final String? printBarcodeProduct;
+  late final String? printBarcodeBox;
+  late final zone;
 
   SalesDetailsModel.fromJson(Map<String, dynamic> json) {
     client = Client.fromJson(json['client']);
@@ -62,6 +68,9 @@ class SalesDetailsModel {
     shipment = Shipment.fromJson(json['shipment']);
     totalPrice = json['totalPrice'];
     contacts = json['contacts'] != null ? List.from(json['contacts']) : null;
+    couriers = json['couriers'] != null
+        ? Couriers.fromJson(json['couriers'])
+        : null;
     boxesPermission = json['btnBoxesAdd'];
     boxesQty = json['boxes_qty'];
     status = json['status'];
@@ -77,6 +86,9 @@ class SalesDetailsModel {
     isPostponed = json['isPostponed'];
     btnPostpone = json['btnPostponed'];
     country = json['countryAndCity'];
+    printBarcodeProduct = json['printBarcodeProduct'];
+    printBarcodeBox = json['printBarcodeBoxes'];
+    zone = json['zone_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,6 +103,7 @@ class SalesDetailsModel {
     data['shipment'] = shipment.toJson();
     data['totalPrice'] = totalPrice;
     data['contacts'] = contacts;
+    data['couriers'] = couriers?.toJson();
     data['btnBoxesAdd'] = boxesPermission;
     data['boxes_qty'] = boxesQty;
     data['status'] = status;
@@ -105,6 +118,9 @@ class SalesDetailsModel {
     data['isPostponed'] = isPostponed;
     data['btnPostponed'] = btnPostpone;
     data['countryAndCity'] = country;
+    data['printBarcodeProduct'] = printBarcodeProduct;
+    data['printBarcodeBoxes'] = printBarcodeBox;
+    data['zone_id'] = zone;
     return data;
   }
 }
@@ -272,5 +288,48 @@ class Shipment {
     data['date'] = date;
     data['urgency'] = urgency;
     return data;
+  }
+}
+
+class Couriers {
+  Couriers({
+    required this.initialValue,
+    required this.data,
+  });
+  late final int initialValue;
+  late final List<CouriersData> data;
+
+  Couriers.fromJson(Map<String, dynamic> json){
+    initialValue = json['initial_value'];
+    data = List.from(json['data']).map((e)=>CouriersData.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['initial_value'] = initialValue;
+    _data['data'] = data.map((e)=>e.toJson()).toList();
+    return _data;
+  }
+}
+
+//////////////// 
+class CouriersData {
+  CouriersData({
+    required this.id,
+    required this.name,
+  });
+  late final id;
+  late final String name;
+
+  CouriersData.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['name'] = name;
+    return _data;
   }
 }

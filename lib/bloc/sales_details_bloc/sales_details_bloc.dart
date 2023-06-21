@@ -17,18 +17,18 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
   SalesDetailsBloc() : super(SalesDetailsInitial()) {
     final salesDetailsRepo = SalesDetailsRepo();
     on<LoadSalesDetails>((event, emit) async {
-      try {
+      // try {
         if (state is! SalesDetailsLoading) {
           emit(SalesDetailsLoading());
           final salesDetails =
               await salesDetailsRepo.loadSalesDetails(id: event.id);
           emit(SalesDetailsLoaded(salesDetails: salesDetails));
         }
-      } catch (e) {
-        emit(SalesDetailsLoadingFailure(exception: e));
-      } finally {
-        event.completer?.complete();
-      }
+      // } catch (e) {
+      //   emit(SalesDetailsLoadingFailure(exception: e));
+      // } finally {
+      //   event.completer?.complete();
+      // }
     });
     on<MovingRedirectionEvent>((event, emit) async {
       event.context.loaderOverlay.show();
@@ -193,6 +193,51 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
                 ],
               );
             });
+      } else {
+        // ignore: use_build_context_synchronously
+        showDialog(
+            context: event.context,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: 'Произошла ошибка',
+                content: Text(resp['message']),
+                actions: [
+                  CustomDialogAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Ок',
+                  )
+                ],
+              );
+            });
+      }
+    });
+
+    on<DefineCourierEvent>((event, emit) async {
+      event.context.loaderOverlay.show();
+      final resp = await salesDetailsRepo.defineCourier(
+          invoiceId: event.invoiceId, courierId: event.courierId);
+      event.context.loaderOverlay.hide();
+      if (resp['success']) {
+        // ignore: use_build_context_synchronously
+        showDialog(
+                context: event.context,
+                builder: (context) {
+                  return CustomAlertDialog(
+                    title: 'Успешно!',
+                    content: Text(resp['message']),
+                    actions: [
+                      CustomDialogAction(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          add(LoadSalesDetails(id: event.invoiceId));
+                        },
+                        text: 'Ок',
+                      )
+                    ],
+                  );
+                });
       } else {
         // ignore: use_build_context_synchronously
         showDialog(

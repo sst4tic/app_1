@@ -1,5 +1,6 @@
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +32,8 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
   late SalesDetailsModel salesDetails;
   late int id;
   late SalesDetailsBloc detailsBloc;
+  List<DropdownMenuItem>? dropdownMenuItems;
+  int? selectedVal;
 
   @override
   void initState() {
@@ -38,6 +41,13 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
     salesDetails = widget.salesDetails;
     id = widget.id;
     detailsBloc = widget.detailsBloc;
+    dropdownMenuItems = salesDetails.couriers?.data
+        .map((e) => DropdownMenuItem(
+              value: e.id,
+              child: Text(e.name),
+            ))
+        .toList();
+    selectedVal = salesDetails.couriers?.initialValue;
   }
 
   final Set<int> _isLoading = {};
@@ -52,8 +62,10 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
     });
   }
 
+
   bool isDetailsExpanded = false;
   bool isDeliveryExpanded = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +132,39 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                 icon: const Icon(Icons.qr_code_scanner_sharp),
               )
             : Container(),
-        salesDetails.status != 5 ? SizedBox(height: 5.h) : Container(),
+        SizedBox(height: salesDetails.btnScan != false ? 5.h : 0),
+        SizedBox(height: dropdownMenuItems != null ? 5.h : 0),
+        dropdownMenuItems != null ?
+        Text(
+          'выберите курьера'.toUpperCase(),
+          style: TextStyles.editStyle,
+        ) : const SizedBox(),
+        SizedBox(height: dropdownMenuItems != null ? 5.h : 0),
+        dropdownMenuItems != null ?
+        DropdownButtonHideUnderline(
+          child: DropdownButton2(
+            hint: const Text('Выберите курьера', style: TextStyle(color: Colors.black),),
+            isExpanded: true,
+            value: selectedVal,
+            buttonStyleData: ButtonStyleData(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              padding: REdgeInsets.all(8),
+            ),
+            items: dropdownMenuItems,
+            onChanged: (value) {
+              if(value != selectedVal!) {
+                setState(() {
+                  selectedVal = value;
+                });
+                detailsBloc.add(DefineCourierEvent(invoiceId: id, courierId: value, context: context));
+              }
+            },
+          ),
+        ) : Container(),
         salesDetails.boxesPermission
             ? ElevatedButton(
                 onPressed: () {
@@ -151,6 +195,12 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5.h),
+              salesDetails.zone != null ?
+              Text(
+                'Зона: ${salesDetails.zone}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ) : const SizedBox(),
+              SizedBox(height: salesDetails.zone != null ? 5.h : 0),
               salesDetails.courierName != null
                   ? Text(
                       'Курьер: ${salesDetails.courierName!}',

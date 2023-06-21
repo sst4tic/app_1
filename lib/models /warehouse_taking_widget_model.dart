@@ -83,7 +83,7 @@ Widget buildTakingList(
                                       id: sales.id,
                                     ),
                                   ),
-                                ).then((value) => onRefresh.call());
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                   primary:

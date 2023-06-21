@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../util/constants.dart';
 import '../../util/warehouse_sale.dart';
 
@@ -45,6 +44,7 @@ class WarehouseAssemblyBloc
               smart: event.query,
               filters: event.filters,
               page: page);
+          filters = event.filters ?? '';
           final warehouseAssemblyPostponed = respPostponed['invoices']
               .map<Sales>((json) => Sales.fromJson(json))
               .toList();
@@ -94,7 +94,7 @@ class WarehouseAssemblyBloc
               warehouseAssembly: warehouseAssembly,
               warehouseAssemblyPostponed: warehouseAssemblyPostponed,
               hasMore:
-                  newWarehouseAssembly['invoices'].length <= 10 ? false : true,
+                  newWarehouseAssembly['invoices'].length <= 10  && newWarehouseAssembly['invoices'].length == 0 ? false : true,
               totalCount: (state as WarehouseAssemblyLoaded).totalCount,
               totalCountPostponed:
                   (state as WarehouseAssemblyLoaded).totalCountPostponed,

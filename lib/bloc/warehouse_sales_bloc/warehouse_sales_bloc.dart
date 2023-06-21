@@ -40,7 +40,7 @@ class WarehouseSalesBloc extends Bloc<WarehouseSalesEvent, WarehouseSalesState> 
           emit(WarehouseSalesLoaded(
               warehouseSales: warehouseSales,
               page: state.page + 1,
-              hasMore: newWarehouseSales.sales.length <= 15));
+              hasMore: newWarehouseSales.sales.length <= 10 ? false : true));
         }
       } catch (e) {
         emit(WarehouseSalesLoadingFailure(exception: e));

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/models%20/search_model.dart';
 import '../../bloc/products_bloc/products_bloc.dart';
+import '../../models /build_product_filter.dart';
 import '../../models /build_warehouse_models.dart';
+import '../../models /product_filter_model.dart';
+import '../../util/function_class.dart';
 
 class AllProductsPage extends StatefulWidget {
   const AllProductsPage({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class AllProductsPage extends StatefulWidget {
 class _AllProductsPageState extends State<AllProductsPage> {
   final productsBloc = ProductsBloc();
   final ScrollController _sController = ScrollController();
+  late final List<ProductFilterModel> filterData;
 
   @override
   void initState() {
@@ -28,18 +32,29 @@ class _AllProductsPageState extends State<AllProductsPage> {
   }
 
   @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    filterData = await Func().getProductsFilters();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          // actions: [
-          //   IconButton(
-          //     onPressed: () async {
-          //       final filterData = await Func().getFilters();
-          //       showFilter(context: context, filterData: filterData, bloc: productsBloc);
-          //     },
-          //     icon: const Icon(Icons.filter_alt),
-          //   ),
-          // ],
+          actions: [
+            IconButton(
+              onPressed: () async {
+                showProductFilter(
+                  context: context,
+                  filterData: filterData,
+                  onSubmitted: (value) {
+                    productsBloc.add(LoadProducts(filters: value));
+                  },
+                );
+              },
+              icon: const Icon(Icons.filter_alt),
+            ),
+          ],
           title: const Text('Все товары'),
           bottom: searchModel(
               context: context,

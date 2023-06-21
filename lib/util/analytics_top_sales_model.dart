@@ -1,40 +1,40 @@
 class AnalyticsTopSalesModel {
   AnalyticsTopSalesModel({
-    required this.channelsList,
-    required this.totalSum,
+    this.channelsList,
+    this.totalSum,
     // required this.totalSumLastPeriod,
-    required this.totalSumReturns,
-    required this.managersList,
-    required this.managersCount,
+    this.totalSumReturns,
+    this.managersList,
+    this.managersCount,
   });
 
-  late final List<ChannelsList> channelsList;
-  late final String totalSum;
+  late final List<ChannelsList>? channelsList;
+  late final String? totalSum;
   // late final String totalSumLastPeriod;
-  late final String totalSumReturns;
-  late final List<ManagersList> managersList;
-  late final String managersCount;
+  late final String? totalSumReturns;
+  late final List<ManagersList>? managersList;
+  late final String? managersCount;
 
   AnalyticsTopSalesModel.fromJson(Map<String, dynamic> json) {
-    channelsList = List.from(json['channels_list'])
+    channelsList = List.from(json['channels_list'] ?? [])
         .map((e) => ChannelsList.fromJson(e))
         .toList();
-    totalSum = json['total_sum'];
+    totalSum = json['total_sum'] ?? '';
     // totalSumLastPeriod = json['total_sum_last_period'];
-    totalSumReturns = json['total_sum_returns'];
-    managersList = List.from(json['managers_list'])
+    totalSumReturns = json['total_sum_returns'] ?? '';
+    managersList = List.from(json['managers_list'] ?? [])
         .map((e) => ManagersList.fromJson(e))
         .toList();
-    managersCount = json['managers_count'];
+    managersCount = json['managers_count'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['channels_list'] = channelsList.map((e) => e.toJson()).toList();
+    _data['channels_list'] = channelsList?.map((e) => e.toJson()).toList();
     _data['total_sum'] = totalSum;
     // _data['total_sum_last_period'] = totalSumLastPeriod;
     _data['total_sum_returns'] = totalSumReturns;
-    _data['managers_list'] = managersList.map((e) => e.toJson()).toList();
+    _data['managers_list'] = managersList?.map((e) => e.toJson()).toList();
     _data['managers_count'] = managersCount;
     return _data;
   }

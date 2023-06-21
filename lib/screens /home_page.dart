@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
                 return Text(state.exception.toString());
               } else {
                 return const Center(child: CircularProgressIndicator());
-
               }
             }),
         ));

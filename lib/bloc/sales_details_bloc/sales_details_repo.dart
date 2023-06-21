@@ -48,10 +48,19 @@ class SalesDetailsRepo implements AbstractSalesDetails {
       child: Text(e['name'], maxLines: 1,),
     )).toList();
   }
-
+  @override
   Future sendPostpone({required int reasonId, required int id}) async {
     var url =
         '${Constants.API_URL_DOMAIN}action=postponed_scans&invoice_id=$id&reason_id=$reasonId';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body;
+  }
+  @override
+  Future defineCourier({required int invoiceId, required int courierId}) async {
+    var url =
+        '${Constants.API_URL_DOMAIN}action=request_define_courier&invoice_id=$invoiceId&courier_id=$courierId';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);

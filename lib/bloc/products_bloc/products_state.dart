@@ -2,7 +2,6 @@ part of 'products_bloc.dart';
 
 abstract class ProductsState {
   get page => 1;
-
   bool get hasMore => true;
 
 }

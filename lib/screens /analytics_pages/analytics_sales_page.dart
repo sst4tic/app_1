@@ -83,7 +83,6 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
                     controller: _dateController,
                     readOnly: true,
                     onTap: () async {
-                      // show cupertino date picker
                       await _selectDate(context);
                     },
                     decoration: const InputDecoration(
@@ -119,8 +118,8 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      buildChannels(channelsList: state.analytics.channelsList),
-                      state.analytics.managersList.isNotEmpty ? buildManagers(managersList: state.analytics.managersList) : const Center(child: Text('Нет данных')),
+                      buildChannels(channelsList: state.channels.channelsList!),
+                      state.managers.managersList!.isNotEmpty ? buildManagers(managersList: state.managers.managersList!) : const Center(child: Text('Нет данных')),
                     ],
                   ),
                 );

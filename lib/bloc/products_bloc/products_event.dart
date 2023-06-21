@@ -5,37 +5,29 @@ abstract class ProductsEvent {}
 class LoadProducts extends ProductsEvent {
   LoadProducts({
     this.completer,
-    this.media,
-    this.orderby,
-    this.availability,
-    this.query
+    this.query,
+    this.filters
   });
 
   final Completer? completer;
-  final String? media;
-  final String? orderby;
-  final String? availability;
   final String? query;
+  final String? filters;
 
-  List<Object?> get props => [completer, media, orderby, availability, query];
+  List<Object?> get props => [completer, query, filters];
 }
 
 class LoadMore extends ProductsEvent {
   LoadMore({
     this.completer,
-    this.media,
-    this.orderby,
-    this.availability,
     this.hasMore,
-    this.query
+    this.query,
+    this.filters
   });
 
   final Completer? completer;
-  final String? media;
-  final String? orderby;
-  final String? availability;
   final bool? hasMore;
   final String? query;
+  final String? filters;
 
-  List<Object?> get props => [completer, media, orderby, availability, hasMore, query];
+  List<Object?> get props => [completer, hasMore, query, filters];
 }

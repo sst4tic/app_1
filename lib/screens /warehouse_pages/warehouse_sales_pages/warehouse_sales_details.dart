@@ -1,8 +1,10 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_comments_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_details_chronology.dart';
 import '../../../bloc/sales_details_bloc/sales_details_bloc.dart';
@@ -10,7 +12,9 @@ import '../../../models /build_sales_details.dart';
 
 class WareHouseSalesDetails extends StatefulWidget {
   const WareHouseSalesDetails(
-      {Key? key, required this.id, required this.invoiceId})
+      {Key? key, required this.id,
+        required this.invoiceId,
+      })
       : super(key: key);
   final int id;
   final String invoiceId;
@@ -22,6 +26,8 @@ class WareHouseSalesDetails extends StatefulWidget {
 class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
   final _detailsBloc = SalesDetailsBloc();
   String printUrl = '';
+  String? barcodeBoxesUrl;
+  String? barcodeProductsUrl;
 
   @override
   void initState() {
@@ -41,6 +47,8 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                 body: Center(child: CircularProgressIndicator()));
           } else if (state is SalesDetailsLoaded) {
             printUrl = state.salesDetails.printUrl;
+            barcodeBoxesUrl = state.salesDetails.printBarcodeBox;
+            barcodeProductsUrl = state.salesDetails.printBarcodeProduct;
             return Scaffold(
               appBar: AppBar(
                 title: Text('Накладная № ${widget.invoiceId}'),
@@ -49,6 +57,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       ? IconButton(
                           onPressed: () {
                             bottomSheet(
+                                boxesQty: state.salesDetails.boxesQty ?? 0,
                                 btnChronology: state.salesDetails.btnChronology,
                                 btnBan: state.salesDetails.btnBan,
                                 btnPrint: state.salesDetails.btnPrint,
@@ -80,7 +89,9 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
       {required bool btnChronology,
       required bool btnBan,
       required bool btnPrint,
-      required bool btnPostpone}) {
+      required bool btnPostpone,
+      required int boxesQty,
+      }) {
     return showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -141,6 +152,117 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                         Icon(FontAwesomeIcons.print)
                       ],
                     )),
+              SizedBox(height: 4.h),
+              if (barcodeProductsUrl != null)
+                ElevatedButton(
+                    onPressed: () {
+                      launchUrlString(barcodeProductsUrl!,
+                          mode: LaunchMode.externalApplication);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[400],
+                      minimumSize: const Size(double.infinity, 40),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('Печать баркода товаров'),
+                        Icon(FontAwesomeIcons.barcode)
+                      ],
+                    )),
+              SizedBox(height: 4.h),
+              if (barcodeBoxesUrl != null)
+                ElevatedButton(
+                  onPressed: () {
+                    var selectedValue = 1;
+                    List<DropdownMenuItem<int>> dropdownItems = [];
+                    for (int i = 1; i <= boxesQty; i += 50) {
+                      int start = i;
+                      int end = i + 49 > boxesQty ? boxesQty : i + 49;
+                      dropdownItems.add(
+                        DropdownMenuItem(
+                          value: start,
+                          child: Text('$start - $end'),
+                        ),
+                      );
+                    }
+                    if (boxesQty > 50) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Material(
+                            color: Colors.transparent,
+                            child: CustomAlertDialog(
+                              title: 'Выберите количество коробок',
+                              content:
+                              StatefulBuilder(
+                                builder: (context, innerSetState) {
+                                  return DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      value: selectedValue,
+                                      isExpanded: true,
+                                      buttonStyleData: ButtonStyleData(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          color: Theme.of(context).scaffoldBackgroundColor,
+                                        ),
+                                        padding: REdgeInsets.all(8),
+                                      ),
+                                      items: dropdownItems,
+                                      onChanged: (value) {
+                                        innerSetState(() {
+                                          selectedValue = value!;
+                                        });
+                                      },
+                                    ),
+                                  );
+                                }
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Отмена'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    int start = selectedValue;
+                                    int end = selectedValue + 49 > boxesQty
+                                        ? boxesQty
+                                        : selectedValue + 49;
+                                    String url = barcodeBoxesUrl!
+                                        .replaceFirst('/1', '/${start.toString()}')
+                                        .replaceFirst('$boxesQty', end.toString());
+
+                                    launchUrlString(url, mode: LaunchMode.externalApplication);
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Печать'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      launchUrlString(barcodeBoxesUrl!,
+                          mode: LaunchMode.externalApplication);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[400],
+                    minimumSize: const Size(double.infinity, 40),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('Печать баркода коробок'),
+                      Icon(FontAwesomeIcons.box),
+                    ],
+                  ),
+                ),
               SizedBox(height: 4.h),
               ElevatedButton(
                   onPressed: () {

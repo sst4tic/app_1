@@ -7,6 +7,7 @@ import 'package:yiwucloud/util/comment_model.dart';
 import 'package:yiwucloud/util/product_details.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
+import '../models /product_filter_model.dart';
 import 'constants.dart';
 import 'filter_list_model.dart';
 import 'notification_model.dart';
@@ -116,11 +117,23 @@ class Func {
     return notification;
   }
 
+  // func for getting products filters
+  Future<List<ProductFilterModel>> getProductsFilters() async {
+    var url = '${Constants.API_URL_DOMAIN}action=filters_list_products';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    final data = body['data']
+        .map<ProductFilterModel>((json) => ProductFilterModel.fromJson(json))
+        .toList();
+    return data;
+  }
+
   // func for getting filters
   Future<FilterModel> getFilters() async {
     var url = '${Constants.API_URL_DOMAIN}action=filters_list';
     final response =
-        await http.get(Uri.parse(url), headers: Constants.headers());
+    await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
     final data = FilterModel.fromJson(body['data']);
     return data;

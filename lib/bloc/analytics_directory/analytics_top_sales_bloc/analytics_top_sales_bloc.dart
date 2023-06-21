@@ -13,9 +13,9 @@ part 'analytics_top_sales_state.dart';
 class AnalyticsTopSalesBloc
     extends Bloc<AnalyticsTopSalesEvent, AnalyticsTopSalesState> {
   AnalyticsTopSalesBloc() : super(AnalyticsTopSalesInitial()) {
-    Future<AnalyticsTopSalesModel> getAnalytics({required String date}) async {
+    Future<AnalyticsTopSalesModel> getAnalytics({required String date, required int channels}) async {
       var url =
-          '${Constants.API_URL_DOMAIN}action=analytics_top_sales&date_at=$date';
+          '${Constants.API_URL_DOMAIN}action=analytics_top_sales&date_at=$date&get_channels=$channels';
       final response =
           await http.get(Uri.parse(url), headers: Constants.headers());
       final body = jsonDecode(response.body);
@@ -28,8 +28,9 @@ class AnalyticsTopSalesBloc
       try {
       if (state is! AnalyticsTopSalesLoading) {
         emit(AnalyticsTopSalesLoading());
-        var analytics = await getAnalytics(date: event.date);
-        emit(AnalyticsTopSalesLoaded(analytics: analytics, date: event.date));
+        var analyticsChannels = await getAnalytics(date: event.date, channels: 1);
+        var analyticsManagers = await getAnalytics(date: event.date, channels: 0);
+        emit(AnalyticsTopSalesLoaded(channels: analyticsChannels, managers: analyticsManagers, date: event.date));
       }
       } catch (e) {
         emit(AnalyticsTopSalesLoadingFailure(exception: e));

@@ -10,6 +10,9 @@ showFilter({
   Function(String)? onSubmitted,
 }) =>
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       context: context,
       backgroundColor: Colors.white,
       isScrollControlled: true,
@@ -46,17 +49,32 @@ showFilter({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Фильтр',
-                      style: TextStyles.bodyStyle,
-                    ),
-                    const Spacer(),
                     IconButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
                         icon: const Icon(Icons.close)),
+                    const Text(
+                      'Фильтр',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          innerSetState(() {
+                            saleChannelInitialVal =
+                                filterData.saleChannel!.childData[0].value;
+                            shipmentInitialVal =
+                                filterData.shipmentType!.childData[0].value;
+                            shipmentPointInitialVal =
+                                filterData.shipmentPoint!.childData[0].value;
+                          });
+                        },
+                        child: const Text('Сбросить', style: TextStyle(color: Colors.red),)),
                   ],
                 ),
                 SizedBox(height: 10.h),
@@ -135,21 +153,6 @@ showFilter({
                     },
                   )),
                 const Spacer(),
-                ElevatedButton(
-                    onPressed: () {
-                      innerSetState(() {
-                        saleChannelInitialVal =
-                            filterData.saleChannel!.childData[0].value;
-                        shipmentInitialVal =
-                            filterData.shipmentType!.childData[0].value;
-                        shipmentPointInitialVal =
-                            filterData.shipmentPoint!.childData[0].value;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        minimumSize: const Size(double.infinity, 40)),
-                    child: const Text('Сбросить')),
                 ElevatedButton(
                     onPressed: () {
                       final filter = {
