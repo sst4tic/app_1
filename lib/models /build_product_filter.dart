@@ -116,7 +116,7 @@ showProductFilter({
                     },
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 40)),
-                    child: Text('Применить'),
+                    child: const Text('Применить'),
                   ),
                   SizedBox(
                     height: 20.h,

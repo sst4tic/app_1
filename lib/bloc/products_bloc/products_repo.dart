@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:yiwucloud/bloc/products_bloc/abstact_products.dart';
 import 'package:yiwucloud/util/constants.dart';
 import '../../util/product.dart';

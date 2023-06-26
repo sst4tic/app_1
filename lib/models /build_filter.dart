@@ -41,6 +41,13 @@ showFilter({
             .toList();
         var shipmentPointInitialVal = filterData.shipmentPoint!.initialValue;
         //////////////
+        final statusItems = filterData.status!.childData
+            .map((e) => DropdownMenuItem(
+                  value: e.value,
+                  child: Text(e.text),
+                ))
+            .toList();
+        var statusInitialVal = filterData.status!.initialValue;
         return StatefulBuilder(builder: (context, innerSetState) {
           return Container(
             padding: REdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -72,11 +79,40 @@ showFilter({
                                 filterData.shipmentType!.childData[0].value;
                             shipmentPointInitialVal =
                                 filterData.shipmentPoint!.childData[0].value;
+                            statusInitialVal =
+                                filterData.status!.childData[0].value;
                           });
                         },
-                        child: const Text('Сбросить', style: TextStyle(color: Colors.red),)),
+                        child: const Text(
+                          'Сбросить',
+                          style: TextStyle(color: Colors.red),
+                        )),
                   ],
                 ),
+                Text(
+                  filterData.status!.name!.toUpperCase(),
+                  style: TextStyles.editStyle,
+                ),
+                SizedBox(height: 10.h),
+                if (filterData.status!.type == 'select')
+                  DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                    isExpanded: true,
+                    buttonStyleData: ButtonStyleData(
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Theme.of(context).scaffoldBackgroundColor),
+                        padding: REdgeInsets.all(8)),
+                    value: statusInitialVal,
+                    items: statusItems,
+                    hint: const Text('Выберите статус'),
+                    onChanged: (value) {
+                      innerSetState(() {
+                        statusInitialVal = int.parse(value.toString());
+                      });
+                    },
+                  )),
                 SizedBox(height: 10.h),
                 Text(
                   filterData.saleChannel!.name!.toUpperCase(),
@@ -156,6 +192,7 @@ showFilter({
                 ElevatedButton(
                     onPressed: () {
                       final filter = {
+                        filterData.status!.value: statusInitialVal,
                         filterData.saleChannel!.value: saleChannelInitialVal,
                         filterData.shipmentType!.value: shipmentInitialVal,
                         filterData.shipmentPoint!.value:
@@ -164,9 +201,13 @@ showFilter({
                       final apiFilter = filter.entries
                           .map((e) => '${e.key}=${e.value}')
                           .join('&');
-                      filterData.shipmentPoint!.initialValue = shipmentPointInitialVal;
-                      filterData.saleChannel!.initialValue = saleChannelInitialVal;
-                      filterData.shipmentType!.initialValue = shipmentInitialVal;
+                      filterData.status!.initialValue = statusInitialVal;
+                      filterData.shipmentPoint!.initialValue =
+                          shipmentPointInitialVal;
+                      filterData.saleChannel!.initialValue =
+                          saleChannelInitialVal;
+                      filterData.shipmentType!.initialValue =
+                          shipmentInitialVal;
                       onSubmitted!(apiFilter);
                       Navigator.pop(context);
                     },

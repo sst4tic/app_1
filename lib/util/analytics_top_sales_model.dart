@@ -52,9 +52,9 @@ class ChannelsList {
   });
 
   late final String name;
-  late final  totalSum;
+  late final String totalSum;
   late final totalSumReturns;
-  late final int plan;
+  late final String plan;
   late final  planPercentage;
 
   ChannelsList.fromJson(Map<String, dynamic> json) {
@@ -94,11 +94,11 @@ class ManagersList {
   late final String fullName;
   late final String channelName;
   late final int channelId;
-  late final  totalSum;
+  late final String totalSum;
   // late final int totalSumLastPeriod;
   // late final int totalSumDifferencePercentage;
   late final totalSumReturns;
-  late final int plan;
+  late final String plan;
   late final planPercentage;
 
   ManagersList.fromJson(Map<String, dynamic> json) {

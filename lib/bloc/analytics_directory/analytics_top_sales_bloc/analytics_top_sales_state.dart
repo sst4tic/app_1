@@ -21,8 +21,8 @@ class AnalyticsTopSalesLoaded extends AnalyticsTopSalesState {
     required this.date,
   });
 
-  final AnalyticsTopSalesModel channels;
-  final AnalyticsTopSalesModel managers;
+  final AnalyticsTopSalesModel? channels;
+  final AnalyticsTopSalesModel? managers;
   final String date;
 
   List<Object?> get props => [channels, managers];

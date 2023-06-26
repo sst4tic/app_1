@@ -92,31 +92,40 @@ class InvoiceScannerBloc
                     keyboardType: TextInputType.number,
                     placeholder: 'Введите число',
                   )
-                : Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextField(
-                          controller: barcodeController,
-                          placeholder: 'Введите баркод',
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          keyboardType: TextInputType.number,
-                        ),
+                : event.type == 'box-zammler'
+                    ? CustomTextField(
+                        controller: barcodeController,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        keyboardType: TextInputType.number,
+                        placeholder: 'Введите баркод',
+                      )
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextField(
+                              controller: barcodeController,
+                              placeholder: 'Введите баркод',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                          const Text('- M -'),
+                          Expanded(
+                            child: CustomTextField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              keyboardType: TextInputType.number,
+                              controller: placeController,
+                              placeholder: 'Введите количество мест',
+                            ),
+                          ),
+                        ],
                       ),
-                      const Text('- M -'),
-                      Expanded(
-                        child: CustomTextField(
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          keyboardType: TextInputType.number,
-                          controller: placeController,
-                          placeholder: 'Введите количество мест',
-                        ),
-                      ),
-                    ],
-                  ),
             actions: [
               CustomDialogAction(
                 text: 'Отмена',
@@ -132,7 +141,9 @@ class InvoiceScannerBloc
                       id: event.id,
                       barcode: event.type == 'product'
                           ? barcodeController.text
-                          : '${barcodeController.text}-M-${placeController.text}',
+                          : event.type == 'box-zammler'
+                              ? barcodeController.text
+                              : '${barcodeController.text}-M-${placeController.text}',
                       context: event.context));
                 },
               ),

@@ -19,13 +19,13 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
   final _analyticsSalesBloc = AnalyticsTopSalesBloc();
 
   final String _date =
-      '${DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(const Duration(days: 30)))}/${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
+      '${DateFormat('yyyy-MM-dd').format(DateTime(DateTime.now().year, DateTime.now().month, 1))}/${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _dateController.text = 'За последний месяц';
+    _dateController.text = 'С начала месяца';
     _analyticsSalesBloc.add(LoadAnalyticsTopSales(date: _date));
   }
 
@@ -53,7 +53,7 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
       firstDate: DateTime(2021),
       lastDate: DateTime.now(),
       initialDateRange: DateTimeRange(
-        start: DateTime.now().subtract(const Duration(days: 30)),
+        start: DateTime(DateTime.now().year, DateTime.now().month, 1),
         end: DateTime.now(),
       ),
     );
@@ -113,22 +113,27 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
               if (state is AnalyticsTopSalesLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is AnalyticsTopSalesLoaded) {
-                return DefaultTabController(
-                  length: 2,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      buildChannels(channelsList: state.channels.channelsList!),
-                      state.managers.managersList!.isNotEmpty ? buildManagers(managersList: state.managers.managersList!) : const Center(child: Text('Нет данных')),
-                    ],
-                  ),
-                );
+                return buildTabView(state);
               } else if (state is AnalyticsTopSalesLoadingFailure) {
                 return Center(child: Text(state.exception.toString()));
               }
               return const SizedBox();
             },
           ),
-        ));
+        )
+    );
+  }
+
+  Widget buildTabView(AnalyticsTopSalesLoaded state) {
+    return DefaultTabController(
+      length: 2,
+      child: TabBarView(
+        controller: _tabController,
+        children: [
+          if (state.channels != null) buildChannels(channelsList: state.channels!.channelsList!),
+          (state.managers != null)  ? buildManagers(managersList: state.managers!.managersList!) : const Center(child: CircularProgressIndicator()),
+        ],
+      ),
+    );
   }
 }

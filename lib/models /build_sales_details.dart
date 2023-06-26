@@ -465,7 +465,31 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                 ),
               )
             ]),
-        SizedBox(height: 5.h),
+        Container(
+          width: double.infinity,
+          padding: REdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(8),
+              bottomRight: Radius.circular(8),
+            ),
+            color: Theme.of(context).primaryColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Итоговая сумма:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '${salesDetails.totalPrice} ₸',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 8.h),
         Column(
           children: [
             Container(

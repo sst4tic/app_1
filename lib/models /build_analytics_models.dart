@@ -70,6 +70,7 @@ Widget buildChannels({required List<ChannelsList> channelsList}) {
                         'Возвраты'.toUpperCase(),
                         style: TextStyles.editStyle,
                       ),
+                      SizedBox(height: 4.h),
                       Text(
                         '${channel.totalSumReturns.toString()} ₸',
                         style: const TextStyle(
@@ -84,6 +85,7 @@ Widget buildChannels({required List<ChannelsList> channelsList}) {
                         'продано'.toUpperCase(),
                         style: TextStyles.editStyle,
                       ),
+                      SizedBox(height: 4.h),
                       Text(
                         '${channel.totalSum} ₸',
                         style: const TextStyle(
@@ -115,7 +117,7 @@ Widget buildChannels({required List<ChannelsList> channelsList}) {
                 ),
                 padding: const EdgeInsets.all(0),
                 barRadius: const Radius.circular(8),
-                backgroundColor: Colors.grey[300],
+                backgroundColor: Colors.blue[50],
                 progressColor: Colors.blue,
               ),
             ],
@@ -208,6 +210,7 @@ Widget buildManagers({required List<ManagersList> managersList}) {
                         'Возвраты'.toUpperCase(),
                         style: TextStyles.editStyle,
                       ),
+                      SizedBox(height: 4.h),
                       Text(
                         '${manager.totalSumReturns} ₸',
                         style: const TextStyle(
@@ -222,6 +225,7 @@ Widget buildManagers({required List<ManagersList> managersList}) {
                         'продано'.toUpperCase(),
                         style: TextStyles.editStyle,
                       ),
+                      SizedBox(height: 4.h),
                       Text(
                         '${manager.totalSum} ₸',
                         style: const TextStyle(
@@ -249,7 +253,7 @@ Widget buildManagers({required List<ManagersList> managersList}) {
                 percent: percent,
                 padding: const EdgeInsets.all(0),
                 barRadius: const Radius.circular(8),
-                backgroundColor: Colors.grey[300],
+                backgroundColor: Colors.blue[50],
                 progressColor: Colors.blue,
               ),
             ],

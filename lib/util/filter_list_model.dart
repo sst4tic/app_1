@@ -79,17 +79,17 @@ class Status {
     required this.initialValue,
     required this.childData,
   });
-  late final String type;
-  late final String value;
-  late final String name;
-  late final int initialValue;
+  String? type;
+  String? value;
+  String? name;
+  int? initialValue;
   late final List<ChildData> childData;
 
   Status.fromJson(Map<String, dynamic> json){
-    type = json['type'];
-    value = json['value'];
-    name = json['name'];
-    initialValue = json['initial_value'];
+    type = json['type'] ?? '';
+    value = json['value'] ?? '';
+    name = json['name'] ?? '';
+    initialValue = json['initial_value'] ?? 0;
     childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
   }
 

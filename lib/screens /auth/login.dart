@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../util/styles.dart';
 
@@ -169,6 +170,27 @@ class _LoginState extends State<Login> {
                                   },
                                   child: const Text(
                                     'Войти',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10.0),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 50.0,
+
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    launchUrlString(
+                                      "https://cloud.yiwumart.org/api/registration",
+                                      mode: LaunchMode.externalApplication,
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Регистрация',
                                     style: TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold,
