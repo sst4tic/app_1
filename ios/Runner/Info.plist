@@ -27,7 +27,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera permission is required for barcode scanning.</string>
+	<string>Для сканирования штрихкода требуется разрешение на использование камеры.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>Your location is required to show nearby places.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Your location is required to show nearby places.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Your location is required to show nearby places.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

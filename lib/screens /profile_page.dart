@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yiwucloud/screens%20/check_screen.dart';
 import 'package:yiwucloud/util/constants.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../models /build_user.dart';
@@ -21,11 +22,10 @@ class _ProfilePageState extends State<ProfilePage> {
   late AuthBloc _authBloc;
   String version = '';
 
-
   static Future<User> getUser() async {
     var url = '${Constants.API_URL_DOMAIN}action=user_profile';
     final response =
-    await http.get(Uri.parse(url), headers: Constants.headers());
+        await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
     return User.fromJson(body['data']);
   }
@@ -77,17 +77,21 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 30),
-            Text('Аккаунт'.toUpperCase(), style: TextStyles.headerStyle2),
+            Text('Работа'.toUpperCase(), style: TextStyles.headerStyle2),
             const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CheckPage(),
+                  ),
+                );
               },
               child: Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12))),
+                    borderRadius: const BorderRadius.all(Radius.circular(12))),
                 padding: REdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -96,17 +100,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 25,
                       height: 25,
                       decoration: BoxDecoration(
-                        color: Colors.blueAccent,
+                        color: Colors.green,
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: const Icon(
-                        Icons.edit,
+                        Icons.check,
                         color: Colors.white,
                         size: 20,
                       ),
                     ),
                     SizedBox(width: 5.h),
-                    Text('Редактирование', style: TextStyles.bodyStyle),
+                    Text('Отметиться', style: TextStyles.bodyStyle),
                     const Spacer(),
                     const Icon(
                       Icons.arrow_forward_ios,
@@ -117,12 +121,52 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const Divider(
-              height: 0,
+            const SizedBox(height: 30),
+            Text('Аккаунт'.toUpperCase(), style: TextStyles.headerStyle2),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () async {
+                _authBloc.add(LoggedOut());
+              },
+              child: Container(
+                padding: REdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    SizedBox(width: 5.h),
+                    Text('Удалить аккаунт', style: TextStyles.bodyStyle),
+                    const Spacer(),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                      size: 15,
+                    ),
+                  ],
+                ),
+              ),
             ),
             GestureDetector(
               onTap: () async {
-                  _authBloc.add(LoggedOut());
+                _authBloc.add(LoggedOut());
               },
               child: Container(
                 padding: REdgeInsets.all(10),

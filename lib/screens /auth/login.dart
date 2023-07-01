@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:yiwucloud/screens%20/auth/registration.dart';
 import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../util/styles.dart';
 
@@ -184,10 +184,7 @@ class _LoginState extends State<Login> {
 
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    launchUrlString(
-                                      "https://cloud.yiwumart.org/api/registration",
-                                      mode: LaunchMode.externalApplication,
-                                    );
+                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Registration()));
                                   },
                                   child: const Text(
                                     'Регистрация',

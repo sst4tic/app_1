@@ -240,6 +240,18 @@ class Decorations {
       borderSide: BorderSide.none,
     ),
   );
+
+  static BoxDecoration containerDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(10.0),
+    color: Colors.white,
+    boxShadow: const [
+      BoxShadow(
+        color: Colors.black12,
+        blurRadius: 5.0,
+        offset: Offset(0, 2),
+      ),
+    ],
+  );
 }
 
 class GridDelegateClass {

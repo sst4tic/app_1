@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import '../../util/styles.dart';
 import '../../util/warehouse_sale.dart';
@@ -237,7 +238,18 @@ Widget buildTakingList(
                         height: 5.h,
                       ),
                       const Divider(),
-                      Center(
+                      sales.isLate ?
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            sales.createdAt!,
+                            style: TextStyles.editStyle,
+                          ),
+                         FaIcon(FontAwesomeIcons.circleExclamation,color: Colors.red, size: 16,)
+                        ],
+                      )
+                          : Center(
                         child: Text(
                           sales.createdAt!,
                           style: TextStyles.editStyle,

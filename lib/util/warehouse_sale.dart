@@ -52,6 +52,7 @@ class Sales {
   late final String? createdAt;
   late final String? source;
   late final String? kaspiNum;
+  late final bool isLate;
 
   Sales.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -67,6 +68,7 @@ class Sales {
     createdAt = json['created_at'];
     source = json['source'];
     kaspiNum = json['kaspi_num'];
+    isLate = json['is_late'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,6 +85,7 @@ class Sales {
     data['created_at'] = createdAt;
     data['source'] = source;
     data['kaspi_num'] = kaspiNum;
+    data['is_late'] = isLate;
     return data;
   }
 }

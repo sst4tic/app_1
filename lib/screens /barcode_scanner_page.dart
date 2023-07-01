@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -81,11 +80,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                                         title: 'Ввести в ручную',
                                         content: CustomTextField(
                                           controller: qtyController,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                          ],
-                                          keyboardType: TextInputType.number,
                                           placeholder: 'Введите число',
                                         ),
                                         actions: [

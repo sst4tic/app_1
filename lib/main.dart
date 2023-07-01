@@ -11,6 +11,7 @@ import 'package:flutter_datawedge/flutter_datawedge.dart';
 import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +23,7 @@ import 'package:yiwucloud/util/styles.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_repo.dart';
 import 'firebase_options.dart';
+
 GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -40,6 +42,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Geolocator.requestPermission();
   await Permission.notification.request();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   RemoteMessage? initialMessage =
@@ -178,7 +181,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AuthBloc(authRepo: AuthRepo()),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              if(Platform.isAndroid && Constants.useragent == 'TC26') {
+              if (Platform.isAndroid && Constants.useragent == 'TC26') {
                 fdw.enableScanner(false);
               }
               return GlobalLoaderOverlay(

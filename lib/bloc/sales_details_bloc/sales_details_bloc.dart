@@ -17,18 +17,18 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
   SalesDetailsBloc() : super(SalesDetailsInitial()) {
     final salesDetailsRepo = SalesDetailsRepo();
     on<LoadSalesDetails>((event, emit) async {
-      // try {
+      try {
         if (state is! SalesDetailsLoading) {
           emit(SalesDetailsLoading());
           final salesDetails =
               await salesDetailsRepo.loadSalesDetails(id: event.id);
           emit(SalesDetailsLoaded(salesDetails: salesDetails));
         }
-      // } catch (e) {
-      //   emit(SalesDetailsLoadingFailure(exception: e));
-      // } finally {
-      //   event.completer?.complete();
-      // }
+      } catch (e) {
+        emit(SalesDetailsLoadingFailure(exception: e));
+      } finally {
+        event.completer?.complete();
+      }
     });
     on<MovingRedirectionEvent>((event, emit) async {
       event.context.loaderOverlay.show();
