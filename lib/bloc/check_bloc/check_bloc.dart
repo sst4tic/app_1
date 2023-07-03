@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/models%20/workpace_model.dart';
@@ -26,69 +25,64 @@ class CheckBloc extends Bloc<CheckEvent, CheckState> {
         event.completer?.complete();
       }
     });
-    on<CheckInEvent>((event, emit) async {
-      final check = await checkRepo.workpacePostpone(lat: event.lat.toString(), lon: event.lon.toString(), type: 'in');
-      // ignore: use_build_context_synchronously
-      showDialog(context: event.context, builder: (context) {
-        return check['success'] ?
-          CustomAlertDialog(
-          title: 'Успешно',
-          content: Text(check['message']),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                add(LoadCheck());
-              },
-              child: const Text('Ок'),
-            )
-          ],
-        ) :
-        CustomAlertDialog(
-          title: 'Ошибка',
-          content: Text(check['message']),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-              child: const Text('Ок'),
-            )
-          ],
-        );
-      });
-    });
-    on<CheckOutEvent>((event, emit) async {
-      final check = await checkRepo.workpacePostpone(lat: event.lat.toString(), lon: event.lon.toString(), type: 'out');
-      // ignore: use_build_context_synchronously
-      showDialog(context: event.context, builder: (context) {
-        return check['success'] ?
-        CustomAlertDialog(
-          title: 'Успешно',
-          content: Text(check['message']),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                add(LoadCheck());
-              },
-              child: const Text('Ок'),
-            )
-          ],
-        ) :
-        CustomAlertDialog(
-          title: 'Ошибка',
-          content: Text(check['message']),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-              child: const Text('Ок'),
-            )
-          ],
-        );
-      });
+    on<CheckLocationEvent>((event, emit) async {
+      showDialog(
+          context: event.context,
+          builder: (context) {
+            return CustomAlertDialog(
+              title: 'Подтверждение',
+              content: const Text('Вы действительно хотите отметиться?'),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    final check = await checkRepo.workpacePostpone(
+                        lat: event.lat.toString(),
+                        lon: event.lon.toString(),
+                        type: event.type);
+                    // ignore: use_build_context_synchronously
+                    showDialog(
+                        context: event.context,
+                        builder: (context) {
+                          return check['success']
+                              ? CustomAlertDialog(
+                                  title: 'Успешно',
+                                  content: Text(check['message']),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                        add(LoadCheck());
+                                      },
+                                      child: const Text('Ок'),
+                                    )
+                                  ],
+                                )
+                              : CustomAlertDialog(
+                                  title: 'Ошибка',
+                                  content: Text(check['message']),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Ок'),
+                                    )
+                                  ],
+                                );
+                        });
+                  },
+                  child: const Text('Да'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Нет'),
+                )
+              ],
+            );
+          });
     });
   }
 }

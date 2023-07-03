@@ -238,7 +238,7 @@ Widget buildTakingList(
                         height: 5.h,
                       ),
                       const Divider(),
-                      sales.isLate ?
+                      sales.isLate! ?
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -246,7 +246,7 @@ Widget buildTakingList(
                             sales.createdAt!,
                             style: TextStyles.editStyle,
                           ),
-                         FaIcon(FontAwesomeIcons.circleExclamation,color: Colors.red, size: 16,)
+                         const FaIcon(FontAwesomeIcons.circleExclamation,color: Colors.red, size: 16,)
                         ],
                       )
                           : Center(

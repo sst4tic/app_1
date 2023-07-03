@@ -11,6 +11,9 @@ class WorkpaceModel {
   late final String? comingToday;
   late final String? leavingToday;
   late final String? btnType;
+  late final String? startAt;
+  late final String? endAt;
+  late final String? schedule;
 
   WorkpaceModel.fromJson(Map<String, dynamic> json){
     totalWork = json['total_work'];
@@ -18,6 +21,9 @@ class WorkpaceModel {
     comingToday = json['coming_today'];
     leavingToday = json['leaving_today'];
     btnType = json['btn_type'];
+    startAt = json['start_at'];
+    endAt = json['end_at'];
+    schedule = json['schedule'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +33,9 @@ class WorkpaceModel {
     data['coming_today'] = comingToday;
     data['leaving_today'] = leavingToday;
     data['btn_type'] = btnType;
+    data['start_at'] = startAt;
+    data['end_at'] = endAt;
+    data['schedule'] = schedule;
     return data;
   }
 }

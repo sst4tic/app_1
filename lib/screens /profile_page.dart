@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     SizedBox(width: 5.h),
-                    Text('Отметиться', style: TextStyles.bodyStyle),
+                    Text('Рабочее время', style: TextStyles.bodyStyle),
                     const Spacer(),
                     const Icon(
                       Icons.arrow_forward_ios,
@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 10),
             GestureDetector(
               onTap: () async {
-                _authBloc.add(LoggedOut());
+                _authBloc.add(DeleteAccountEvent(context: context));
               },
               child: Container(
                 padding: REdgeInsets.all(10),

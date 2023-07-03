@@ -2,13 +2,15 @@ name: yiwucloud
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.0.22+23
+version: 1.0.23+24
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
 
 dependencies:
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.2
   provider: ^6.0.4

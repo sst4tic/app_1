@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
 import 'abstract_auth.dart';
@@ -41,6 +42,42 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(Unauthenticated(token: ''));
       }
     });
+    on<DeleteAccountEvent>((event, emit) async {
+      try {
+        // show dialog to confirm delete account
+        showDialog(
+            context: event.context,
+            builder: (BuildContext context) {
+              return CustomAlertDialog(
+                title: "Удаление аккаунта",
+                content: const Text("Вы действительно хотите удалить аккаунт?"),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      final response = await authRepo.deleteAccount();
+                      // ignore: use_build_context_synchronously
+                      Func().showSnackbar(event.context, response['message'],
+                          response['success']);
+                      if (response['success'] == true) {
+                        add(LoggedOut());
+                      }
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Да'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Нет'),
+                  ),
+                ],
+              );
+            });
+      } catch (e) {
+        print(e);
+      }
+    });
   }
 
   void _checkAuthenticationStatus() async {
@@ -52,15 +89,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       add(LoggedOut());
     }
-    // _authenticationStatusSubscription =
-    //     Stream.periodic(const Duration(seconds: 30)).listen((_) async {
-    //   final isAuthenticated = await authRepo.getToken();
-    //   if (isAuthenticated.isNotEmpty) {
-    //     add(LoggedIn(token: isAuthenticated));
-    //   } else {
-    //     add(LoggedOut());
-    //   }
-    // });
   }
 
   @override

@@ -20,3 +20,10 @@ class LoginEvent extends AuthEvent {
   LoginEvent({required this.email, required this.password, required this.context});
   List<Object> get props => [email, password, context];
 }
+
+class DeleteAccountEvent extends AuthEvent {
+  final BuildContext context;
+
+  DeleteAccountEvent({required this.context});
+  List<Object> get props => [context];
+}

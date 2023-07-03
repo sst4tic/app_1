@@ -20,20 +20,13 @@ class LeftEvent extends CheckEvent {
   LeftEvent({this.completer});
 }
 
-class CheckInEvent extends CheckEvent {
+
+class CheckLocationEvent extends CheckEvent {
   final Completer<void>? completer;
   final double lat;
   final double lon;
+  final String type;
   final BuildContext context;
 
-  CheckInEvent({this.completer, required this.lat, required this.lon, required this.context});
-}
-
-class CheckOutEvent extends CheckEvent {
-  final Completer<void>? completer;
-  final double lat;
-  final double lon;
-  final BuildContext context;
-
-  CheckOutEvent({this.completer, required this.lat, required this.lon, required this.context});
+  CheckLocationEvent({this.completer, required this.lat, required this.lon,  required this.type, required this.context});
 }

@@ -17,6 +17,7 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
   TabController? _tabController;
   final TextEditingController _dateController = TextEditingController();
   final _analyticsSalesBloc = AnalyticsTopSalesBloc();
+  DateTimeRange? selectedDateRange;
 
   final String _date =
       '${DateFormat('yyyy-MM-dd').format(DateTime(DateTime.now().year, DateTime.now().month, 1))}/${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
@@ -31,6 +32,7 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
+      locale: const Locale('ru', 'RU'),
       saveText: 'Сохранить',
       cancelText: 'Отмена',
       helpText: 'Выберите дату',
@@ -52,12 +54,14 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
       },
       firstDate: DateTime(2021),
       lastDate: DateTime.now(),
-      initialDateRange: DateTimeRange(
-        start: DateTime(DateTime.now().year, DateTime.now().month, 1),
-        end: DateTime.now(),
-      ),
+      initialDateRange: selectedDateRange ??
+          DateTimeRange(
+            start: DateTime(DateTime.now().year, DateTime.now().month, 1),
+            end: DateTime.now(),
+          ),
     );
     if (picked != null) {
+      selectedDateRange = picked;
       final pickedDate =
           '${picked.start.toString().substring(0, 10)} - ${picked.end.toString().substring(0, 10)}';
       final AmanDate =
@@ -120,8 +124,7 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
               return const SizedBox();
             },
           ),
-        )
-    );
+        ));
   }
 
   Widget buildTabView(AnalyticsTopSalesLoaded state) {
@@ -130,8 +133,11 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
       child: TabBarView(
         controller: _tabController,
         children: [
-          if (state.channels != null) buildChannels(channelsList: state.channels!.channelsList!),
-          (state.managers != null)  ? buildManagers(managersList: state.managers!.managersList!) : const Center(child: CircularProgressIndicator()),
+          if (state.channels != null)
+            buildChannels(channelsList: state.channels!.channelsList!),
+          (state.managers != null)
+              ? buildManagers(managersList: state.managers!.managersList!)
+              : const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

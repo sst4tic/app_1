@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
 import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -118,6 +119,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
+
 FlutterDataWedge fdw = FlutterDataWedge(profileName: 'DataWedgeFlutterDemo');
 late StreamSubscription<ScanResult> onScanResultListener;
 
@@ -192,6 +194,14 @@ class _MyAppState extends State<MyApp> {
                         ),
                       )
                     : MaterialApp(
+                        localizationsDelegates: const [
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                          DefaultWidgetsLocalizations.delegate,
+                        ],
+                        supportedLocales: const [
+                          Locale('ru', 'RU'),
+                        ],
                         navigatorKey: navKey,
                         debugShowCheckedModeBanner: false,
                         theme: lightTheme,

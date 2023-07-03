@@ -142,6 +142,7 @@ class Func {
   // for date
   Future<void> selectDate(BuildContext context, VoidCallback callback) async {
     final DateTimeRange? picked = await showDateRangePicker(
+      locale: const Locale('ru', 'RU'),
       saveText: 'Сохранить',
       cancelText: 'Отмена',
       helpText: 'Выберите дату',

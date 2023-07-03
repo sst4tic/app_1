@@ -52,7 +52,7 @@ class Sales {
   late final String? createdAt;
   late final String? source;
   late final String? kaspiNum;
-  late final bool isLate;
+  late final bool? isLate;
 
   Sales.fromJson(Map<String, dynamic> json){
     id = json['id'];

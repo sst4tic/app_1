@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,5 +46,14 @@ class AuthRepo implements AbstractAuth {
         return resp;
       });
     }
+  }
+
+  @override
+  Future deleteAccount() async {
+    var url = '${Constants.API_URL_DOMAIN}action=user_delete';
+    final response =
+    await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body;
   }
 }
