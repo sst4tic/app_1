@@ -6,6 +6,7 @@ import '../../models /build_filter.dart';
 import '../../models /warehouse_taking_widget_model.dart';
 import '../../util/filter_list_model.dart';
 import '../../util/function_class.dart';
+import 'multi_scan_page.dart';
 
 class WarehouseTaking extends StatefulWidget {
   const WarehouseTaking({Key? key}) : super(key: key);
@@ -48,6 +49,14 @@ class _WarehouseTakingState extends State<WarehouseTaking>
       appBar: AppBar(
           title: const Text('Склад: Вывоз'),
           actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => const MultiScanPage())
+                );
+              },
+              icon: const Icon(Icons.qr_code_scanner),
+            ),
             IconButton(
               onPressed: () {
                 showFilter(

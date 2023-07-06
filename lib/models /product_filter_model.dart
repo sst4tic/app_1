@@ -23,11 +23,11 @@ class ProductFilterModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e) => e.toJson()).toList();
+    return data;
   }
 }

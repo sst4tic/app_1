@@ -86,8 +86,7 @@ Widget buildArrival(
                       ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                              primary:
-                                  Theme.of(context).scaffoldBackgroundColor,
+                              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                               elevation: 0),
                           child: Row(
                             children: [
@@ -309,8 +308,7 @@ Widget buildSales(
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                                primary:
-                                    Theme.of(context).scaffoldBackgroundColor,
+                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                 elevation: 0),
                             child: Row(
                               children: [
@@ -767,7 +765,7 @@ Widget buildMoving(
                     ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).scaffoldBackgroundColor,
+                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                             elevation: 0),
                         child: Row(
                           children: [

@@ -127,16 +127,16 @@ class _CheckPageState extends State<CheckPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Отработано за месяц'),
-                              Text(workpace.totalWork ?? emptyTime),
+                              const Text('Отработано сегодня'),
+                              Text(workpace.todayWork ?? emptyTime),
                             ],
                           ),
                           const Divider(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Отработано сегодня'),
-                              Text(workpace.todayWork ?? emptyTime),
+                              const Text('Отработано за месяц'),
+                              Text(workpace.totalWork ?? emptyTime),
                             ],
                           ),
                         ],

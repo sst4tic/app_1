@@ -49,6 +49,7 @@ dependencies:
   flutter_datawedge: ^1.2.0
   device_info_plus: ^9.0.2
   geolocator: ^9.0.2
+  flutter_slidable: ^3.0.0
 
 
 dev_dependencies:

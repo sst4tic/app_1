@@ -51,23 +51,23 @@ class FilterModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['status'] = status?.toJson();
-    _data['type_of_invoice'] = typeOfInvoice?.toJson();
-    _data['date_other'] = dateOther?.toJson();
-    _data['date_completed'] = dateCompleted?.toJson();
-    _data['date_returned'] = dateReturned?.toJson();
-    _data['date_canceled'] = dateCanceled?.toJson();
-    _data['manager'] = manager?.toJson();
-    _data['payments_method'] = paymentsMethod?.toJson();
-    _data['shipment_type'] = shipmentType?.toJson();
-    _data['discount'] = discount?.toJson();
-    _data['sale_channel'] = saleChannel?.toJson();
-    _data['bill'] = bill?.toJson();
-    _data['service_point'] = servicePoint?.toJson();
-    _data['shipment_point'] = shipmentPoint?.toJson();
-    _data['with_docs'] = withDocs?.toJson();
-    return _data;
+    final data = <String, dynamic>{};
+    data['status'] = status?.toJson();
+    data['type_of_invoice'] = typeOfInvoice?.toJson();
+    data['date_other'] = dateOther?.toJson();
+    data['date_completed'] = dateCompleted?.toJson();
+    data['date_returned'] = dateReturned?.toJson();
+    data['date_canceled'] = dateCanceled?.toJson();
+    data['manager'] = manager?.toJson();
+    data['payments_method'] = paymentsMethod?.toJson();
+    data['shipment_type'] = shipmentType?.toJson();
+    data['discount'] = discount?.toJson();
+    data['sale_channel'] = saleChannel?.toJson();
+    data['bill'] = bill?.toJson();
+    data['service_point'] = servicePoint?.toJson();
+    data['shipment_point'] = shipmentPoint?.toJson();
+    data['with_docs'] = withDocs?.toJson();
+    return data;
   }
 }
 
@@ -94,13 +94,13 @@ class Status {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -118,10 +118,10 @@ class ChildData {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['value'] = value;
-    _data['text'] = text;
-    return _data;
+    final data = <String, dynamic>{};
+    data['value'] = value;
+    data['text'] = text;
+    return data;
   }
 }
 
@@ -148,13 +148,13 @@ class TypeOfInvoice {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -175,11 +175,11 @@ class Date {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['name'] = name;
-    _data['value'] = value;
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['name'] = name;
+    data['value'] = value;
+    return data;
   }
 }
 
@@ -200,11 +200,11 @@ class DateCompleted {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['name'] = name;
-    _data['value'] = value;
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['name'] = name;
+    data['value'] = value;
+    return data;
   }
 }
 
@@ -225,11 +225,11 @@ class DateReturned {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['name'] = name;
-    _data['value'] = value;
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['name'] = name;
+    data['value'] = value;
+    return data;
   }
 }
 
@@ -250,11 +250,11 @@ class DateCanceled {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['name'] = name;
-    _data['value'] = value;
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['name'] = name;
+    data['value'] = value;
+    return data;
   }
 }
 
@@ -275,11 +275,11 @@ class Manager {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['name'] = name;
-    _data['value'] = value;
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['name'] = name;
+    data['value'] = value;
+    return data;
   }
 }
 
@@ -306,13 +306,13 @@ class PaymentsMethod {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -341,13 +341,13 @@ class ShipmentType {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -374,13 +374,13 @@ class Discount {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -409,13 +409,13 @@ class SaleChannel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -442,13 +442,13 @@ class Bill {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -475,13 +475,13 @@ class ServicePoint {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -510,13 +510,13 @@ class ShipmentPoint {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -543,12 +543,12 @@ class WithDocs {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['type'] = type;
-    _data['value'] = value;
-    _data['name'] = name;
-    _data['initial_value'] = initialValue;
-    _data['data'] = childData.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['type'] = type;
+    data['value'] = value;
+    data['name'] = name;
+    data['initial_value'] = initialValue;
+    data['data'] = childData.map((e)=>e.toJson()).toList();
+    return data;
   }
 }

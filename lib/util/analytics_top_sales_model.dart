@@ -29,14 +29,14 @@ class AnalyticsTopSalesModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['channels_list'] = channelsList?.map((e) => e.toJson()).toList();
-    _data['total_sum'] = totalSum;
+    final data = <String, dynamic>{};
+    data['channels_list'] = channelsList?.map((e) => e.toJson()).toList();
+    data['total_sum'] = totalSum;
     // _data['total_sum_last_period'] = totalSumLastPeriod;
-    _data['total_sum_returns'] = totalSumReturns;
-    _data['managers_list'] = managersList?.map((e) => e.toJson()).toList();
-    _data['managers_count'] = managersCount;
-    return _data;
+    data['total_sum_returns'] = totalSumReturns;
+    data['managers_list'] = managersList?.map((e) => e.toJson()).toList();
+    data['managers_count'] = managersCount;
+    return data;
   }
 }
 
@@ -66,15 +66,15 @@ class ChannelsList {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['name'] = name;
-    _data['total_sum'] = totalSum;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['total_sum'] = totalSum;
     // _data['total_sum_last_period'] = totalSumLastPeriod;
     // _data['total_sum_difference_percentage'] = totalSumDifferencePercentage;
-    _data['total_sum_returns'] = totalSumReturns;
-    _data['plan'] = plan;
-    _data['plan_percentage'] = planPercentage;
-    return _data;
+    data['total_sum_returns'] = totalSumReturns;
+    data['plan'] = plan;
+    data['plan_percentage'] = planPercentage;
+    return data;
   }
 }
 

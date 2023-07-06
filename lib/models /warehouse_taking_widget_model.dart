@@ -7,9 +7,9 @@ import '../../util/warehouse_sale.dart';
 
 Widget buildTakingList(
     {required List<Sales> taking,
-      required int total,
-      required VoidCallback onRefresh,
-     required ScrollController sController,
+    required int total,
+    required VoidCallback onRefresh,
+    required ScrollController sController,
     required bool hasMore}) {
   return RefreshIndicator(
       onRefresh: () async {
@@ -87,8 +87,7 @@ Widget buildTakingList(
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                  primary:
-                                      Theme.of(context).scaffoldBackgroundColor,
+                                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                   elevation: 0),
                               child: Row(
                                 children: [
@@ -238,23 +237,27 @@ Widget buildTakingList(
                         height: 5.h,
                       ),
                       const Divider(),
-                      sales.isLate! ?
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            sales.createdAt!,
-                            style: TextStyles.editStyle,
-                          ),
-                         const FaIcon(FontAwesomeIcons.circleExclamation,color: Colors.red, size: 16,)
-                        ],
-                      )
+                      sales.isLate!
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  sales.createdAt!,
+                                  style: TextStyles.editStyle,
+                                ),
+                                const FaIcon(
+                                  FontAwesomeIcons.circleExclamation,
+                                  color: Colors.red,
+                                  size: 16,
+                                )
+                              ],
+                            )
                           : Center(
-                        child: Text(
-                          sales.createdAt!,
-                          style: TextStyles.editStyle,
-                        ),
-                      ),
+                              child: Text(
+                                sales.createdAt!,
+                                style: TextStyles.editStyle,
+                              ),
+                            ),
                       SizedBox(
                         height: 5.h,
                       ),
@@ -281,6 +284,5 @@ Widget buildTakingList(
             ),
           ),
         ],
-      )
-      );
+      ));
 }

@@ -47,9 +47,8 @@ class InvoiceScannerBloc
       final data = await invoiceScannerRepo.loadData(id: event.id);
       try {
         if (scanData['success']) {
-          AudioPlayer().play(AssetSource('sounds/success-sound.mp3'),
-              mode: PlayerMode.lowLatency);
-          // ignore: use_build_context_synchronously
+          AudioPlayer().play(AssetSource('sounds/success-sound.mp3'), mode: PlayerMode.lowLatency);
+              // ignore: use_build_context_synchronously
           Func().showSnackbar(event.context, scanData['message'], true);
           if (data['type'] == 'product') {
             final invoices = data['data']

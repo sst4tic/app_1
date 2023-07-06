@@ -69,13 +69,14 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                minimumSize: Size(double.infinity, 30.h),
+                                minimumSize: Size(double.infinity, 35.h),
                               ),
                               onPressed: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    final qtyController = TextEditingController();
+                                    final qtyController =
+                                        TextEditingController();
                                     return CustomAlertDialog(
                                         title: 'Ввести в ручную',
                                         content: CustomTextField(

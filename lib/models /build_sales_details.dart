@@ -62,10 +62,8 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
     });
   }
 
-
   bool isDetailsExpanded = false;
   bool isDeliveryExpanded = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -134,37 +132,43 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
             : Container(),
         SizedBox(height: salesDetails.btnScan != false ? 5.h : 0),
         SizedBox(height: dropdownMenuItems != null ? 5.h : 0),
-        dropdownMenuItems != null ?
-        Text(
-          'выберите курьера'.toUpperCase(),
-          style: TextStyles.editStyle,
-        ) : const SizedBox(),
+        dropdownMenuItems != null
+            ? Text(
+                'выберите курьера'.toUpperCase(),
+                style: TextStyles.editStyle,
+              )
+            : const SizedBox(),
         SizedBox(height: dropdownMenuItems != null ? 5.h : 0),
-        dropdownMenuItems != null ?
-        DropdownButtonHideUnderline(
-          child: DropdownButton2(
-            hint: const Text('Выберите курьера', style: TextStyle(color: Colors.black),),
-            isExpanded: true,
-            value: selectedVal,
-            buttonStyleData: ButtonStyleData(
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-              ),
-              padding: REdgeInsets.all(8),
-            ),
-            items: dropdownMenuItems,
-            onChanged: (value) {
-              if(value != selectedVal!) {
-                setState(() {
-                  selectedVal = value;
-                });
-                detailsBloc.add(DefineCourierEvent(invoiceId: id, courierId: value, context: context));
-              }
-            },
-          ),
-        ) : Container(),
+        dropdownMenuItems != null
+            ? DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  hint: const Text(
+                    'Выберите курьера',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  isExpanded: true,
+                  value: selectedVal,
+                  buttonStyleData: ButtonStyleData(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
+                    padding: REdgeInsets.all(8),
+                  ),
+                  items: dropdownMenuItems,
+                  onChanged: (value) {
+                    if (value != selectedVal!) {
+                      setState(() {
+                        selectedVal = value;
+                      });
+                      detailsBloc.add(DefineCourierEvent(
+                          invoiceId: id, courierId: value, context: context));
+                    }
+                  },
+                ),
+              )
+            : Container(),
         salesDetails.boxesPermission
             ? ElevatedButton(
                 onPressed: () {
@@ -194,13 +198,16 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                 'Статус: ${salesDetails.statusName}',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 5.h),
-              salesDetails.zone != null ?
-              Text(
-                'Зона: ${salesDetails.zone}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ) : const SizedBox(),
-              SizedBox(height: salesDetails.zone != null ? 5.h : 0),
+              salesDetails.zone != null ? const Divider() : const SizedBox(),
+              salesDetails.zone != null
+                  ? Text(
+                      'Зона: ${salesDetails.zone}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : const SizedBox(),
+              salesDetails.zone != null && salesDetails.courierName != null
+                  ? const Divider()
+                  : const SizedBox(),
               salesDetails.courierName != null
                   ? Text(
                       'Курьер: ${salesDetails.courierName!}',
@@ -348,7 +355,7 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Cкидка:'),
-                          Text('${salesDetails.details.discountName} %'),
+                          Text('${salesDetails.details.discountName ?? 0} %'),
                         ],
                       ),
                       salesDetails.details.kaspiNum != null
