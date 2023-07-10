@@ -2,7 +2,7 @@ name: yiwucloud
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.0.23+24
+version: 1.0.27+28
 
 environment:
   sdk: '>=2.19.4 <3.0.0'

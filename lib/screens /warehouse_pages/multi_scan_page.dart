@@ -35,8 +35,9 @@ class _MultiScanPageState extends State<MultiScanPage> {
   void initInvoiceScanner() {
     fdw.enableScanner(true);
     onScanResultListener = fdw.onScanResult.listen((result) {
+      String formattedCode = formatScanData(result.data);
       _invoiceScannerBloc
-          .add(ScanEvent(context: context, barcode: result.data));
+          .add(ScanEvent(context: context, barcode: formattedCode));
     });
   }
 
@@ -73,6 +74,9 @@ class _MultiScanPageState extends State<MultiScanPage> {
                 if (state is MultiScanLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is MultiScanLoaded) {
+                  final dataScanned = state.data!
+                      .where((element) => element.qty == element.qtyScanned)
+                      .toList();
                   final sortedData = List<MultiScanModel>.from(state.data!);
                   sortedData.sort((a, b) => a.qty == a.qtyScanned
                       ? 1
@@ -115,6 +119,56 @@ class _MultiScanPageState extends State<MultiScanPage> {
                                       },
                                     ),
                                   ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              color: Colors.white,
+                              padding: REdgeInsets.all(8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Количество накладных:'.toUpperCase(),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: '${state.data!.length} / ',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        ),
+                                        TextSpan(
+                                          text: '${dataScanned.length}',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                        const TextSpan(
+                                          text: ' / ',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              '${state.data!.length - dataScanned.length}',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -173,7 +227,7 @@ class _MultiScanPageState extends State<MultiScanPage> {
                   motion: const ScrollMotion(),
                   extentRatio: 0.3,
                   children: [
-                     SlidableAction(
+                    SlidableAction(
                       onPressed: (context) {
                         _invoiceScannerBloc.add(DeleteEvent(
                           context: context,
@@ -181,7 +235,7 @@ class _MultiScanPageState extends State<MultiScanPage> {
                         ));
                       },
                       label: 'Удалить',
-                       spacing: 0,
+                      spacing: 0,
                       backgroundColor: Colors.red,
                       borderRadius: const BorderRadius.only(
                         bottomRight: Radius.circular(8.0),
@@ -191,7 +245,6 @@ class _MultiScanPageState extends State<MultiScanPage> {
                   ],
                 ),
                 child: Container(
-                  // margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -238,16 +291,28 @@ class _MultiScanPageState extends State<MultiScanPage> {
 
   bool isScanned = false;
 
+  String formatScanData(String code) {
+    if (code.contains('-')) {
+      int hyphenIndex = code.indexOf('-');
+      if (code.contains('M')) {
+      } else {
+        code = code.substring(0, hyphenIndex);
+      }
+    }
+    return code;
+  }
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       if (scanData != '' && !isScanned) {
         isScanned = true;
+        String formattedCode = formatScanData(scanData.code!);
         controller.pauseCamera();
         HapticFeedback.mediumImpact();
         _invoiceScannerBloc.add(ScanEvent(
           context: context,
-          barcode: scanData.code!,
+          barcode: formattedCode,
         ));
         Future.delayed(const Duration(milliseconds: 500), () {
           controller.resumeCamera();

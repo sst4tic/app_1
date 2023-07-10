@@ -254,7 +254,7 @@ Widget buildTakingList(
                             )
                           : Center(
                               child: Text(
-                                sales.createdAt!,
+                                sales.createdAt ?? 'Дата не указана',
                                 style: TextStyles.editStyle,
                               ),
                             ),
