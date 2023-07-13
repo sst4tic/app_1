@@ -142,6 +142,13 @@ class _CheckPageState extends State<CheckPage> {
                         ],
                       ),
                     ),
+                    // ElevatedButton(onPressed: () async {
+                    //  await NotificationService().scheduleNotification(scheduledNotificationDateTime:
+                    //   DateTime.now().add(const Duration(seconds: 10)),
+                    //    title: 'Scheduled Notification',
+                    //    body: 'You should see this notification in 5 seconds',
+                    //   );
+                    // }, child: const Text('test')),
                     const Spacer(),
                     ElevatedButton(
                       onPressed: () async {

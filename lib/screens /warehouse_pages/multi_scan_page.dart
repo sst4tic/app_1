@@ -231,7 +231,7 @@ class _MultiScanPageState extends State<MultiScanPage> {
                       onPressed: (context) {
                         _invoiceScannerBloc.add(DeleteEvent(
                           context: context,
-                          index: index,
+                          invoiceId: barcode.invoiceId,
                         ));
                       },
                       label: 'Удалить',

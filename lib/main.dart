@@ -24,7 +24,7 @@ import 'package:yiwucloud/util/styles.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_repo.dart';
 import 'firebase_options.dart';
-
+import 'package:timezone/data/latest.dart' as tz;
 GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -117,6 +117,7 @@ void main() async {
     var APNS = await messaging.getAPNSToken();
   }
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 

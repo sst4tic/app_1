@@ -42,12 +42,12 @@ class DeleteEvent extends MultiScanEvent {
   DeleteEvent({
     this.completer,
     required this.context,
-    required this.index,
+    required this.invoiceId,
   });
 
   final Completer? completer;
   final BuildContext context;
-  final int index;
+  final int invoiceId;
 
-  List<Object?> get props => [completer, index];
+  List<Object?> get props => [completer, invoiceId];
 }

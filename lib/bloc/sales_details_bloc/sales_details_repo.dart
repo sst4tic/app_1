@@ -19,9 +19,9 @@ class SalesDetailsRepo implements AbstractSalesDetails {
   }
 
   @override
-  Future movingRedirection({required int id, required String act}) async {
+  Future movingRedirection({required int id, required String act, double? lat, double? lon}) async {
     var url =
-        '${Constants.API_URL_DOMAIN}action=sale_moving_redirection&id=$id&act=$act';
+        '${Constants.API_URL_DOMAIN}action=sale_moving_redirection&id=$id&act=$act&lon=$lon&lat=$lat';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);

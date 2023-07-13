@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/bloc/invoice_scanner_bloc/invoice_scanner_repo.dart';
 import 'package:yiwucloud/bloc/sales_details_bloc/sales_details_repo.dart';
 import 'package:yiwucloud/main.dart';
+import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/models%20/multi_scan_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:yiwucloud/util/function_class.dart';
@@ -65,10 +66,10 @@ class MultiScanBloc extends Bloc<MultiScanEvent, MultiScanState> {
             }
             AudioPlayer().play(AssetSource('sounds/success-sound.mp3'),
                 mode: PlayerMode.lowLatency);
-            final scan = await InvoiceScannerRepo()
-                .invoiceScan(id: invoiceId, barcode: event.barcode);
-            final updatedData = await getScan();
-            emit(MultiScanLoaded(data: updatedData));
+            data[index].qtyScanned = data[index].qtyScanned + 1;
+            await InvoiceScannerRepo().invoiceScan(
+                id: data[index].invoiceId, barcode: event.barcode);
+            emit(MultiScanLoaded(data: data));
           }
         }
       } catch (e) {
@@ -84,13 +85,25 @@ class MultiScanBloc extends Bloc<MultiScanEvent, MultiScanState> {
           final data = (state as MultiScanLoaded).data;
           bool isSnackBarShown = false;
           for (var i = 0; i < data!.length; i++) {
-            final redirectionResp = await SalesDetailsRepo().movingRedirection(
-                id: data[i].invoiceId, act: 'wareHouseComplete');
             if (data[i].qty == data[i].qtyScanned) {
+              final redirectionResp = await SalesDetailsRepo().movingRedirection(
+                  id: data[i].invoiceId, act: 'wareHouseComplete');
               emit(MultiScanLoaded(data: await getScan()));
               if (!isSnackBarShown && redirectionResp['success']) {
-                Func().showSnackbar(event.context,
-                    'Отсканированны накладные: ${data[i].barcode}', false);
+                // ignore: use_build_context_synchronously
+                showDialog(context: event.context, builder: (context) {
+                  return CustomAlertDialog(
+                    title: 'Успешно',
+                    content: Text('Отсканированно ${data.length} накладных'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Ок'))
+                    ],
+                  );
+                });
                 isSnackBarShown = true;
               }
             } else {
@@ -114,14 +127,10 @@ class MultiScanBloc extends Bloc<MultiScanEvent, MultiScanState> {
       try {
         navKey.currentContext!.loaderOverlay.show();
         if (state is! MultiScanLoading) {
-          final data = (state as MultiScanLoaded).data;
-          final invoiceId = data![event.index].invoiceId;
-          final resp = await deleteScan(invoiceId);
-          if (event.index != -1) {
-            emit(MultiScanLoaded(data: await getScan()));
-          }
+          final resp = await deleteScan(event.invoiceId);
           Func().showSnackbar(
               navKey.currentContext, resp['message'], resp['success']);
+          resp['success'] ? emit(MultiScanLoaded(data: await getScan())) : null;
         }
         navKey.currentContext!.loaderOverlay.hide();
       } catch (e) {

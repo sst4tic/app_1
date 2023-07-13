@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/bloc/sales_details_bloc/sales_details_repo.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
@@ -32,8 +33,10 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
     });
     on<MovingRedirectionEvent>((event, emit) async {
       event.context.loaderOverlay.show();
+      final position = event.act == 'Delivered' ? await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high) : null;
       final redirection = await salesDetailsRepo.movingRedirection(
-          id: event.id, act: event.act);
+          id: event.id, act: event.act, lat: position?.latitude, lon: position?.longitude);
       final salesDetails =
           await salesDetailsRepo.loadSalesDetails(id: event.id);
       event.context.loaderOverlay.hide();

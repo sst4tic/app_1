@@ -7,8 +7,8 @@ class MultiScanModel {
   });
   late final int invoiceId;
   late final String barcode;
-  late final int qty;
-  late final int qtyScanned;
+   int qty = 1;
+   int qtyScanned = 0;
 
   MultiScanModel.fromJson(Map<String, dynamic> json){
     invoiceId = json['invoice_id'];
