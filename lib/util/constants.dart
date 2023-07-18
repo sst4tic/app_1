@@ -6,4 +6,6 @@ class Constants {
   static String bearer = '';
   static String useragent = '';
   static headers() => {header: bearer, 'user-agent': 'YiwuMart: test'};
+  static String startAt = '';
+  static String endAt = '';
 }

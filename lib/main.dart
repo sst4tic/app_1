@@ -25,6 +25,7 @@ import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_repo.dart';
 import 'firebase_options.dart';
 import 'package:timezone/data/latest.dart' as tz;
+
 GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -55,7 +56,7 @@ void main() async {
                 MaterialPageRoute(
                     builder: (context) => WareHouseSalesDetails(
                           id: int.parse(initialMessage.data['id']),
-                          invoiceId: '0${initialMessage.data['invoice_id']}',
+                          invoiceId: '${initialMessage.data['invoice_id']}',
                         )),
               ));
     }
@@ -89,7 +90,7 @@ void main() async {
         MaterialPageRoute(
             builder: (context) => WareHouseSalesDetails(
                   id: int.parse(message.data['id']),
-                  invoiceId: '0${message.data['invoice_id']}',
+                  invoiceId: '${message.data['invoice_id']}',
                 )),
       );
     }
@@ -101,7 +102,7 @@ void main() async {
         MaterialPageRoute(
             builder: (context) => WareHouseSalesDetails(
                   id: int.parse(message.data['id']),
-                  invoiceId: '0${message.data['invoice_id']}',
+                  invoiceId: '${message.data['invoice_id']}',
                 )),
       );
     }

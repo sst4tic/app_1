@@ -4,4 +4,5 @@ abstract class AbstractAuth {
   Future<void> getFirebaseToken(val);
   Future login(String email, String password, context);
   Future deleteAccount();
+  Future initParams();
 }

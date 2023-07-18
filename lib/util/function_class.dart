@@ -139,41 +139,6 @@ class Func {
     return data;
   }
 
-  // for date
-  Future<void> selectDate(BuildContext context, VoidCallback callback) async {
-    final DateTimeRange? picked = await showDateRangePicker(
-      locale: const Locale('ru', 'RU'),
-      saveText: 'Сохранить',
-      cancelText: 'Отмена',
-      helpText: 'Выберите дату',
-      fieldEndLabelText: 'Конец',
-      fieldStartLabelText: 'Начало',
-      context: context,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
-            ),
-            dialogBackgroundColor: Colors.white,
-          ),
-          child: child!,
-        );
-      },
-      firstDate: DateTime(2021),
-      lastDate: DateTime.now(),
-      initialDateRange: DateTimeRange(
-        start: DateTime.now().subtract(const Duration(days: 30)),
-        end: DateTime.now(),
-      ),
-    );
-    if (picked != null) {
-      final AmanDate =
-          '${picked.start.toString().substring(0, 10)}/${picked.end.toString().substring(0, 10)}';
-    }
-  }
 
   // for zebra scanner
   void initGlobalScanner() {
@@ -210,5 +175,11 @@ class Func {
       onScanResultListener = fdw.onScanResult.listen((result) {
       });
     }
+  }
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }

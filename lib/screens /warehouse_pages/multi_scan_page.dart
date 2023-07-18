@@ -79,10 +79,11 @@ class _MultiScanPageState extends State<MultiScanPage> {
                       .toList();
                   final sortedData = List<MultiScanModel>.from(state.data!);
                   sortedData.sort((a, b) => a.qty == a.qtyScanned
-                      ? 1
+                      ? -1
                       : a.qtyScanned == 0
-                          ? -1
-                          : 0);
+                      ? 1
+                      : 0);
+                  // print barcode
                   return state.data!.isNotEmpty
                       ? Column(
                           children: [

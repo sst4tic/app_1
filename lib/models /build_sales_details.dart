@@ -460,6 +460,14 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                       const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Детали:'),
+                          Text(salesDetails.shipment.details ?? 'Не указано'),
+                        ],
+                      ),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
                           Text('Адрес доставки:'),
                         ],

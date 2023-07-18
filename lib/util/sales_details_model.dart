@@ -263,6 +263,7 @@ class Shipment {
     required this.shipmentType,
     required this.address,
     this.date,
+    this.details,
     required this.urgency,
   });
 
@@ -270,6 +271,7 @@ class Shipment {
   late final String shipmentType;
   late final String address;
   late final String? date;
+  late final String? details;
   late final String urgency;
 
   Shipment.fromJson(Map<String, dynamic> json) {
@@ -277,6 +279,7 @@ class Shipment {
     shipmentType = json['shipmentType'];
     address = json['address'];
     date = json['date'];
+    details = json['details'];
     urgency = json['urgency'];
   }
 
@@ -286,6 +289,7 @@ class Shipment {
     data['shipmentType'] = shipmentType;
     data['address'] = address;
     data['date'] = date;
+    data['details'] = details;
     data['urgency'] = urgency;
     return data;
   }

@@ -56,4 +56,13 @@ class AuthRepo implements AbstractAuth {
     final body = jsonDecode(response.body);
     return body;
   }
+
+  @override
+  Future initParams() async {
+    var url = '${Constants.API_URL_DOMAIN}action=init_params';
+    final response =
+    await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body;
+  }
 }

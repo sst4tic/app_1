@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
+import 'package:yiwucloud/util/notification_service.dart';
 import 'abstract_auth.dart';
 
 part 'auth_event.dart';
@@ -17,7 +18,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({required this.authRepo}) : super(AuthInitial()) {
     _checkAuthenticationStatus();
-    on<AppStarted>(_onAppStarted);
     on<LoggedIn>((event, emit) {
       emit(Authenticated(token: event.token));
     });
@@ -32,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await authRepo.login(event.email, event.password, event.context);
       Func().showSnackbar(
           event.context, response.data['message'], response.data['success']);
-      if (response.data['success'] == true) {
+      if (response.data['success']) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('login', response.data['api_token']);
         Constants.USER_TOKEN = response.data['api_token'];
@@ -44,7 +44,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<DeleteAccountEvent>((event, emit) async {
       try {
-        // show dialog to confirm delete account
         showDialog(
             context: event.context,
             builder: (BuildContext context) {
@@ -80,12 +79,65 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
+  DateTime _parseDate(String time) {
+    DateTime now = DateTime.now();
+    final date =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T$time';
+    return DateTime.parse(date);
+  }
+
+  Future notification() async {
+    final params = await authRepo.initParams();
+    Constants.startAt = params['data']['start_at'] ?? '';
+    Constants.endAt = params['data']['end_at'] ?? '';
+    if (params['data']['start_at'] != null) {
+      if (_parseDate(params['data']['start_at']).isAfter(DateTime.now()) &&
+          _parseDate(params['data']['end_at']).isAfter(DateTime.now())) {
+        await NotificationService().scheduleNotification(
+          scheduledNotificationDateTime: _parseDate(params['data']['start_at']),
+          title: 'Не забудьте отметиться',
+          body: 'Не забудьте отметиться о приходе на работу!',
+        );
+      } else if (_parseDate(params['data']['start_at'])
+              .isBefore(DateTime.now()) &&
+          _parseDate(params['data']['end_at']).isAfter(DateTime.now())) {
+        await NotificationService().scheduleNotification(
+          scheduledNotificationDateTime: _parseDate(params['data']['end_at']),
+          id: 2,
+          title: 'Не забудьте отметиться',
+          body: 'Не забудьте отметиться об уходе с работы!',
+        );
+      } else if (_parseDate(params['data']['start_at'])
+              .isBefore(DateTime.now()) &&
+          _parseDate(params['data']['end_at']).isBefore(DateTime.now())) {
+        await NotificationService().scheduleNotification(
+          scheduledNotificationDateTime: _parseDate(params['data']['start_at'])
+              .add(const Duration(days: 1)),
+          title: 'Не забудьте отметиться',
+          body: 'Не забудьте отметиться о приходе на работу!',
+        );
+      }
+      await NotificationService().scheduleNotification(
+        scheduledNotificationDateTime: _parseDate(params['data']['start_at']),
+        title: 'Не забудьте отметиться',
+        body: 'Не забудьте отметиться о приходе на работу!',
+      );
+      await NotificationService().scheduleNotification(
+        scheduledNotificationDateTime: _parseDate(params['data']['end_at']),
+        id: 2,
+        title: 'Не забудьте отметиться',
+        body: 'Не забудьте отметиться об уходе с работы!',
+      );
+    }
+  }
+
   void _checkAuthenticationStatus() async {
     final isAuthenticated = await authRepo.getToken();
     if (isAuthenticated.isNotEmpty) {
       Constants.USER_TOKEN = isAuthenticated;
       Constants.bearer = 'Bearer $isAuthenticated';
       add(LoggedIn(token: isAuthenticated));
+      notification();
     } else {
       add(LoggedOut());
     }
@@ -95,14 +147,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> close() {
     _authenticationStatusSubscription.cancel();
     return super.close();
-  }
-
-  Future<void> _onAppStarted(AppStarted event, Emitter<AuthState> emit) async {
-    final isAuthenticated = await authRepo.getToken();
-    if (isAuthenticated != '') {
-      emit(Authenticated(token: isAuthenticated.toString()));
-    } else {
-      emit(Unauthenticated(token: isAuthenticated.toString()));
-    }
   }
 }

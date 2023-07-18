@@ -99,9 +99,8 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
       context: context,
       builder: (context) {
         return Container(
-          padding: REdgeInsets.all(8.0),
+          padding: REdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
                 'Дополнительные действия',
@@ -111,7 +110,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: 8.h),
               if (btnChronology)
                 ElevatedButton(
                     onPressed: () {
@@ -134,7 +133,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                         Icon(FontAwesomeIcons.codeBranch)
                       ],
                     )),
-              SizedBox(height: 4.h),
+              SizedBox(height: 3.h),
               if (btnPrint)
                 ElevatedButton(
                     onPressed: () {
@@ -152,7 +151,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                         Icon(FontAwesomeIcons.print)
                       ],
                     )),
-              SizedBox(height: 4.h),
+              SizedBox(height: 3.h),
               if (barcodeProductsUrl != null)
                 ElevatedButton(
                     onPressed: () {
@@ -170,7 +169,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                         Icon(FontAwesomeIcons.barcode)
                       ],
                     )),
-              SizedBox(height: 4.h),
+              SizedBox(height: 3.h),
               if (barcodeBoxesUrl != null)
                 ElevatedButton(
                   onPressed: () {
@@ -263,7 +262,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                     ],
                   ),
                 ),
-              SizedBox(height: 4.h),
+              SizedBox(height: 3.h),
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -284,7 +283,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       Icon(FontAwesomeIcons.comment)
                     ],
                   )),
-              SizedBox(height: btnPostpone ? 4.h : 0),
+              SizedBox(height: btnPostpone ? 3.h : 0),
               if (btnPostpone)
                 ElevatedButton(
                     onPressed: () {
@@ -302,7 +301,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                         Icon(FontAwesomeIcons.pause)
                       ],
                     )),
-              SizedBox(height: 4.h),
+              SizedBox(height: 3.h),
               if (btnBan)
                 ElevatedButton(
                     onPressed: () {
