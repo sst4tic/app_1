@@ -60,7 +60,9 @@ class WarehouseTakingBloc
               totalCount: body['total'],
               totalCountCompleted: bodyCompleted['total'],
               page: 1,
-              hasMore: true));
+              pageCompleted: 1,
+              hasMore: true,
+              hasMoreCompleted: true));
         }
       } catch (e) {
         emit(WarehouseTakingLoadingFailure(exception: e));
@@ -68,39 +70,62 @@ class WarehouseTakingBloc
         event.completer?.complete();
       }
     });
+
     on<LoadMore>((event, emit) async {
       try {
         if (state is WarehouseTakingLoaded && state.hasMore) {
-          final warehouseAssembly =
+          final warehouseTaking =
               (state as WarehouseTakingLoaded).warehouseTaking;
-          final warehouseAssemblyPostponed =
-              (state as WarehouseTakingLoaded).warehouseCompleted;
           final newWarehouseAssembly = await loadTaking(
               page: state.page + 1,
               smart: query,
               filters: filters,
               completed: 0);
-          warehouseAssembly.addAll(newWarehouseAssembly['invoices']
+          warehouseTaking.addAll(newWarehouseAssembly['invoices']
               .map<Sales>((json) => Sales.fromJson(json))
               .toList());
-          final newWarehouseAssemblyPostponed = await loadTaking(
-              page: state.page + 1,
-              smart: query,
-              filters: filters,
-              completed: 1);
-          warehouseAssemblyPostponed.addAll(
-              newWarehouseAssemblyPostponed['invoices']
-                  .map<Sales>((json) => Sales.fromJson(json))
-                  .toList());
           emit(WarehouseTakingLoaded(
-              warehouseTaking: warehouseAssembly,
-              warehouseCompleted: warehouseAssemblyPostponed,
+              warehouseTaking: warehouseTaking,
+              pageCompleted: (state as WarehouseTakingLoaded).pageCompleted,
+              warehouseCompleted:
+                  (state as WarehouseTakingLoaded).warehouseCompleted,
               hasMore:
-                  newWarehouseAssembly['invoices'].length <= 10 ? false : true,
+                  newWarehouseAssembly['invoices'].length <= 5 ? false : true,
+              hasMoreCompleted: state.hasMoreCompleted,
               totalCount: (state as WarehouseTakingLoaded).totalCount,
               totalCountCompleted:
                   (state as WarehouseTakingLoaded).totalCountCompleted,
               page: state.page + 1));
+        }
+      } catch (e) {
+        emit(WarehouseTakingLoadingFailure(exception: e));
+      }
+    });
+
+    on<LoadMoreCompleted>((event, emit) async {
+      try {
+        if (state is WarehouseTakingLoaded && state.hasMoreCompleted) {
+          final warehouseCompleted =
+              (state as WarehouseTakingLoaded).warehouseCompleted;
+          final newWarehouseAssembly = await loadTaking(
+              page: state.pageCompleted + 1,
+              smart: query,
+              filters: filters,
+              completed: 1);
+          warehouseCompleted.addAll(newWarehouseAssembly['invoices']
+              .map<Sales>((json) => Sales.fromJson(json))
+              .toList());
+          emit(WarehouseTakingLoaded(
+              warehouseTaking: (state as WarehouseTakingLoaded).warehouseTaking,
+              warehouseCompleted: warehouseCompleted,
+              hasMore: state.hasMore,
+              hasMoreCompleted:
+                  newWarehouseAssembly['invoices'].length <= 5 ? false : true,
+              totalCount: (state as WarehouseTakingLoaded).totalCount,
+              totalCountCompleted:
+                  (state as WarehouseTakingLoaded).totalCountCompleted,
+              page: state.page,
+              pageCompleted: state.pageCompleted + 1));
         }
       } catch (e) {
         emit(WarehouseTakingLoadingFailure(exception: e));

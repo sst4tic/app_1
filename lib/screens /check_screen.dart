@@ -8,7 +8,6 @@ import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import '../models /haptic_model.dart';
 import '../util/styles.dart';
 import 'attendance_page.dart';
-import 'documents_page.dart';
 
 class CheckPage extends StatefulWidget {
   const CheckPage({Key? key}) : super(key: key);
@@ -48,65 +47,6 @@ class _CheckPageState extends State<CheckPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: SizeTapAnimation(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const DocumentsPage()));
-                            },
-                            child: Container(
-                              padding: REdgeInsets.all(12.0),
-                              decoration: Decorations.containerDecoration,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.description,
-                                    color: Colors.blue,
-                                    size: 30,
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Text(
-                                    'Документы',
-                                    style: TextStyles.editStyle.copyWith(fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8.0),
-                        Expanded(
-                          child: SizeTapAnimation(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const AttendancePage()));
-                            },
-                            child: Container(
-                              padding: REdgeInsets.all(12.0),
-                              decoration: Decorations.containerDecoration,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.schedule,
-                                    color: Colors.blue,
-                                    size: 30,
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Text(
-                                    'Посещаемость',
-                                    style: TextStyles.editStyle.copyWith(fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
                     Container(
                       padding: REdgeInsets.all(8.0),
                       decoration: Decorations.containerDecoration,
@@ -169,6 +109,29 @@ class _CheckPageState extends State<CheckPage> {
                                 ],
                               ),
                             ],
+                          ),
+                          const Divider(),
+                          SizeTapAnimation(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const AttendancePage()));
+                            },
+                            child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.schedule,
+                                  color: Colors.blue,
+                                ),
+                                SizedBox(width: 5.0),
+                                Text(
+                                  'Посещаемость',
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 15,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
-
 import '../bloc/attendance_bloc/attendance_bloc.dart';
 import '../models /attendance_model.dart';
 import '../util/styles.dart';
@@ -22,6 +21,7 @@ class _AttendancePageState extends State<AttendancePage> {
   final _attendanceBloc = AttendanceBloc();
   final String _date =
       '${DateFormat('yyyy-MM-dd').format(DateTime(DateTime.now().year, DateTime.now().month, 1))}/${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
+  final String emptyTime = '--:--';
 
   @override
   initState() {
@@ -48,7 +48,6 @@ class _AttendancePageState extends State<AttendancePage> {
       return false;
     }
   }
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
@@ -141,16 +140,40 @@ class _AttendancePageState extends State<AttendancePage> {
         itemBuilder: (context, index) {
           final attendanceItem = attendance[index];
           return ListTile(
-            title: Text(
-                attendance[index].day.capitalize(),style: TextStyles.editStyle.copyWith(fontSize: 14)),
-            trailing:
-                (attendanceItem.outAt == null && attendanceItem.inAt == null)
+            title: Text(attendance[index].day.capitalize(),
+                style: TextStyles.editStyle.copyWith(fontSize: 14)),
+            trailing: attendanceItem.dayOff
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.holiday_village,
+                        color: Colors.blue,
+                        size: 15,
+                      ),
+                      SizedBox(width: 2.w),
+                      Text(
+                        'Выходной',
+                        style: TextStyles.editStyle
+                            .copyWith(fontSize: 13, color: Colors.blue),
+                      ),
+                    ],
+                  )
+                : (attendanceItem.outAt == null && attendanceItem.inAt == null)
                     ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.warning_amber, color: Colors.yellow[600], size: 15,),
+                          Icon(
+                            Icons.warning_amber,
+                            color: Colors.yellow[600],
+                            size: 15,
+                          ),
                           SizedBox(width: 2.w),
-                          Text('Не отметился', style: TextStyles.editStyle.copyWith(fontSize: 13,color: Colors.yellow[600]),),
+                          Text(
+                            'Не отметился',
+                            style: TextStyles.editStyle.copyWith(
+                                fontSize: 13, color: Colors.yellow[600]),
+                          ),
                         ],
                       )
                     : Row(
@@ -159,16 +182,40 @@ class _AttendancePageState extends State<AttendancePage> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(attendanceItem.inAt ?? '--:--', style: TextStyles.editStyle.copyWith(color: check(Constants.startAt, attendanceItem.inAt!) ? Colors.green : Colors.red, fontSize: 13),),
-                              Text(Constants.startAt, style: TextStyles.editStyle.copyWith(fontSize: 13,color: Colors.grey)),
+                              Text(
+                                attendanceItem.inAt ?? emptyTime,
+                                style: TextStyles.editStyle.copyWith(
+                                    color: check(
+                                            attendanceItem.startSchedule ??
+                                                Constants.startAt,
+                                            attendanceItem.inAt!)
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontSize: 13),
+                              ),
+                              Text(attendanceItem.startSchedule ?? emptyTime,
+                                  style: TextStyles.editStyle.copyWith(
+                                      fontSize: 13, color: Colors.grey)),
                             ],
                           ),
                           SizedBox(width: 12.w),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(attendanceItem.outAt ?? '--:--', style: TextStyles.editStyle.copyWith(color: check(Constants.endAt, attendanceItem.outAt!) ? Colors.red : Colors.green, fontSize: 13),),
-                              Text(Constants.endAt,style: TextStyles.editStyle.copyWith(fontSize: 13,color: Colors.grey)),
+                              Text(
+                                attendanceItem.outAt ?? emptyTime,
+                                style: TextStyles.editStyle.copyWith(
+                                    color: attendanceItem.outAt != null
+                                        ? check(Constants.endAt,
+                                                attendanceItem.outAt!)
+                                            ? Colors.red
+                                            : Colors.green
+                                        : Colors.grey,
+                                    fontSize: 13),
+                              ),
+                              Text(attendanceItem.endSchedule ?? emptyTime,
+                                  style: TextStyles.editStyle.copyWith(
+                                      fontSize: 13, color: Colors.grey)),
                             ],
                           ),
                         ],

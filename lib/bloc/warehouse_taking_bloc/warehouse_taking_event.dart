@@ -27,3 +27,15 @@ class LoadMore extends WarehouseTakingEvent {
 
   List<Object?> get props => [completer];
 }
+
+class LoadMoreCompleted extends WarehouseTakingEvent {
+  LoadMoreCompleted({
+    this.completer,
+    this.hasMore,
+  });
+
+  final Completer? completer;
+  final bool? hasMore;
+
+  List<Object?> get props => [completer];
+}

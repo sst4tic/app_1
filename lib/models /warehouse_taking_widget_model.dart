@@ -87,7 +87,8 @@ Widget buildTakingList(
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                  backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
                                   elevation: 0),
                               child: Row(
                                 children: [

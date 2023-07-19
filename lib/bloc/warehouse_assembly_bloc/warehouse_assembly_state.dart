@@ -2,7 +2,12 @@ part of 'warehouse_assembly_bloc.dart';
 
 abstract class WarehouseAssemblyState {
   get page => 1;
+
+  get pagePostponed => 1;
+
   bool get hasMore => true;
+
+  bool get hasMorePostponed => true;
 }
 
 class WarehouseAssemblyInitial extends WarehouseAssemblyState {}
@@ -24,7 +29,9 @@ class WarehouseAssemblyLoaded extends WarehouseAssemblyState {
     required this.totalCount,
     required this.totalCountPostponed,
     required this.page,
+    required this.pagePostponed,
     required this.hasMore,
+    required this.hasMorePostponed,
   });
 
   final List<Sales> warehouseAssembly;
@@ -34,7 +41,11 @@ class WarehouseAssemblyLoaded extends WarehouseAssemblyState {
   @override
   final int page;
   @override
+  final int pagePostponed;
+  @override
   final bool hasMore;
+  @override
+  final bool hasMorePostponed;
 
   List<Object?> get props => [warehouseAssembly];
 }

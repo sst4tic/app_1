@@ -20,7 +20,7 @@ class _WarehouseTakingState extends State<WarehouseTaking>
   final _takingBloc = WarehouseTakingBloc();
   TabController? _tabController;
   final ScrollController _sController = ScrollController();
-
+  final ScrollController _sControllerCompleted = ScrollController();
 
   @override
   void initState() {
@@ -31,6 +31,12 @@ class _WarehouseTakingState extends State<WarehouseTaking>
       if (_sController.position.pixels ==
           _sController.position.maxScrollExtent) {
         _takingBloc.add(LoadMore());
+      }
+    });
+    _sControllerCompleted.addListener(() {
+      if (_sControllerCompleted.position.pixels ==
+          _sControllerCompleted.position.maxScrollExtent) {
+        _takingBloc.add(LoadMoreCompleted());
       }
     });
   }
@@ -52,8 +58,9 @@ class _WarehouseTakingState extends State<WarehouseTaking>
             IconButton(
               onPressed: () {
                 Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const MultiScanPage())
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MultiScanPage()));
               },
               icon: const Icon(Icons.qr_code_scanner),
             ),
@@ -112,8 +119,8 @@ class _WarehouseTakingState extends State<WarehouseTaking>
                           onRefresh: () =>
                               _takingBloc.add(LoadWarehouseTaking()),
                           total: state.totalCountCompleted,
-                          sController: _sController,
-                          hasMore: state.hasMore)
+                          sController: _sControllerCompleted,
+                          hasMore: state.hasMoreCompleted)
                     ],
                   ));
             } else {

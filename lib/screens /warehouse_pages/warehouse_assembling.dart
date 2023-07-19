@@ -14,12 +14,13 @@ class WarehouseAssembly extends StatefulWidget {
   State<WarehouseAssembly> createState() => _WarehouseAssemblyState();
 }
 
-class _WarehouseAssemblyState extends State<WarehouseAssembly> with TickerProviderStateMixin {
+class _WarehouseAssemblyState extends State<WarehouseAssembly>
+    with TickerProviderStateMixin {
   final _assemblyBloc = WarehouseAssemblyBloc();
   late final FilterModel filterData;
   TabController? _tabController;
   final ScrollController _sController = ScrollController();
-
+  final ScrollController _sControllerPostponed = ScrollController();
 
   @override
   void initState() {
@@ -30,6 +31,12 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly> with TickerProvid
       if (_sController.position.pixels ==
           _sController.position.maxScrollExtent) {
         _assemblyBloc.add(LoadMore());
+      }
+    });
+    _sControllerPostponed.addListener(() {
+      if (_sControllerPostponed.position.pixels ==
+          _sControllerPostponed.position.maxScrollExtent) {
+        _assemblyBloc.add(LoadMorePostponed());
       }
     });
   }
@@ -99,8 +106,8 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly> with TickerProvid
                               _assemblyBloc.add(LoadWarehouseAssembly())),
                       buildTakingList(
                           taking: state.warehouseAssemblyPostponed,
-                          hasMore: state.hasMore,
-                          sController: _sController,
+                          hasMore: state.hasMorePostponed,
+                          sController: _sControllerPostponed,
                           total: state.totalCountPostponed,
                           onRefresh: () =>
                               _assemblyBloc.add(LoadWarehouseAssembly())),

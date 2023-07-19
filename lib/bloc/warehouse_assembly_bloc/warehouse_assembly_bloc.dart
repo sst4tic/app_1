@@ -58,7 +58,9 @@ class WarehouseAssemblyBloc
               totalCount: total,
               totalCountPostponed: respPostponed['total'],
               page: 1,
-              hasMore: true));
+              hasMore: true,
+              pagePostponed: 1,
+              hasMorePostponed: true));
         }
       } catch (e) {
         emit(WarehouseAssemblyLoadingFailure(exception: e));
@@ -71,8 +73,6 @@ class WarehouseAssemblyBloc
         if (state is WarehouseAssemblyLoaded && state.hasMore) {
           final warehouseAssembly =
               (state as WarehouseAssemblyLoaded).warehouseAssembly;
-          final warehouseAssemblyPostponed =
-              (state as WarehouseAssemblyLoaded).warehouseAssemblyPostponed;
           final newWarehouseAssembly = await loadAssembly(
               page: state.page + 1,
               smart: query,
@@ -81,24 +81,54 @@ class WarehouseAssemblyBloc
           warehouseAssembly.addAll(newWarehouseAssembly['invoices']
               .map<Sales>((json) => Sales.fromJson(json))
               .toList());
-          final newWarehouseAssemblyPostponed = await loadAssembly(
-              page: state.page + 1,
-              smart: query,
-              filters: filters,
-              postponed: 1);
-          warehouseAssemblyPostponed.addAll(
-              newWarehouseAssemblyPostponed['invoices']
-                  .map<Sales>((json) => Sales.fromJson(json))
-                  .toList());
           emit(WarehouseAssemblyLoaded(
               warehouseAssembly: warehouseAssembly,
-              warehouseAssemblyPostponed: warehouseAssemblyPostponed,
-              hasMore:
-                  newWarehouseAssembly['invoices'].length <= 10  && newWarehouseAssembly['invoices'].length == 0 ? false : true,
+              warehouseAssemblyPostponed:
+                  (state as WarehouseAssemblyLoaded).warehouseAssemblyPostponed,
+              hasMore: newWarehouseAssembly['invoices'].length <= 5 &&
+                      newWarehouseAssembly['invoices'].length == 0
+                  ? false
+                  : true,
               totalCount: (state as WarehouseAssemblyLoaded).totalCount,
               totalCountPostponed:
                   (state as WarehouseAssemblyLoaded).totalCountPostponed,
-              page: state.page + 1));
+              page: state.page + 1,
+              pagePostponed: (state as WarehouseAssemblyLoaded).pagePostponed,
+              hasMorePostponed:
+                  (state as WarehouseAssemblyLoaded).hasMorePostponed));
+        }
+      } catch (e) {
+        emit(WarehouseAssemblyLoadingFailure(exception: e));
+      }
+    });
+    on<LoadMorePostponed>((event, emit) async {
+      try {
+        if (state is WarehouseAssemblyLoaded && state.hasMorePostponed) {
+          final warehouseAssembly =
+              (state as WarehouseAssemblyLoaded).warehouseAssemblyPostponed;
+          final newWarehouseAssembly = await loadAssembly(
+              page: state.pagePostponed + 1,
+              smart: query,
+              filters: filters,
+              postponed: 1);
+          warehouseAssembly.addAll(newWarehouseAssembly['invoices']
+              .map<Sales>((json) => Sales.fromJson(json))
+              .toList());
+          emit(WarehouseAssemblyLoaded(
+              warehouseAssembly:
+                  (state as WarehouseAssemblyLoaded).warehouseAssembly,
+              warehouseAssemblyPostponed:
+                  (state as WarehouseAssemblyLoaded).warehouseAssemblyPostponed,
+              hasMore: state.hasMore,
+              hasMorePostponed: newWarehouseAssembly['invoices'].length <= 5 &&
+                      newWarehouseAssembly['invoices'].length == 0
+                  ? false
+                  : true,
+              totalCount: (state as WarehouseAssemblyLoaded).totalCount,
+              totalCountPostponed:
+                  (state as WarehouseAssemblyLoaded).totalCountPostponed,
+              page: state.page,
+              pagePostponed: state.pagePostponed + 1));
         }
       } catch (e) {
         emit(WarehouseAssemblyLoadingFailure(exception: e));

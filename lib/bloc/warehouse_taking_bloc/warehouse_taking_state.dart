@@ -1,9 +1,11 @@
 part of 'warehouse_taking_bloc.dart';
 
- abstract class WarehouseTakingState {
-   get page => 1;
-   bool get hasMore => true;
- }
+abstract class WarehouseTakingState {
+  get page => 1;
+  get pageCompleted => 1;
+  bool get hasMore => true;
+  bool get hasMoreCompleted => true;
+}
 
 class WarehouseTakingInitial extends WarehouseTakingState {}
 
@@ -24,7 +26,9 @@ class WarehouseTakingLoaded extends WarehouseTakingState {
     required this.totalCount,
     required this.totalCountCompleted,
     required this.page,
+    required this.pageCompleted,
     required this.hasMore,
+    required this.hasMoreCompleted,
   });
 
   final List<Sales> warehouseTaking;
@@ -34,7 +38,11 @@ class WarehouseTakingLoaded extends WarehouseTakingState {
   @override
   final int page;
   @override
+  final int pageCompleted;
+  @override
   final bool hasMore;
+  @override
+  final bool hasMoreCompleted;
 
   List<Object?> get props => [warehouseTaking, warehouseCompleted];
 }
