@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/product_detail.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/styles.dart';
@@ -42,6 +43,11 @@ class _GlobalScanScreenState extends State<GlobalScanScreen> {
                 return WareHouseSalesDetails(
                   invoiceId: state.invoiceId,
                   id: state.id,
+                );
+              } else if (state is ScanResultMoving) {
+                return MovingDetailsPage(
+                  id: state.id,
+                  movingId: state.movingId,
                 );
               } else if (state is ScanResultLoadingFailure) {
                 return Center(

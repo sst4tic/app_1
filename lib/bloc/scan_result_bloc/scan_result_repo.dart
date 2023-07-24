@@ -49,12 +49,14 @@ class Data {
   late final String? invoiceId;
   late final int? id;
   late final int? productId;
+  late final String? movingId;
 
   Data.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     invoiceId = json['invoice_id'];
     id = json['id'];
     productId = json['product_id'];
+    movingId = json['moving_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +65,7 @@ class Data {
     data['invoice_id'] = invoiceId;
     data['id'] = id;
     data['product_id'] = productId;
+    data['moving_id'] = movingId;
     return data;
   }
 }

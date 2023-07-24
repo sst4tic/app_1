@@ -31,6 +31,9 @@ class ScanResultBloc extends Bloc<ScanResultEvent, ScanResultState> {
                 id: result.data.id!, invoiceId: result.data.invoiceId ?? ''));
           } else if (result.data.type == 'product') {
             emit(ScanResultProduct(id: result.data.productId!));
+          } else if (result.data.type == 'moving') {
+            emit(ScanResultMoving(
+                id: result.data.id!, movingId: result.data.movingId ?? ''));
           } else {
             emit(ScanResultLoadingFailure(exception: result.message));
           }

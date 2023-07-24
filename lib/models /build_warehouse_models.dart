@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiwucloud/bloc/warehouse_moving_bloc/warehouse_moving_bloc.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/create_arrival_page.dart';
-import 'package:yiwucloud/screens%20/warehouse_pages/create_moving_page.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/moving_model.dart';
 import '../bloc/products_bloc/products_bloc.dart';
@@ -693,44 +693,6 @@ Widget buildMoving(
         ),
       ),
       SliverToBoxAdapter(
-        child: Container(
-          padding: REdgeInsets.only(left: 8, right: 8, top: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CreateMovingPage(),
-                      ));
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 7, right: 7),
-                  height: 40,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Создать перемещение',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      SliverToBoxAdapter(
           child: ListView.builder(
         padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),
         scrollDirection: Axis.vertical,
@@ -763,7 +725,17 @@ Widget buildMoving(
                           fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MovingDetailsPage(
+                                movingId: movingItem.movingId,
+                                id: movingItem.id,
+                              ),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                             elevation: 0),

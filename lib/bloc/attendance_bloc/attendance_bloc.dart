@@ -12,8 +12,7 @@ part 'attendance_state.dart';
 class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   AttendanceBloc() : super(AttendanceInitial()) {
     Future<List<AttendanceModel>> getAttendance({required String date}) async {
-      var url =
-          '${Constants.API_URL_DOMAIN}action=attendance&date_at=$date';
+      var url = '${Constants.API_URL_DOMAIN}action=attendance&date_at=$date';
       final response =
           await http.get(Uri.parse(url), headers: Constants.headers());
       final body = jsonDecode(response.body);

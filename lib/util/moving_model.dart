@@ -1,6 +1,7 @@
 class MovingModel {
   MovingModel({
     required this.movingId,
+    required this.id,
     required this.statusName,
     required this.warehouseFromData,
     required this.warehouseToData,
@@ -8,6 +9,7 @@ class MovingModel {
     required this.createdAt,
   });
   late final String movingId;
+  late final int id;
   late final String statusName;
   late final String warehouseFromData;
   late final String warehouseToData;
@@ -16,6 +18,7 @@ class MovingModel {
 
   MovingModel.fromJson(Map<String, dynamic> json){
     movingId = json['moving_id'];
+    id = json['id'];
     statusName = json['status_name'];
     warehouseFromData = json['warehouseFromData'];
     warehouseToData = json['warehouseToData'];
@@ -26,6 +29,7 @@ class MovingModel {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['moving_id'] = movingId;
+    data['id'] = id;
     data['status_name'] = statusName;
     data['warehouseFromData'] = warehouseFromData;
     data['warehouseToData'] = warehouseToData;

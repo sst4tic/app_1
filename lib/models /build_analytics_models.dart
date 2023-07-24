@@ -153,7 +153,7 @@ Widget buildManagers({required List<ManagersList> managersList}) {
                     shape: AvatarShape.circle(20),
                     name: manager.fullName,
                     textStyle:
-                    const TextStyle(fontSize: 20, color: Colors.white),
+                        const TextStyle(fontSize: 20, color: Colors.white),
                     margin: const EdgeInsets.all(5),
                   ),
                   SizedBox(width: 8.h),

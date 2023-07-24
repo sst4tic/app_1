@@ -42,8 +42,15 @@ class _ProductsMovingState extends State<ProductsMoving> {
                   child: CircularProgressIndicator(),
                 );
               } else if (state is WarehouseMovingLoaded) {
-                return buildMoving(
-                    moving: state.warehouseMoving, controller: _sController, context: context);
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    _movingBloc.add(LoadMoving());
+                  },
+                  child: buildMoving(
+                      moving: state.warehouseMoving,
+                      controller: _sController,
+                      context: context),
+                );
               } else if (state is WarehouseMovingLoadingFailure) {
                 return Center(
                   child: Text(state.exception.toString()),

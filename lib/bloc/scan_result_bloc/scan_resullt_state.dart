@@ -39,6 +39,19 @@ class ScanResultProduct extends ScanResultState {
   List<Object?> get props => [id];
 }
 
+class ScanResultMoving extends ScanResultState {
+  ScanResultMoving({
+    required this.id,
+    required this.movingId,
+  });
+
+  final int id;
+  final String movingId;
+
+
+  List<Object?> get props => [id, movingId];
+}
+
 class ScanResultLoadingFailure extends ScanResultState {
   ScanResultLoadingFailure({
     this.exception,

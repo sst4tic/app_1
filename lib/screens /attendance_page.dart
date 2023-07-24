@@ -31,6 +31,13 @@ class _AttendancePageState extends State<AttendancePage> {
   }
 
   bool check(String scheduleTime, String arrivalTime) {
+    RegExp timePattern = RegExp(r'^\d{2}:\d{2}$');
+
+    if (!timePattern.hasMatch(scheduleTime) ||
+        !timePattern.hasMatch(arrivalTime)) {
+      return false;
+    }
+
     List<int> scheduleParts = scheduleTime.split(':').map(int.parse).toList();
     List<int> arrivalParts = arrivalTime.split(':').map(int.parse).toList();
 
