@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/constants.dart';
+import '../../util/moving_model.dart';
 import '../../util/warehouse_sale.dart';
 
 part 'warehouse_assembly_event.dart';
@@ -30,6 +31,17 @@ class WarehouseAssemblyBloc
       return body['data'];
     }
 
+    Future<List<MovingModel>> getMovingAssembly() async {
+      var url = '${Constants.API_URL_DOMAIN}action=moving_of_assembler_list';
+      final response =
+          await http.get(Uri.parse(url), headers: Constants.headers());
+      final body = jsonDecode(response.body);
+      final data = body['data'];
+      return data
+          .map<MovingModel>((json) => MovingModel.fromJson(json))
+          .toList();
+    }
+
     on<LoadWarehouseAssembly>((event, emit) async {
       try {
         if (state is! WarehouseAssemblyLoading) {
@@ -52,7 +64,9 @@ class WarehouseAssemblyBloc
               .map<Sales>((json) => Sales.fromJson(json))
               .toList();
           final total = resp['total'];
+          final moving = await getMovingAssembly();
           emit(WarehouseAssemblyLoaded(
+              movingList: moving,
               warehouseAssembly: warehouseAssembly,
               warehouseAssemblyPostponed: warehouseAssemblyPostponed,
               totalCount: total,
@@ -82,6 +96,7 @@ class WarehouseAssemblyBloc
               .map<Sales>((json) => Sales.fromJson(json))
               .toList());
           emit(WarehouseAssemblyLoaded(
+            movingList: (state as WarehouseAssemblyLoaded).movingList,
               warehouseAssembly: warehouseAssembly,
               warehouseAssemblyPostponed:
                   (state as WarehouseAssemblyLoaded).warehouseAssemblyPostponed,
@@ -115,6 +130,7 @@ class WarehouseAssemblyBloc
               .map<Sales>((json) => Sales.fromJson(json))
               .toList());
           emit(WarehouseAssemblyLoaded(
+            movingList: (state as WarehouseAssemblyLoaded).movingList,
               warehouseAssembly:
                   (state as WarehouseAssemblyLoaded).warehouseAssembly,
               warehouseAssemblyPostponed:

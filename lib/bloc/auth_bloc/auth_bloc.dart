@@ -74,62 +74,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               );
             });
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
     });
   }
 
   DateTime _parseDate(String time) {
     DateTime now = DateTime.now();
-    final date =
-        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T$time';
-    return DateTime.parse(date);
+    final date = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T$time';
+    DateTime parsedDateTime = DateTime.parse(date);
+    parsedDateTime = parsedDateTime.subtract(const Duration(minutes: 5));
+    return parsedDateTime;
   }
 
   Future notification() async {
     final params = await authRepo.initParams();
     Constants.startAt = params['data']['start_at'] ?? '';
     Constants.endAt = params['data']['end_at'] ?? '';
-    if (params['data']['start_at'] != null) {
-      if (_parseDate(params['data']['start_at']).isAfter(DateTime.now()) &&
-          _parseDate(params['data']['end_at']).isAfter(DateTime.now())) {
+    try {
+      if (params['data']['start_at'] != null) {
         await NotificationService().scheduleNotification(
           scheduledNotificationDateTime: _parseDate(params['data']['start_at']),
-          title: 'Не забудьте отметиться',
-          body: 'Не забудьте отметиться о приходе на работу!',
-        );
-      } else if (_parseDate(params['data']['start_at'])
-              .isBefore(DateTime.now()) &&
-          _parseDate(params['data']['end_at']).isAfter(DateTime.now())) {
-        await NotificationService().scheduleNotification(
-          scheduledNotificationDateTime: _parseDate(params['data']['end_at']),
-          id: 2,
-          title: 'Не забудьте отметиться',
-          body: 'Не забудьте отметиться об уходе с работы!',
-        );
-      } else if (_parseDate(params['data']['start_at'])
-              .isBefore(DateTime.now()) &&
-          _parseDate(params['data']['end_at']).isBefore(DateTime.now())) {
-        await NotificationService().scheduleNotification(
-          scheduledNotificationDateTime: _parseDate(params['data']['start_at'])
-              .add(const Duration(days: 1)),
-          title: 'Не забудьте отметиться',
+          title: 'Важно отметиться',
           body: 'Не забудьте отметиться о приходе на работу!',
         );
       }
-      await NotificationService().scheduleNotification(
-        scheduledNotificationDateTime: _parseDate(params['data']['start_at']),
-        title: 'Не забудьте отметиться',
-        body: 'Не забудьте отметиться о приходе на работу!',
-      );
-      await NotificationService().scheduleNotification(
-        scheduledNotificationDateTime: _parseDate(params['data']['end_at']),
-        id: 2,
-        title: 'Не забудьте отметиться',
-        body: 'Не забудьте отметиться об уходе с работы!',
-      );
+    } catch (e) {
+      debugPrint('Ошибка при выполнении первой функции: $e');
+    }
+    try {
+      if (params['data']['end_at'] != null) {
+        await NotificationService().scheduleNotification(
+          scheduledNotificationDateTime: _parseDate(params['data']['end_at']),
+          id: 2,
+          title: 'Важно отметиться!',
+          body: 'Не забудьте отметиться об уходе с работы!',
+        );
+      }
+    } catch (e) {
+      debugPrint('Ошибка при выполнении второй функции: $e');
     }
   }
+
 
   void _checkAuthenticationStatus() async {
     final isAuthenticated = await authRepo.getToken();

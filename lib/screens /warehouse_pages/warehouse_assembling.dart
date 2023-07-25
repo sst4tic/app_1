@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/models%20/build_filter.dart';
+import 'package:yiwucloud/models%20/build_warehouse_models.dart';
 import 'package:yiwucloud/models%20/search_model.dart';
 import 'package:yiwucloud/models%20/warehouse_taking_widget_model.dart';
 import 'package:yiwucloud/util/filter_list_model.dart';
@@ -26,7 +27,7 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly>
   void initState() {
     super.initState();
     _assemblyBloc.add(LoadWarehouseAssembly());
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _sController.addListener(() {
       if (_sController.position.pixels ==
           _sController.position.maxScrollExtent) {
@@ -66,6 +67,7 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly>
                   tabs: const [
                     Tab(text: 'Сборка'),
                     Tab(text: 'Отложенные'),
+                    Tab(text: 'Перемещения'),
                   ],
                 ),
               ],
@@ -93,7 +95,7 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly>
                 return const Center(child: CircularProgressIndicator());
               } else if (state is WarehouseAssemblyLoaded) {
                 return DefaultTabController(
-                  length: 2,
+                  length: 3,
                   child: TabBarView(
                     controller: _tabController,
                     children: [
@@ -111,6 +113,15 @@ class _WarehouseAssemblyState extends State<WarehouseAssembly>
                           total: state.totalCountPostponed,
                           onRefresh: () =>
                               _assemblyBloc.add(LoadWarehouseAssembly())),
+                      state.movingList.isNotEmpty
+                          ? buildMoving(
+                              hasMore: false,
+                              moving: state.movingList,
+                              controller: ScrollController(),
+                              context: context)
+                          : const Center(
+                              child: Text('Нет перемещений'),
+                            ),
                     ],
                   ),
                 );

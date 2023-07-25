@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/bloc/moving_details_bloc/moving_details_repo.dart';
 
@@ -34,24 +38,26 @@ class MovingDetailsBloc extends Bloc<MovingDetailsEvent, MovingDetailsState> {
         final redirection =
             await movingRepo.movingRedirection(id: event.id, act: event.act);
         event.context.loaderOverlay.hide();
-          // ignore: use_build_context_synchronously
-          showDialog(
-              context: event.context,
-              builder: (context) {
-                return CustomAlertDialog(
-                  title: redirection['success'] ? 'Успешно' : 'Произошла ошибка',
-                  content: Text(redirection['message']),
-                  actions: [
-                    TextButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        redirection['success'] ? add(LoadMovingDetails(id: event.id)) : null;
-                      },
-                      child: const Text('Ок'),
-                    )
-                  ],
-                );
-              });
+        // ignore: use_build_context_synchronously
+        showDialog(
+            context: event.context,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: redirection['success'] ? 'Успешно' : 'Произошла ошибка',
+                content: Text(redirection['message']),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      redirection['success']
+                          ? add(LoadMovingDetails(id: event.id))
+                          : null;
+                    },
+                    child: const Text('Ок'),
+                  )
+                ],
+              );
+            });
       } catch (e) {
         event.context.loaderOverlay.hide();
         // ignore: use_build_context_synchronously
@@ -73,10 +79,132 @@ class MovingDetailsBloc extends Bloc<MovingDetailsEvent, MovingDetailsState> {
             });
       }
     });
+
+    on<ChangeBoxQty>((event, emit) async {
+      var qtyController = TextEditingController();
+      var status = event.select?.initialValue;
+      var qty = await showCupertinoDialog(
+        context: event.context,
+        builder: (BuildContext context) {
+          return Material(
+            color: Colors.transparent,
+            child: StatefulBuilder(builder: (context, innerSetState) {
+              return CustomAlertDialog(
+                title: 'Укажите количество мест',
+                content: Column(
+                  children: [
+                    SizedBox(height: 8.h),
+                    event.select != null
+                        ? DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                              isExpanded: true,
+                              buttonStyleData: ButtonStyleData(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor),
+                                  padding: REdgeInsets.all(8)),
+                              value: event.select!.initialValue,
+                              items: event.select!.data
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id,
+                                        child: Text(e.name),
+                                      ))
+                                  .toList(),
+                              style: const TextStyle(fontSize: 12, color: Colors.black),
+                              onChanged: (value) {
+                                innerSetState(() {
+                                  event.select?.initialValue = value as int;
+                                  status = value as int;
+                                });
+                              },
+                            ),
+                        )
+                        : Container(),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      controller: qtyController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      keyboardType: TextInputType.number,
+                      placeholder: 'Введите число',
+                    ),
+                  ],
+                ),
+                actions: [
+                  CustomDialogAction(
+                    text: 'Отмена',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  CustomDialogAction(
+                    text: 'Подтвердить',
+                    onPressed: () {
+                      Navigator.of(context).pop(qtyController.text);
+                    },
+                  ),
+                ],
+              );
+            }),
+          );
+        },
+      );
+      if (qty != null) {
+        event.context.loaderOverlay.show();
+        final changeBoxQty = await movingRepo.changeBoxQty(
+            id: event.id, qty: qtyController.text, status: status);
+        final movingDetails = await movingRepo.loadMovingDetails(id: event.id);
+        event.context.loaderOverlay.hide();
+        if (changeBoxQty['success']) {
+          // ignore: use_build_context_synchronously
+          showDialog(
+              context: event.context,
+              builder: (context) {
+                return CustomAlertDialog(
+                  title: 'Успешно',
+                  content: Text(changeBoxQty['message']),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        add(LoadMovingDetails(id: event.id));
+                      },
+                      child: const Text('Ок'),
+                    )
+                  ],
+                );
+              });
+          emit(MovingDetailsLoaded(movingDetails: movingDetails));
+        } else {
+          // ignore: use_build_context_synchronously
+          showDialog(
+              context: event.context,
+              builder: (context) {
+                return CustomAlertDialog(
+                  title: 'Произошла ошибка',
+                  content: Text(changeBoxQty['message']),
+                  actions: [
+                    CustomDialogAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      text: 'Ок',
+                    )
+                  ],
+                );
+              });
+        }
+      }
+    });
+
     on<DefineCourierEvent>((event, emit) async {
       try {
         event.context.loaderOverlay.show();
-        final redirection = await movingRepo.defineCourier(movingId: event.invoiceId, courierId: event.courierId);
+        final redirection = await movingRepo.defineCourier(
+            movingId: event.invoiceId, courierId: event.courierId);
         event.context.loaderOverlay.hide();
         // ignore: use_build_context_synchronously
         showDialog(
@@ -89,7 +217,9 @@ class MovingDetailsBloc extends Bloc<MovingDetailsEvent, MovingDetailsState> {
                   TextButton(
                     onPressed: () async {
                       Navigator.pop(context);
-                      redirection['success'] ? add(LoadMovingDetails(id: event.invoiceId)) : null;
+                      redirection['success']
+                          ? add(LoadMovingDetails(id: event.invoiceId))
+                          : null;
                     },
                     child: const Text('Ок'),
                   )

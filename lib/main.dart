@@ -2,14 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
 import 'package:flutter_datawedge/models/scan_result.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,8 +16,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/screens%20/auth/login.dart';
 import 'package:yiwucloud/screens%20/main_screen.dart';
-import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/constants.dart';
+import 'package:yiwucloud/util/notification_service.dart';
 import 'package:yiwucloud/util/styles.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
 import 'bloc/auth_bloc/auth_repo.dart';
@@ -28,17 +26,6 @@ import 'package:timezone/data/latest.dart' as tz;
 
 GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel', // id
-  'High Importance Notifications', // title
-  description: 'This channel is used for important notifications.',
-  importance: Importance.high,
-);
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -46,78 +33,7 @@ void main() async {
   );
   await Geolocator.requestPermission();
   await Permission.notification.request();
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  RemoteMessage? initialMessage =
-      await FirebaseMessaging.instance.getInitialMessage();
-  if (initialMessage != null) {
-    if (initialMessage.data['invoice_id'] != null) {
-      Future.delayed(const Duration(milliseconds: 1250))
-          .then((value) => navKey.currentState!.push(
-                MaterialPageRoute(
-                    builder: (context) => WareHouseSalesDetails(
-                          id: int.parse(initialMessage.data['id']),
-                          invoiceId: '${initialMessage.data['invoice_id']}',
-                        )),
-              ));
-    }
-  }
-  await messaging.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification!.android;
-    if (notification != null && android != null) {
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channelDescription: channel.description,
-            icon: '@mipmap/ic_launcher',
-          ),
-        ),
-      );
-    }
-    if (message.data['invoice_id'] != null) {
-      navKey.currentState!.push(
-        MaterialPageRoute(
-            builder: (context) => WareHouseSalesDetails(
-                  id: int.parse(message.data['id']),
-                  invoiceId: '${message.data['invoice_id']}',
-                )),
-      );
-    }
-  });
-
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) async {
-    if (message!.data['invoice_id'] != null) {
-      navKey.currentState!.push(
-        MaterialPageRoute(
-            builder: (context) => WareHouseSalesDetails(
-                  id: int.parse(message.data['id']),
-                  invoiceId: '${message.data['invoice_id']}',
-                )),
-      );
-    }
-  });
-
-  var initializationSettingsAndroid =
-      const AndroidInitializationSettings('@drawable/ic_notification');
-  var initializationSettingsIOS = const DarwinInitializationSettings();
-  var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-  await messaging.requestPermission();
-  if (Platform.isIOS) {
-    var APNS = await messaging.getAPNSToken();
-  }
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  NotificationService().initNotifications();
   tz.initializeTimeZones();
   runApp(const MyApp());
 }
@@ -134,6 +50,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isLoading = true;
+
   getToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {

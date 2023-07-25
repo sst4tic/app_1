@@ -32,10 +32,12 @@ class WarehouseAssemblyLoaded extends WarehouseAssemblyState {
     required this.pagePostponed,
     required this.hasMore,
     required this.hasMorePostponed,
+    required this.movingList,
   });
 
   final List<Sales> warehouseAssembly;
   final List<Sales> warehouseAssemblyPostponed;
+  final List<MovingModel> movingList;
   final int totalCount;
   final int totalCountPostponed;
   @override

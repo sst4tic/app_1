@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:yiwucloud/bloc/check_bloc/check_bloc.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
+import 'package:yiwucloud/screens%20/schedule_page.dart';
 import '../models /haptic_model.dart';
 import '../util/styles.dart';
 import 'attendance_page.dart';
@@ -52,30 +53,40 @@ class _CheckPageState extends State<CheckPage> {
                       decoration: Decorations.containerDecoration,
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.circle_outlined,
-                                color: Colors.blue,
-                              ),
-                              const SizedBox(width: 5.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    workpace.schedule ?? emptyTime,
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
+                          SizeTapAnimation(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.circle_outlined,
+                                  color: Colors.blue,
+                                ),
+                                const SizedBox(width: 5.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      workpace.schedule ?? emptyTime,
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Расписание',
-                                    style: TextStyles.editStyle,
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    Text(
+                                      'Расписание',
+                                      style: TextStyles.editStyle,
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 15,
+                                ),
+                              ],
+                            ),
                           ),
                           const Divider(),
                           Row(

@@ -1,3 +1,4 @@
+
 class MovingDetailsModel {
   MovingDetailsModel({
     this.invoiceId,
@@ -6,7 +7,11 @@ class MovingDetailsModel {
     required this.btnBan,
     required this.btnBanAct,
     required this.btnChronology,
-    required this.btnScan,
+    required this.btnBoxes,
+    this.btnBoxesSelectStatus,
+    this.boxesWait,
+    this.boxesSent,
+    this.boxesRecd,
     required this.statusName,
     required this.statusId,
     this.btnText,
@@ -21,13 +26,18 @@ class MovingDetailsModel {
     required this.couriers,
     required this.products,
   });
+
   late final String? invoiceId;
   late final String excelUrl;
   late final String pdfUrl;
   late final bool btnBan;
   late final String btnBanAct;
   late final bool btnChronology;
-  late final bool btnScan;
+  late final bool btnBoxes;
+  late final BtnBoxesSelectStatus? btnBoxesSelectStatus;
+  int? boxesWait;
+  int? boxesSent;
+  int? boxesRecd;
   late final String statusName;
   late final int statusId;
   late final String? btnText;
@@ -42,14 +52,20 @@ class MovingDetailsModel {
   late final Couriers? couriers;
   late final List<Products> products;
 
-  MovingDetailsModel.fromJson(Map<String, dynamic> json){
+  MovingDetailsModel.fromJson(Map<String, dynamic> json) {
     invoiceId = null;
     excelUrl = json['excel_url'];
     pdfUrl = json['pdf_url'];
     btnBan = json['btnBan'];
     btnBanAct = json['btnBanAct'];
     btnChronology = json['btnChronology'];
-    btnScan = json['btnScan'];
+    btnBoxes = json['btnBoxes'];
+    btnBoxesSelectStatus = json['btnBoxesSelectStatus'] != null
+        ? BtnBoxesSelectStatus.fromJson(json['btnBoxesSelectStatus'])
+        : null;
+    boxesWait = json['boxesWait'];
+    boxesSent = json['boxesSent'];
+    boxesRecd = json['boxesRecd'];
     statusName = json['status_name'];
     statusId = json['status_id'];
     btnText = json['btnText'];
@@ -61,8 +77,11 @@ class MovingDetailsModel {
     type = json['type'];
     createdAt = json['created_at'];
     courierName = json['courierName'];
-    couriers = json['couriers'] != null ? Couriers.fromJson(json['couriers']) : null;
-    products = List.from(json['products'] ?? []).map((e)=>Products.fromJson(e)).toList();
+    couriers =
+        json['couriers'] != null ? Couriers.fromJson(json['couriers']) : null;
+    products = List.from(json['products'] ?? [])
+        .map((e) => Products.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -73,7 +92,12 @@ class MovingDetailsModel {
     data['btnBan'] = btnBan;
     data['btnBanAct'] = btnBanAct;
     data['btnChronology'] = btnChronology;
-    data['btnScan'] = btnScan;
+    data['btnBoxes'] = btnBoxes;
+    data['btnBoxesSelectStatus'] =
+        btnBoxesSelectStatus != null ? btnBoxesSelectStatus!.toJson() : null;
+    data['boxesWait'] = boxesWait;
+    data['boxesSent'] = boxesSent;
+    data['boxesRecd'] = boxesRecd;
     data['status_name'] = statusName;
     data['status_id'] = statusId;
     data['btnText'] = btnText;
@@ -86,7 +110,7 @@ class MovingDetailsModel {
     data['created_at'] = createdAt;
     data['courierName'] = courierName;
     data['couriers'] = couriers?.toJson();
-    data['products'] = products.map((e)=>e.toJson()).toList();
+    data['products'] = products.map((e) => e.toJson()).toList();
     return data;
   }
 }
@@ -96,10 +120,11 @@ class Products {
     required this.name,
     required this.qty,
   });
+
   late final String name;
   late final int qty;
 
-  Products.fromJson(Map<String, dynamic> json){
+  Products.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     qty = json['qty'];
   }
@@ -112,23 +137,46 @@ class Products {
   }
 }
 
-class Couriers {
-  Couriers({
+class BtnBoxesSelectStatus {
+  BtnBoxesSelectStatus({
     required this.initialValue,
     required this.data,
   });
-  late final int initialValue;
+
+  int initialValue = 0;
   late final List<ChildData> data;
 
-  Couriers.fromJson(Map<String, dynamic> json){
+  BtnBoxesSelectStatus.fromJson(Map<String, dynamic> json) {
     initialValue = json['initial_value'];
-    data = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    data = List.from(json['data']).map((e) => ChildData.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['initial_value'] = initialValue;
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
+    return _data;
+  }
+}
+
+class Couriers {
+  Couriers({
+    required this.initialValue,
+    required this.data,
+  });
+
+  late final int initialValue;
+  late final List<ChildData> data;
+
+  Couriers.fromJson(Map<String, dynamic> json) {
+    initialValue = json['initial_value'];
+    data = List.from(json['data']).map((e) => ChildData.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['initial_value'] = initialValue;
+    _data['data'] = data.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -138,18 +186,19 @@ class ChildData {
     required this.id,
     required this.name,
   });
+
   late final id;
   late final String name;
 
-  ChildData.fromJson(Map<String, dynamic> json){
+  ChildData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    return data;
   }
 }

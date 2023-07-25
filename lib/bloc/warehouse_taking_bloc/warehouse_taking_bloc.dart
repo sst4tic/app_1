@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/util/warehouse_sale.dart';
 
 import '../../util/constants.dart';
+import '../../util/moving_model.dart';
 
 part 'warehouse_taking_event.dart';
 
@@ -31,6 +32,18 @@ class WarehouseTakingBloc
       return body['data'];
     }
 
+    Future<List<MovingModel>> getMovingCourier() async {
+      var url = '${Constants.API_URL_DOMAIN}action=moving_of_courier_list';
+      final response =
+      await http.get(Uri.parse(url), headers: Constants.headers());
+      final body = jsonDecode(response.body);
+      final data = body['data'];
+      return data
+          .map<MovingModel>((json) => MovingModel.fromJson(json))
+          .toList();
+    }
+
+
     on<LoadWarehouseTaking>((event, emit) async {
       try {
         if (state is! WarehouseTakingLoading) {
@@ -54,7 +67,9 @@ class WarehouseTakingBloc
           final completed = bodyCompleted['invoices']
               .map<Sales>((json) => Sales.fromJson(json))
               .toList();
+          final moving = await getMovingCourier();
           emit(WarehouseTakingLoaded(
+              movingList: moving,
               warehouseTaking: taking,
               warehouseCompleted: completed,
               totalCount: body['total'],
@@ -85,6 +100,7 @@ class WarehouseTakingBloc
               .map<Sales>((json) => Sales.fromJson(json))
               .toList());
           emit(WarehouseTakingLoaded(
+              movingList: (state as WarehouseTakingLoaded).movingList,
               warehouseTaking: warehouseTaking,
               pageCompleted: (state as WarehouseTakingLoaded).pageCompleted,
               warehouseCompleted:
@@ -116,6 +132,7 @@ class WarehouseTakingBloc
               .map<Sales>((json) => Sales.fromJson(json))
               .toList());
           emit(WarehouseTakingLoaded(
+              movingList: (state as WarehouseTakingLoaded).movingList,
               warehouseTaking: (state as WarehouseTakingLoaded).warehouseTaking,
               warehouseCompleted: warehouseCompleted,
               hasMore: state.hasMore,

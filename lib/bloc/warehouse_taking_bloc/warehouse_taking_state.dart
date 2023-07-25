@@ -29,10 +29,12 @@ class WarehouseTakingLoaded extends WarehouseTakingState {
     required this.pageCompleted,
     required this.hasMore,
     required this.hasMoreCompleted,
+    required this.movingList,
   });
 
   final List<Sales> warehouseTaking;
   final List<Sales> warehouseCompleted;
+  final List<MovingModel> movingList;
   final int totalCount;
   final int totalCountCompleted;
   @override

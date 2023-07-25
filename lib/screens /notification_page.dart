@@ -1,6 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import '../util/function_class.dart';
 import '../util/notification_model.dart';
@@ -80,6 +81,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => WareHouseSalesDetails(id: notItem.invoiceData!.id, invoiceId: notItem.invoiceData!.invoiceId,
+
+                            )));
+                  }
+                  if(notItem.movingData != null) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MovingDetailsPage(id: notItem.movingData!.id, movingId: notItem.movingData!.movingId,
 
                             )));
                   }

@@ -12,6 +12,7 @@ class MovingDetailsRepo implements AbstractMovingDetails {
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
+
     final data = body['data'];
     final movingDetails = MovingDetailsModel.fromJson(data);
     return movingDetails;
@@ -33,6 +34,16 @@ class MovingDetailsRepo implements AbstractMovingDetails {
         '${Constants.API_URL_DOMAIN}action=moving_define_courier&moving_id=$movingId&courier_id=$courierId';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body;
+  }
+
+  @override
+  Future changeBoxQty({required int id, required qty, status}) async {
+    var url =
+        '${Constants.API_URL_DOMAIN}action=moving_boxes_change&id=$id&boxes=$qty&status=$status';
+    final response =
+    await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
     return body;
   }

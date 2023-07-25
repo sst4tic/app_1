@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiwucloud/models%20/moving_details.dart';
 import 'package:yiwucloud/util/styles.dart';
 import '../bloc/moving_details_bloc/moving_details_bloc.dart';
-import '../screens /warehouse_pages/moving_scan_page.dart';
 
 class MovingDetailsWidget extends StatefulWidget {
   final MovingDetailsModel salesDetails;
@@ -27,7 +26,7 @@ class MovingDetailsWidget extends StatefulWidget {
 }
 
 class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
-  late MovingDetailsModel salesDetails;
+  late MovingDetailsModel movingDetails;
   late int id;
   late MovingDetailsBloc detailsBloc;
   List<DropdownMenuItem>? dropdownMenuItems;
@@ -36,16 +35,16 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
   @override
   void initState() {
     super.initState();
-    salesDetails = widget.salesDetails;
+    movingDetails = widget.salesDetails;
     id = widget.id;
     detailsBloc = widget.detailsBloc;
-    dropdownMenuItems = salesDetails.couriers?.data
+    dropdownMenuItems = movingDetails.couriers?.data
         .map((e) => DropdownMenuItem(
               value: e.id,
               child: Text(e.name),
             ))
         .toList();
-    selectedVal = salesDetails.couriers?.initialValue;
+    selectedVal = movingDetails.couriers?.initialValue;
   }
 
   bool isDeliveryExpanded = false;
@@ -56,38 +55,31 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
       shrinkWrap: true,
       padding: REdgeInsets.all(8),
       children: [
-        SizedBox(height: salesDetails.btnAct != null ? 5.h : 0),
-        salesDetails.btnAct != null
+        SizedBox(height: movingDetails.btnAct != null ? 5.h : 0),
+        movingDetails.btnAct != null
             ? ElevatedButton(
                 onPressed: () async {
                   detailsBloc.add(MovingRedirectionEvent(
                       id: id,
-                      act: salesDetails.btnAct ?? '',
+                      act: movingDetails.btnAct ?? '',
                       context: context));
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 35.h),
                 ),
-                child: Text(salesDetails.btnText!),
+                child: Text(movingDetails.btnText!),
               )
             : const SizedBox(),
-        SizedBox(height: salesDetails.btnScan != false ? 5.h : 0),
-        salesDetails.btnScan != false
-            ? ElevatedButton.icon(
+        SizedBox(height: movingDetails.btnBoxes != false ? 5.h : 0),
+        movingDetails.btnBoxes != false
+            ? ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MovingScanPage(
-                                movingId: widget.invoiceId,
-                                id: id,
-                              )));
+                  detailsBloc.add(ChangeBoxQty(id: id, context: context, select: movingDetails.btnBoxesSelectStatus));
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 35.h),
-                    backgroundColor: Colors.green),
-                label: const Text('Сканировать товары'),
-                icon: const Icon(Icons.qr_code_scanner_sharp),
+                    backgroundColor: Colors.blue[900]),
+                child: const Text('Указать количество мест'),
               )
             : const SizedBox(),
         SizedBox(height: dropdownMenuItems != null ? 5.h : 0),
@@ -160,7 +152,7 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Откуда:'),
-                          Text(salesDetails.warehouseFromData),
+                          Text(movingDetails.warehouseFromData),
                         ],
                       ),
                       const Divider(),
@@ -168,7 +160,7 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Куда:'),
-                          Text(salesDetails.warehouseToData),
+                          Text(movingDetails.warehouseToData),
                         ],
                       ),
                       const Divider(),
@@ -176,7 +168,7 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Создал:'),
-                          Text(salesDetails.senderData),
+                          Text(movingDetails.senderData),
                         ],
                       ),
                       const Divider(),
@@ -184,7 +176,37 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Тип перемещения:'),
-                          Text(salesDetails.type),
+                          Text(movingDetails.type),
+                        ],
+                      ),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Место сборщик:'),
+                          Text(movingDetails.boxesWait != null
+                              ? movingDetails.boxesWait.toString()
+                              : 'Не указано'),
+                        ],
+                      ),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Место принимающий:'),
+                          Text(movingDetails.boxesSent != null
+                              ? movingDetails.boxesSent.toString()
+                              : 'Не указано'),
+                        ],
+                      ),
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Место логист:'),
+                          Text(movingDetails.boxesRecd != null
+                              ? movingDetails.boxesRecd.toString()
+                              : 'Не указано'),
                         ],
                       ),
                       const Divider(),
@@ -192,7 +214,7 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Дата оформления:'),
-                          Text(salesDetails.createdAt),
+                          Text(movingDetails.createdAt),
                         ],
                       ),
                       const Divider(),
@@ -204,7 +226,7 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            salesDetails.comments ?? 'Нет комментариев',
+                            movingDetails.comments ?? 'Нет комментариев',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -235,11 +257,11 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
             ListView.separated(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: salesDetails.products.length,
+              itemCount: movingDetails.products.length,
               itemBuilder: (context, index) {
-                final product = salesDetails.products[index];
+                final product = movingDetails.products[index];
                 return ListTile(
-                  shape: index == salesDetails.products.length - 1
+                  shape: index == movingDetails.products.length - 1
                       ? const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(8),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/models%20/search_model.dart';
 import '../../bloc/warehouse_taking_bloc/warehouse_taking_bloc.dart';
 import '../../models /build_filter.dart';
+import '../../models /build_warehouse_models.dart';
 import '../../models /warehouse_taking_widget_model.dart';
 import '../../util/filter_list_model.dart';
 import '../../util/function_class.dart';
@@ -26,7 +27,7 @@ class _WarehouseTakingState extends State<WarehouseTaking>
   void initState() {
     super.initState();
     _takingBloc.add(LoadWarehouseTaking());
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _sController.addListener(() {
       if (_sController.position.pixels ==
           _sController.position.maxScrollExtent) {
@@ -89,6 +90,7 @@ class _WarehouseTakingState extends State<WarehouseTaking>
                   tabs: const [
                     Tab(text: 'Вывоз'),
                     Tab(text: 'Отпущено'),
+                    Tab(text: 'Перемещения')
                   ],
                 ),
               ],
@@ -120,7 +122,16 @@ class _WarehouseTakingState extends State<WarehouseTaking>
                               _takingBloc.add(LoadWarehouseTaking()),
                           total: state.totalCountCompleted,
                           sController: _sControllerCompleted,
-                          hasMore: state.hasMoreCompleted)
+                          hasMore: state.hasMoreCompleted),
+                      state.movingList.isNotEmpty
+                          ? buildMoving(
+                              hasMore: false,
+                              moving: state.movingList,
+                              controller: ScrollController(),
+                              context: context)
+                          : const Center(
+                              child: Text('Нет перемещений'),
+                            ),
                     ],
                   ));
             } else {

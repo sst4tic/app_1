@@ -42,3 +42,16 @@ class DefineCourierEvent extends MovingDetailsEvent {
   List<Object?> get props => [context, courierId, invoiceId];
 }
 
+class ChangeBoxQty extends MovingDetailsEvent {
+  ChangeBoxQty({
+    required this.id,
+    required this.context,
+    this.select,
+  });
+
+  final int id;
+  final BuildContext context;
+  final BtnBoxesSelectStatus? select;
+
+  List<Object?> get props => [id, context];
+}
