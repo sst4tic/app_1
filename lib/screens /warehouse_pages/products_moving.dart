@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/bloc/warehouse_moving_bloc/warehouse_moving_bloc.dart';
 import 'package:yiwucloud/models%20/build_warehouse_models.dart';
 
+import '../../models /search_model.dart';
+
 class ProductsMoving extends StatefulWidget {
   const ProductsMoving({Key? key}) : super(key: key);
 
@@ -31,6 +33,10 @@ class _ProductsMovingState extends State<ProductsMoving> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Склад: перемещение'),
+            bottom: searchModel(
+                context: context,
+                onSubmitted: (value) =>
+                    _movingBloc.add(LoadMoving(query: value))),
         ),
         body: BlocProvider<WarehouseMovingBloc>(
           create: (context) => WarehouseMovingBloc(),
@@ -47,6 +53,7 @@ class _ProductsMovingState extends State<ProductsMoving> {
                     _movingBloc.add(LoadMoving());
                   },
                   child: buildMoving(
+                      hasMore: state.hasMore,
                       moving: state.warehouseMoving,
                       controller: _sController,
                       context: context),

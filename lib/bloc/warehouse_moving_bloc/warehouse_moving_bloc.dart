@@ -13,12 +13,14 @@ class WarehouseMovingBloc
   WarehouseMovingBloc() : super(WarehouseMovingInitial()) {
     final movingRepo = MovingRepo();
     int page = 1;
+    String query = '';
     List<MovingModel> warehouseMoving = [];
     on<LoadMoving>((event, emit) async {
       try {
         if (state is! WarehouseMovingLoading) {
           emit(WarehouseMovingLoading());
-          warehouseMoving = await movingRepo.getMoving(page: page);
+          warehouseMoving = await movingRepo.getMoving(page: page, query: event.query);
+          query = event.query ?? '';
           emit(WarehouseMovingLoaded(
               warehouseMoving: warehouseMoving, page: 1, hasMore: true));
         }
@@ -35,7 +37,7 @@ class WarehouseMovingBloc
           final warehouseMoving =
               (state as WarehouseMovingLoaded).warehouseMoving;
           final newWarehouseMoving =
-              await movingRepo.getMoving(page: state.page + 1);
+              await movingRepo.getMoving(page: state.page + 1, query: query);
           warehouseMoving.addAll(newWarehouseMoving);
           emit(WarehouseMovingLoaded(
               warehouseMoving: warehouseMoving,

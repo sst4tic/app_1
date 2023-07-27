@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:yiwucloud/screens%20/check_screen.dart';
 import 'package:yiwucloud/screens%20/documents_page.dart';
 import 'package:yiwucloud/util/constants.dart';
@@ -42,6 +43,14 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     _future = getUser();
     _authBloc = BlocProvider.of<AuthBloc>(context);
+    getVersion();
+  }
+
+  void getVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      version = packageInfo.version;
+    });
   }
 
   @override
@@ -251,6 +260,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+            SizedBox(height: 25.h),
+            Center(child: Text('Версия приложения $version', style: TextStyles.editStyle)),
           ],
         ),
       ),

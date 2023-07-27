@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:yiwucloud/bloc/warehouse_moving_bloc/warehouse_moving_bloc.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/create_arrival_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/moving_model.dart';
-import '../bloc/products_bloc/products_bloc.dart';
 import '../bloc/warehouse_arrival_bloc/warehouse_arrival_bloc.dart';
 import '../screens /warehouse_pages/product_detail.dart';
 import '../util/arrival_model.dart';
@@ -86,7 +84,8 @@ Widget buildArrival(
                       ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
                               elevation: 0),
                           child: Row(
                             children: [
@@ -223,46 +222,46 @@ Widget buildSales(
       controller: controller,
       slivers: [
         // if (btnPermission)
-          // SliverToBoxAdapter(
-          //   child: Padding(
-          //     padding: REdgeInsets.only(left: 8, right: 8, top: 8),
-          //     child: ElevatedButton(
-          //       onPressed: () {
-          //         Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //               builder: (context) => const CreateSalePage(),
-          //             ));
-          //       },
-          //       style: ElevatedButton.styleFrom(elevation: 0),
-          //       child: const Text('Создать продажу'),
-          //     ),
-          //   ),
-          // ),
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.white,
-              padding: REdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Количество накладных:'.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+        // SliverToBoxAdapter(
+        //   child: Padding(
+        //     padding: REdgeInsets.only(left: 8, right: 8, top: 8),
+        //     child: ElevatedButton(
+        //       onPressed: () {
+        //         Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //               builder: (context) => const CreateSalePage(),
+        //             ));
+        //       },
+        //       style: ElevatedButton.styleFrom(elevation: 0),
+        //       child: const Text('Создать продажу'),
+        //     ),
+        //   ),
+        // ),
+        SliverToBoxAdapter(
+          child: Container(
+            color: Colors.white,
+            padding: REdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Количество накладных:'.toUpperCase(),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    '$total',
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
+                ),
+                Text(
+                  '$total',
+                  style: const TextStyle(
+                    fontSize: 16,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+        ),
         SliverToBoxAdapter(
           child: ListView.builder(
             padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),
@@ -308,7 +307,8 @@ Widget buildSales(
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                backgroundColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 elevation: 0),
                             child: Row(
                               children: [
@@ -677,10 +677,12 @@ Widget buildProducts(
   );
 }
 
-Widget buildMoving(
-    {required List<MovingModel> moving,
-    required ScrollController controller,
-    required BuildContext context}) {
+Widget buildMoving({
+  required List<MovingModel> moving,
+  required ScrollController controller,
+  required BuildContext context,
+  required bool hasMore,
+}) {
   return CustomScrollView(
     controller: controller,
     slivers: [
@@ -737,7 +739,8 @@ Widget buildMoving(
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
                             elevation: 0),
                         child: Row(
                           children: [
@@ -912,20 +915,11 @@ Widget buildMoving(
           );
         },
       )),
-      BlocBuilder<WarehouseMovingBloc, WarehouseMovingState>(
-        builder: (context, state) {
-          if (state is ProductsLoadingMore) {
-            return const SliverToBoxAdapter(
-              child: Text('Больше нет данных'),
-            );
-          } else {
-            return const SliverToBoxAdapter(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-        },
+      SliverToBoxAdapter(
+        child: Center(
+            child: moving.length <= 10 || hasMore == false
+                ? const Text('Больше нет данных')
+                : const CircularProgressIndicator()),
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(

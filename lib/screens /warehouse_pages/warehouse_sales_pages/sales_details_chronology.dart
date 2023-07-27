@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import '../../../util/constants.dart';
 
 class DetailsChronology extends StatefulWidget {
-  const DetailsChronology({Key? key, required this.id}) : super(key: key);
+  const DetailsChronology({Key? key, required this.id, required this.isSales}) : super(key: key);
   final int id;
+  final bool isSales;
 
   @override
   State<DetailsChronology> createState() => _DetailsChronologyState();
@@ -16,10 +17,11 @@ class DetailsChronology extends StatefulWidget {
 
 class _DetailsChronologyState extends State<DetailsChronology> {
   late Future<List<ChronologyModel>> chronologyFuture;
+  late bool isSales;
 
   Future<List<ChronologyModel>> getChronology() async {
     var url =
-        '${Constants.API_URL_DOMAIN}action=chronology_list&id=${widget.id}';
+        '${Constants.API_URL_DOMAIN}action=${isSales ? 'chronology_list' : 'moving_chronology_list'}&id=${widget.id}';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
@@ -32,8 +34,10 @@ class _DetailsChronologyState extends State<DetailsChronology> {
   @override
   void initState() {
     super.initState();
+    isSales = widget.isSales;
     chronologyFuture = getChronology();
   }
+
 
   @override
   Widget build(BuildContext context) {

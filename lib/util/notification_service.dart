@@ -146,6 +146,11 @@ class NotificationService {
           tz.local,
         ),
         const NotificationDetails(
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ),
             android: AndroidNotificationDetails(
                 'your channel id', 'your channel name',
                 importance: Importance.max,

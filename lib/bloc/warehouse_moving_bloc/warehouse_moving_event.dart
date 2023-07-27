@@ -5,9 +5,11 @@ abstract class WarehouseMovingEvent {}
 class LoadMoving extends WarehouseMovingEvent {
   LoadMoving({
     this.completer,
+    this.query,
   });
 
   final Completer? completer;
+  final String? query;
 
   List<Object?> get props => [completer];
 }

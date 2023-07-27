@@ -118,7 +118,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              DetailsChronology(id: widget.id),
+                              DetailsChronology(id: widget.id, isSales: true,),
                         ),
                       );
                     },

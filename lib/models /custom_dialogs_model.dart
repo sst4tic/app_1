@@ -68,6 +68,9 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType ?? TextInputType.text,
       decoration: InputDecoration(
         hintText: placeholder,
+        hintStyle: const TextStyle(
+          color: Colors.black12,
+        ),
       ),
     );
   }

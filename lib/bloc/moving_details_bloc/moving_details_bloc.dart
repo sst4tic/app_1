@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/bloc/moving_details_bloc/moving_details_repo.dart';
 
@@ -34,9 +35,11 @@ class MovingDetailsBloc extends Bloc<MovingDetailsEvent, MovingDetailsState> {
     });
     on<MovingRedirectionEvent>((event, emit) async {
       try {
+        final position = event.act == 'wareHouseComplete' ? await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high) : null;
         event.context.loaderOverlay.show();
         final redirection =
-            await movingRepo.movingRedirection(id: event.id, act: event.act);
+            await movingRepo.movingRedirection(id: event.id, act: event.act, lat: position?.latitude, lon: position?.longitude);
         event.context.loaderOverlay.hide();
         // ignore: use_build_context_synchronously
         showDialog(
@@ -92,6 +95,7 @@ class MovingDetailsBloc extends Bloc<MovingDetailsEvent, MovingDetailsState> {
               return CustomAlertDialog(
                 title: 'Укажите количество мест',
                 content: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 8.h),
                     event.select != null
