@@ -175,6 +175,21 @@ class _CheckPageState extends State<CheckPage> {
                               Text(workpace.totalWork ?? emptyTime),
                             ],
                           ),
+                          const Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Переработка'),
+                              Text(workpace.overtime),
+                            ],
+                          ),  const Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Опоздания'),
+                              Text(workpace.lateness),
+                            ],
+                          ),
                         ],
                       ),
                     ),

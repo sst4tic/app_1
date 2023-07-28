@@ -193,7 +193,7 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Место принимающий:'),
+                          const Text('Место логист:'),
                           Text(movingDetails.boxesSent != null
                               ? movingDetails.boxesSent.toString()
                               : 'Не указано'),
@@ -203,7 +203,7 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Место логист:'),
+                          const Text('Место принимающий:'),
                           Text(movingDetails.boxesRecd != null
                               ? movingDetails.boxesRecd.toString()
                               : 'Не указано'),

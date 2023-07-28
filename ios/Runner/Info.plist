@@ -29,11 +29,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Для сканирования штрихкода требуется разрешение на использование камеры.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>Геолокация используется для того чтобы пользователь мог подтвердить свое местоположение.</string>
+    <string>Геолокация используется для того чтобы пользователь мог посмотреть где находятся магазины или склады на карте.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Геолокация используется для того чтобы пользователь мог подтвердить свое местоположение.</string>
+    <string>Геолокация используется для того чтобы пользователь мог посмотреть где находятся магазины или склады на карте.</string>
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>Геолокация используется для того чтобы пользователь мог подтвердить свое местоположение.</string>
+    <string>Геолокация используется для того чтобы пользователь мог посмотреть где находятся магазины или склады на карте.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

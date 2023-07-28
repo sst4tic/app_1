@@ -14,7 +14,8 @@ class WorkpaceModel {
   late final String? startAt;
   late final String? endAt;
   late final String? schedule;
-
+  late final String overtime;
+  late final String lateness;
   WorkpaceModel.fromJson(Map<String, dynamic> json){
     totalWork = json['total_work'];
     todayWork = json['today_work'];
@@ -24,6 +25,8 @@ class WorkpaceModel {
     startAt = json['start_at'];
     endAt = json['end_at'];
     schedule = json['schedule'];
+    overtime = json['overtiming'];
+    lateness = json['lateness'];
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +39,8 @@ class WorkpaceModel {
     data['start_at'] = startAt;
     data['end_at'] = endAt;
     data['schedule'] = schedule;
+    data['overtiming'] = overtime;
+    data['lateness'] = lateness;
     return data;
   }
 }
