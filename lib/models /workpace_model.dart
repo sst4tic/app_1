@@ -16,6 +16,7 @@ class WorkpaceModel {
   late final String? schedule;
   late final String overtime;
   late final String lateness;
+
   WorkpaceModel.fromJson(Map<String, dynamic> json){
     totalWork = json['total_work'];
     todayWork = json['today_work'];

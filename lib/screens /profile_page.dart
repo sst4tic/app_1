@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
                     final user = snapshot.data!;
-                    return buildUser(user);
+                    return buildUser(user, () => refresh());
                   } else {
                     return const Center(
                       child: Text('Не удалось загрузить пользователя'),

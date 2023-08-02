@@ -154,11 +154,11 @@ class _CheckPageState extends State<CheckPage> {
                     ),
                     const SizedBox(height: 10.0),
                     Container(
-                      padding: REdgeInsets.all(8.0),
                       decoration: Decorations.containerDecoration,
                       child: ListView(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
+                        padding: REdgeInsets.all(8.0),
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -264,10 +264,11 @@ class _CheckPageState extends State<CheckPage> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const Spacer(),
-                              ],
+                          const Spacer(),
+                        ],
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 25.0),
                   ],
                 ),
               );

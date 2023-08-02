@@ -28,6 +28,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Для сканирования штрихкода требуется разрешение на использование камеры.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Пожалуйста, разрешите доступ к вашей галерее для выбора фотографий для аватара.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>Геолокация используется для того чтобы пользователь мог посмотреть где находятся магазины или склады на карте.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

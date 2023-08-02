@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/bloc/warehouse_moving_bloc/warehouse_moving_bloc.dart';
+import 'package:yiwucloud/models%20/build_product_filter.dart';
 import 'package:yiwucloud/models%20/build_warehouse_models.dart';
-
+import '../../models /product_filter_model.dart';
 import '../../models /search_model.dart';
+import '../../util/function_class.dart';
 
 class ProductsMoving extends StatefulWidget {
   const ProductsMoving({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class ProductsMoving extends StatefulWidget {
 class _ProductsMovingState extends State<ProductsMoving> {
   final _movingBloc = WarehouseMovingBloc();
   final ScrollController _sController = ScrollController();
+  late final List<ProductFilterModel> filterData;
 
   @override
   void initState() {
@@ -29,6 +32,12 @@ class _ProductsMovingState extends State<ProductsMoving> {
   }
 
   @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    filterData = await Func().getMovingFilters();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -37,6 +46,19 @@ class _ProductsMovingState extends State<ProductsMoving> {
                 context: context,
                 onSubmitted: (value) =>
                     _movingBloc.add(LoadMoving(query: value))),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showProductFilter(
+                  context: context,
+                  onSubmitted: (value) {
+                    _movingBloc.add(LoadMoving(filters: value));
+                  }, filterData: filterData,
+                );
+              },
+              icon: const Icon(Icons.filter_alt),
+            ),
+          ],
         ),
         body: BlocProvider<WarehouseMovingBloc>(
           create: (context) => WarehouseMovingBloc(),

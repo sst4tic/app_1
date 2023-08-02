@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 
 class MovingRepo implements AbstractMoving {
   @override
-  Future<List<MovingModel>> getMoving({required int page, String? query}) async {
-    var url = '${Constants.API_URL_DOMAIN}action=moving_list&page=$page&smart=${query ?? ''}';
+  Future<List<MovingModel>> getMoving({required int page, String? query, String? filters}) async {
+    var url = '${Constants.API_URL_DOMAIN}action=moving_list&page=$page&smart=${query ?? ''}&${filters ?? ''}';
     final response = await http.get(
         Uri.parse(url),
         headers: Constants.headers()

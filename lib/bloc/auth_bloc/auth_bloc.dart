@@ -79,40 +79,50 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
-  DateTime _parseDate(String time) {
-    DateTime now = DateTime.now();
-    final date = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T$time';
-    DateTime parsedDateTime = DateTime.parse(date);
+  DateTime _parseDateWithDayAndTime(int dayIndex, String time) {
+    final now = DateTime.now();
+    int currentDayOfWeek = now.weekday;
+
+    int daysToAdd = (7 + dayIndex - currentDayOfWeek) % 7;
+    final date = now.add(Duration(days: daysToAdd));
+
+    final dateTimeString = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}T$time';
+    DateTime parsedDateTime = DateTime.parse(dateTimeString);
     parsedDateTime = parsedDateTime.subtract(const Duration(minutes: 5));
     return parsedDateTime;
   }
 
   Future notification() async {
     final params = await authRepo.initParams();
-    Constants.startAt = params['data']['start_at'] ?? '';
-    Constants.endAt = params['data']['end_at'] ?? '';
-    try {
-      if (params['data']['start_at'] != null) {
-        await NotificationService().scheduleNotification(
-          scheduledNotificationDateTime: _parseDate(params['data']['start_at']),
-          title: 'Важно отметиться',
-          body: 'Не забудьте отметиться о приходе на работу!',
-        );
+    for (var index = 0; index < params['data'].length; index++) {
+      var item = params['data'][index];
+      if (item['start_at'] != null) {
+        try {
+          final startDateTime = _parseDateWithDayAndTime(index, item['start_at']);
+          await NotificationService().scheduleNotification(
+            scheduledNotificationDateTime: startDateTime,
+            title: 'Важно отметиться',
+            body: 'Не забудьте отметиться о приходе на работу!',
+            id: index,
+          );
+        } catch (e) {
+          debugPrint('Ошибка при выполнении функции для start_at: $e');
+        }
       }
-    } catch (e) {
-      debugPrint('Ошибка при выполнении первой функции: $e');
-    }
-    try {
-      if (params['data']['end_at'] != null) {
-        await NotificationService().scheduleNotification(
-          scheduledNotificationDateTime: _parseDate(params['data']['end_at']),
-          id: 2,
-          title: 'Важно отметиться!',
-          body: 'Не забудьте отметиться об уходе с работы!',
-        );
+
+      if (item['end_at'] != null) {
+        try {
+          final endDateTime = _parseDateWithDayAndTime(index, item['end_at']);
+          await NotificationService().scheduleNotification(
+            scheduledNotificationDateTime: endDateTime,
+            title: 'Важно отметиться!',
+            body: 'Не забудьте отметиться об уходе с работы!',
+            id: (index + params['data'].length) as int,
+          );
+        } catch (e) {
+          debugPrint('Ошибка при выполнении функции для end_at: $e');
+        }
       }
-    } catch (e) {
-      debugPrint('Ошибка при выполнении второй функции: $e');
     }
   }
 

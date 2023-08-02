@@ -4,12 +4,20 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:yiwucloud/screens%20/check_screen.dart';
 import '../firebase_options.dart';
 import '../main.dart';
 import '../screens /warehouse_pages/moving_details_page.dart';
 import '../screens /warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+
+void onDidReceiveNotificationResponse(NotificationResponse notificationResponse) {
+  navKey.currentState!.push(
+    MaterialPageRoute(
+        builder: (context) => const CheckPage()),
+  );
+}
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -25,7 +33,14 @@ class NotificationService {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-
+    var initializationSettingsAndroid =
+    const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS =  const DarwinInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await notificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse, onDidReceiveBackgroundNotificationResponse: onDidReceiveNotificationResponse);
+    notificationsPlugin.getNotificationAppLaunchDetails();
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     RemoteMessage? initialMessage =
@@ -118,29 +133,24 @@ class NotificationService {
       }
     });
 
-    var initializationSettingsAndroid =
-    const AndroidInitializationSettings('@drawable/ic_notification');
-    var initializationSettingsIOS = const DarwinInitializationSettings();
-    var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await messaging.requestPermission();
     if (Platform.isIOS) {
       var APNS = await messaging.getAPNSToken();
     }
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
   }
-
   Future scheduleNotification(
       {int id = 0,
       String? title,
       String? body,
       String? payLoad,
       required DateTime scheduledNotificationDateTime}) async {
-    return notificationsPlugin.zonedSchedule(
+    return
+      notificationsPlugin.zonedSchedule(
         id,
         title,
         body,
+        payload: 'my_payload',
         tz.TZDateTime.from(
           scheduledNotificationDateTime,
           tz.local,

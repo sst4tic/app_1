@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/screens%20/global_scan_screen.dart';
 import 'package:yiwucloud/util/comment_model.dart';
@@ -11,6 +13,8 @@ import '../models /product_filter_model.dart';
 import 'constants.dart';
 import 'filter_list_model.dart';
 import 'notification_model.dart';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
 
 class Func {
   showSnackbar(context, String text, bool success) {
@@ -129,16 +133,27 @@ class Func {
     return data;
   }
 
+  // func for getting moving filters
+  Future<List<ProductFilterModel>> getMovingFilters() async {
+    var url = '${Constants.API_URL_DOMAIN}action=filters_list_moving';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    final data = body['data']
+        .map<ProductFilterModel>((json) => ProductFilterModel.fromJson(json))
+        .toList();
+    return data;
+  }
+
   // func for getting filters
   Future<FilterModel> getFilters() async {
     var url = '${Constants.API_URL_DOMAIN}action=filters_list';
     final response =
-    await http.get(Uri.parse(url), headers: Constants.headers());
+        await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
     final data = FilterModel.fromJson(body['data']);
     return data;
   }
-
 
   // for zebra scanner
   void initGlobalScanner() {
@@ -169,13 +184,72 @@ class Func {
       }
     }
   }
- // for clear scanner
+
+  // for clear scanner
   void clearScanner() {
     if (Platform.isAndroid && Constants.useragent == 'TC26') {
-      onScanResultListener = fdw.onScanResult.listen((result) {
-      });
+      onScanResultListener = fdw.onScanResult.listen((result) {});
     }
   }
+}
+
+Future<File> getImageFromGallery() async {
+  final picker = ImagePicker();
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  return File(pickedFile!.path);
+}
+
+Future<File> takeImageFromCamera() async {
+  final picker = ImagePicker();
+  final pickedFile = await picker.pickImage(source: ImageSource.camera);
+  return File(pickedFile!.path);
+}
+
+String imageToBase64(File imageFile) {
+  List<int> imageBytes = imageFile.readAsBytesSync();
+  return base64Encode(imageBytes);
+}
+
+Future<void> uploadImg(File imageFile, BuildContext context) async {
+  context.loaderOverlay.show();
+  var stream = http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+  var length = await imageFile.length();
+  var uploadURL = '${Constants.BASE_URL_DOMAIN}api/user-avatar-post';
+
+  var uri = Uri.parse(uploadURL);
+  var request = http.MultipartRequest("POST", uri);
+  request.headers['Authorization'] = Constants.bearer;
+  var multipartFile = http.MultipartFile('file', stream, length,
+      filename: basename(imageFile.path));
+
+  request.files.add(multipartFile);
+  var response = await request.send();
+  try {
+    await response.stream.transform(utf8.decoder).join();
+  } catch (e) {
+
+  }
+  // ignore: use_build_context_synchronously
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          title: response.statusCode == 200 ? 'Успешно' : 'Ошибка',
+          content: Text(response.statusCode == 200
+              ? 'Фото успешно загружено!'
+              : 'Произошла ошибка!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Ок'),
+            )
+          ],
+        );
+      });
+  // ignore: use_build_context_synchronously
+  context.loaderOverlay.hide();
 }
 
 extension StringExtension on String {
