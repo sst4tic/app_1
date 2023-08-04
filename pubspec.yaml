@@ -2,7 +2,7 @@ name: yiwucloud
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.0.38+39
+version: 1.0.40+41
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
@@ -51,6 +51,11 @@ dependencies:
   geolocator: ^9.0.2
   flutter_slidable: ^3.0.0
   image_picker: ^1.0.1
+  flutter_exif_rotation: ^0.5.1
+  image_cropper: ^4.0.1
+  flutter_cached_pdfview: ^0.4.2
+  extended_image: ^7.0.2
+  share_plus: ^7.1.0
 
 
 dev_dependencies:

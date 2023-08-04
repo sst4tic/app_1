@@ -47,7 +47,7 @@ showProductFilter({
                           innerSetState(() {
                             for (var element in filterData) {
                               element.initialValue = newData
-                                  .firstWhere((e) => e.name == element.name)
+                                  .firstWhere((e) => e.name == element.name, orElse: () => element)
                                   .initialValue;
                             }
                           });

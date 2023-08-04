@@ -190,6 +190,14 @@ class _CheckPageState extends State<CheckPage> {
                               Text(workpace.lateness),
                             ],
                           ),
+                          const Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Ранний приход'),
+                              Text(workpace.earlyArrival),
+                            ],
+                          ),
                         ],
                       ),
                     ),

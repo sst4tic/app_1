@@ -15,6 +15,7 @@ class WorkpaceModel {
   late final String? endAt;
   late final String? schedule;
   late final String overtime;
+  late final String earlyArrival;
   late final String lateness;
 
   WorkpaceModel.fromJson(Map<String, dynamic> json){
@@ -27,6 +28,7 @@ class WorkpaceModel {
     endAt = json['end_at'];
     schedule = json['schedule'];
     overtime = json['overtiming'];
+    earlyArrival = json['early_arrival'];
     lateness = json['lateness'];
   }
 
@@ -41,6 +43,7 @@ class WorkpaceModel {
     data['end_at'] = endAt;
     data['schedule'] = schedule;
     data['overtiming'] = overtime;
+    data['early_arrival'] = earlyArrival;
     data['lateness'] = lateness;
     return data;
   }

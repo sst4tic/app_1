@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
@@ -15,7 +16,6 @@ import 'filter_list_model.dart';
 import 'notification_model.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
-
 class Func {
   showSnackbar(context, String text, bool success) {
     success
@@ -202,7 +202,8 @@ Future<File> getImageFromGallery() async {
 Future<File> takeImageFromCamera() async {
   final picker = ImagePicker();
   final pickedFile = await picker.pickImage(source: ImageSource.camera);
-  return File(pickedFile!.path);
+  File rotatedImage = await FlutterExifRotation.rotateImage(path: pickedFile!.path);
+  return File(rotatedImage.path);
 }
 
 String imageToBase64(File imageFile) {
@@ -227,7 +228,7 @@ Future<void> uploadImg(File imageFile, BuildContext context) async {
   try {
     await response.stream.transform(utf8.decoder).join();
   } catch (e) {
-
+    print(e);
   }
   // ignore: use_build_context_synchronously
   showDialog(

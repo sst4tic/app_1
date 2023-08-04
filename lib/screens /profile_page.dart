@@ -8,6 +8,7 @@ import 'package:yiwucloud/screens%20/documents_page.dart';
 import 'package:yiwucloud/util/constants.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../models /build_user.dart';
+import '../models /custom_dialogs_model.dart';
 import '../util/styles.dart';
 import '../util/user.dart';
 import 'package:http/http.dart' as http;
@@ -223,7 +224,29 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             GestureDetector(
               onTap: () async {
-                _authBloc.add(LoggedOut());
+                showDialog(context: context, builder:
+                (BuildContext context) {
+                  return CustomAlertDialog(
+                    title: "Выход из аккаунта",
+                    content: const Text("Вы действительно хотите выйти?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          _authBloc.add(LoggedOut());
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Да'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Нет'),
+                      ),
+                    ],
+                  );
+                }
+                );
               },
               child: Container(
                 padding: REdgeInsets.all(10),
