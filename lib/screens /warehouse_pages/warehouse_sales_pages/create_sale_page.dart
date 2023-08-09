@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 
 import '../../../util/constants.dart';
 
@@ -37,7 +40,11 @@ class _CreateSalePageState extends State<CreateSalePage> {
               name: 'WebViewMessage',
               onMessageReceived: (JavascriptMessage message) {
                 if (message.message != '') {
-                  Navigator.pop(context);
+                  var decodedMessage = jsonDecode(message.message);
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WareHouseSalesDetails(id: decodedMessage['invoice_id'], invoiceId: decodedMessage['invoice_number'])));
+                  });
                 }
               }
           ),

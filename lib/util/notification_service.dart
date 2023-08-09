@@ -12,17 +12,17 @@ import '../screens /warehouse_pages/warehouse_sales_pages/warehouse_sales_detail
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
-void onDidReceiveNotificationResponse(NotificationResponse notificationResponse) {
+void onDidReceiveNotificationResponse(
+    NotificationResponse notificationResponse) {
   navKey.currentState!.push(
-    MaterialPageRoute(
-        builder: (context) => const CheckPage()),
+    MaterialPageRoute(builder: (context) => const CheckPage()),
   );
 }
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
-    AndroidNotificationChannel channel = const AndroidNotificationChannel(
+  AndroidNotificationChannel channel = const AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
     description: 'This channel is used for important notifications.',
@@ -34,37 +34,45 @@ class NotificationService {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     var initializationSettingsAndroid =
-    const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettingsIOS =  const DarwinInitializationSettings();
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = const DarwinInitializationSettings();
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    var details = await notificationsPlugin.getNotificationAppLaunchDetails();
+    if (details!.didNotificationLaunchApp) {
+      Future.delayed(const Duration(milliseconds: 1000))
+          .then((value) => navKey.currentState!.push(
+                MaterialPageRoute(builder: (context) => const CheckPage()),
+              ));
+    }
     await notificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse, onDidReceiveBackgroundNotificationResponse: onDidReceiveNotificationResponse);
-    notificationsPlugin.getNotificationAppLaunchDetails();
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+        onDidReceiveBackgroundNotificationResponse:
+            onDidReceiveNotificationResponse);
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
+        await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       if (initialMessage.data['invoice_id'] != null) {
         Future.delayed(const Duration(milliseconds: 1250))
             .then((value) => navKey.currentState!.push(
-          MaterialPageRoute(
-              builder: (context) => WareHouseSalesDetails(
-                id: int.parse(initialMessage.data['id']),
-                invoiceId: '${initialMessage.data['invoice_id']}',
-              )),
-        ));
+                  MaterialPageRoute(
+                      builder: (context) => WareHouseSalesDetails(
+                            id: int.parse(initialMessage.data['id']),
+                            invoiceId: '${initialMessage.data['invoice_id']}',
+                          )),
+                ));
       }
       if (initialMessage.data['moving_id'] != null) {
         Future.delayed(const Duration(milliseconds: 1250))
             .then((value) => navKey.currentState!.push(
-          MaterialPageRoute(
-              builder: (context) => MovingDetailsPage(
-                id: int.parse(initialMessage.data['id']),
-                movingId: '${initialMessage.data['moving_id']}',
-              )),
-        ));
+                  MaterialPageRoute(
+                      builder: (context) => MovingDetailsPage(
+                            id: int.parse(initialMessage.data['id']),
+                            movingId: '${initialMessage.data['moving_id']}',
+                          )),
+                ));
       }
     }
 
@@ -96,18 +104,18 @@ class NotificationService {
         navKey.currentState!.push(
           MaterialPageRoute(
               builder: (context) => WareHouseSalesDetails(
-                id: int.parse(message.data['id']),
-                invoiceId: '${message.data['invoice_id']}',
-              )),
+                    id: int.parse(message.data['id']),
+                    invoiceId: '${message.data['invoice_id']}',
+                  )),
         );
       }
       if (message.data['moving_id'] != null) {
         navKey.currentState!.push(
           MaterialPageRoute(
               builder: (context) => MovingDetailsPage(
-                id: int.parse(message.data['id']),
-                movingId: '${message.data['moving_id']}',
-              )),
+                    id: int.parse(message.data['id']),
+                    movingId: '${message.data['moving_id']}',
+                  )),
         );
       }
     });
@@ -117,18 +125,18 @@ class NotificationService {
         navKey.currentState!.push(
           MaterialPageRoute(
               builder: (context) => WareHouseSalesDetails(
-                id: int.parse(message.data['id']),
-                invoiceId: '${message.data['invoice_id']}',
-              )),
+                    id: int.parse(message.data['id']),
+                    invoiceId: '${message.data['invoice_id']}',
+                  )),
         );
       }
       if (message.data['moving_id'] != null) {
         navKey.currentState!.push(
           MaterialPageRoute(
               builder: (context) => MovingDetailsPage(
-                id: int.parse(message.data['id']),
-                movingId: '${message.data['moving_id']}',
-              )),
+                    id: int.parse(message.data['id']),
+                    movingId: '${message.data['moving_id']}',
+                  )),
         );
       }
     });
@@ -139,14 +147,14 @@ class NotificationService {
     }
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   }
+
   Future scheduleNotification(
       {int id = 0,
       String? title,
       String? body,
       String? payLoad,
       required DateTime scheduledNotificationDateTime}) async {
-    return
-      notificationsPlugin.zonedSchedule(
+    return notificationsPlugin.zonedSchedule(
         id,
         title,
         body,
@@ -156,11 +164,11 @@ class NotificationService {
           tz.local,
         ),
         const NotificationDetails(
-          iOS: DarwinNotificationDetails(
-            presentAlert: true,
-            presentBadge: true,
-            presentSound: true,
-          ),
+            iOS: DarwinNotificationDetails(
+              presentAlert: true,
+              presentBadge: true,
+              presentSound: true,
+            ),
             android: AndroidNotificationDetails(
                 'your channel id', 'your channel name',
                 importance: Importance.max,

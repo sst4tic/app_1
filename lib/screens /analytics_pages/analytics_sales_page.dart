@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import '../../bloc/analytics_directory/analytics_top_sales_bloc/analytics_top_sales_bloc.dart';
+import '../../bloc/analytics_top_sales_bloc/analytics_top_sales_bloc.dart';
 import '../../models /build_analytics_models.dart';
 
 class AnalyticsSalesPage extends StatefulWidget {

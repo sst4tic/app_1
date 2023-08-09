@@ -221,23 +221,6 @@ Widget buildSales(
     child: CustomScrollView(
       controller: controller,
       slivers: [
-        // if (btnPermission)
-        // SliverToBoxAdapter(
-        //   child: Padding(
-        //     padding: REdgeInsets.only(left: 8, right: 8, top: 8),
-        //     child: ElevatedButton(
-        //       onPressed: () {
-        //         Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //               builder: (context) => const CreateSalePage(),
-        //             ));
-        //       },
-        //       style: ElevatedButton.styleFrom(elevation: 0),
-        //       child: const Text('Создать продажу'),
-        //     ),
-        //   ),
-        // ),
         SliverToBoxAdapter(
           child: Container(
             color: Colors.white,
@@ -273,7 +256,7 @@ Widget buildSales(
               final sales = salesModel[index];
               return Container(
                 padding: REdgeInsets.symmetric(horizontal: 12),
-                margin: REdgeInsets.symmetric(vertical: 8),
+                margin: REdgeInsets.only(bottom: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   border: sales.statusName == 'Отпущено'

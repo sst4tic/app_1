@@ -92,7 +92,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
               ),
             )),
         SliverToBoxAdapter(
-             child: docs.length != 0 ? ListView.separated(
+             child: docs.isNotEmpty ? ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: docs.length,

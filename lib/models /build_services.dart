@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:yiwucloud/models%20/haptic_model.dart';
 import 'package:yiwucloud/screens%20/analytics_pages/analytics_sales_page.dart';
+import 'package:yiwucloud/screens%20/sales_plan_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_arrival.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_moving.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_assembling.dart';
@@ -93,6 +94,10 @@ Widget buildServiceChild(List<Services> services) {
           } else if (service.id == 33) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const AnalyticsSalesPage();
+            }));
+          } else if (service.id == 13) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const SalesPlanPage();
             }));
           }
         },

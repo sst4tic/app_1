@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
 import '../util/styles.dart';
@@ -18,6 +19,18 @@ Widget buildUser(
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 1,
       itemBuilder: (context, index) {
+        final List<PlatformUiSettings> uiSettings = [
+          AndroidUiSettings(
+              toolbarColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true),
+          IOSUiSettings(
+            resetAspectRatioEnabled: false,
+            aspectRatioLockEnabled: true,
+            doneButtonTitle: 'Готово',
+            cancelButtonTitle: 'Отмена',
+          ),
+        ];
         final users = user;
         return Container(
           decoration: BoxDecoration(
@@ -91,32 +104,45 @@ Widget buildUser(
                                           .copyWith(fontSize: 14),
                                     ),
                                     onTap: () async {
-                                      var img = await takeImageFromCamera();
-                                      await ImageCropper().cropImage(
-                                        aspectRatioPresets: [
-                                          CropAspectRatioPreset.square,
-                                        ],
-                                        sourcePath: img.path,
-                                        compressFormat: ImageCompressFormat.jpg,
-                                        compressQuality: 100,
-                                        aspectRatio: const CropAspectRatio(
-                                            ratioX: 1, ratioY: 1),
-                                        uiSettings: [
-                                          AndroidUiSettings(
-                                            hideBottomControls: true,
-                                              toolbarColor: Colors.white,
-                                              initAspectRatio:
-                                              CropAspectRatioPreset.square,
-                                              lockAspectRatio: false),
-                                          IOSUiSettings(
-                                            doneButtonTitle: 'Готово',
-                                            cancelButtonTitle: 'Отмена',
-                                          ),
-                                        ],
-                                      ).then((value) async =>
-                                      await uploadImg(File(value!.path), context)
-                                          .then((value) => onRefresh.call()
-                                      ));
+                                      try {
+                                        var img = await takeImageFromCamera();
+                                        await ImageCropper().cropImage(
+                                          aspectRatioPresets: [
+                                            CropAspectRatioPreset.square,
+                                          ],
+                                          sourcePath: img.path,
+                                          compressFormat:
+                                              ImageCompressFormat.jpg,
+                                          compressQuality: 100,
+                                          aspectRatio: const CropAspectRatio(
+                                              ratioX: 1, ratioY: 1),
+                                          uiSettings: uiSettings,
+                                        ).then((value) async => await uploadImg(
+                                                File(value!.path), context)
+                                            .then((value) => onRefresh.call()));
+                                      } catch (e) {
+                                        // ignore: use_build_context_synchronously
+                                        showDialog<void>(
+                                          context: context,
+                                          builder:
+                                              (BuildContext dialogContext) {
+                                            return CustomAlertDialog(
+                                              title: 'Ошибка',
+                                              content: Text(
+                                                  'Произошла ошибка: ${e.toString()}'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(dialogContext)
+                                                        .pop(); // Dismiss alert dialog
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                     },
                                   ),
                                   const Divider(
@@ -136,32 +162,52 @@ Widget buildUser(
                                           .copyWith(fontSize: 14),
                                     ),
                                     onTap: () async {
-                                      var img = await getImageFromGallery();
-                                          await ImageCropper().cropImage(
-                                        aspectRatioPresets: [
-                                          CropAspectRatioPreset.square,
-                                        ],
-                                        sourcePath: img.path,
-                                        compressFormat: ImageCompressFormat.jpg,
-                                        compressQuality: 100,
-                                        aspectRatio: const CropAspectRatio(
-                                            ratioX: 1, ratioY: 1),
-                                        uiSettings: [
-                                          AndroidUiSettings(
-                                              hideBottomControls: true,
-                                              toolbarColor: Colors.white,
-                                              initAspectRatio:
-                                              CropAspectRatioPreset.square,
-                                              lockAspectRatio: false),
-                                          IOSUiSettings(
-                                            doneButtonTitle: 'Готово',
-                                            cancelButtonTitle: 'Отмена',
-                                          ),
-                                        ],
-                                      ).then((value) async => 
-                                              await uploadImg(File(value!.path), context)
-                                                  .then((value) => onRefresh.call()
-                                          ));
+                                      try {
+                                        var img = await getImageFromGallery();
+                                        var croppedImg =
+                                            await ImageCropper().cropImage(
+                                          aspectRatioPresets: [
+                                            CropAspectRatioPreset.square,
+                                          ],
+                                          sourcePath: img.path,
+                                          compressFormat:
+                                              ImageCompressFormat.jpg,
+                                          compressQuality: 100,
+                                          aspectRatio: const CropAspectRatio(
+                                              ratioX: 1, ratioY: 1),
+                                          uiSettings: uiSettings,
+                                        );
+                                        if (croppedImg != null) {
+                                          // ignore: use_build_context_synchronously
+                                          await uploadImg(
+                                                  File(croppedImg.path),
+                                                  context)
+                                              .then(
+                                                  (value) => onRefresh.call());
+                                        }
+                                      } catch (e) {
+                                        // ignore: use_build_context_synchronously
+                                        showDialog<void>(
+                                          context: context,
+                                          builder:
+                                              (BuildContext dialogContext) {
+                                            return CustomAlertDialog(
+                                              title: 'Ошибка',
+                                              content: Text(
+                                                  'Произошла ошибка: ${e.toString()}'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(dialogContext)
+                                                        .pop(); // Dismiss alert dialog
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                     },
                                   ),
                                 ],

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:yiwucloud/screens%20/check_screen.dart';
 import 'package:yiwucloud/screens%20/documents_page.dart';
+import 'package:yiwucloud/screens%20/info_page.dart';
 import 'package:yiwucloud/util/constants.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../models /build_user.dart';
@@ -135,6 +136,43 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+            // GestureDetector(
+            //   onTap: () {
+            //     Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const FinancePage()));
+            //   },
+            //   child: Container(
+            //     padding: REdgeInsets.all(10),
+            //     decoration:
+            //     BoxDecoration(color: Theme.of(context).primaryColor),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: [
+            //         Container(
+            //           width: 25,
+            //           height: 25,
+            //           decoration: BoxDecoration(
+            //             color: Colors.orange,
+            //             borderRadius: BorderRadius.circular(5),
+            //           ),
+            //           child: const Icon(
+            //             Icons.attach_money,
+            //             color: Colors.white,
+            //             size: 20,
+            //           ),
+            //         ),
+            //         SizedBox(width: 5.h),
+            //         Text('Финансы', style: TextStyles.bodyStyle),
+            //         const Spacer(),
+            //         const Icon(
+            //           Icons.arrow_forward_ios,
+            //           color: Colors.grey,
+            //           size: 15,
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -148,8 +186,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12))),
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12))),
                 padding: REdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -183,8 +221,15 @@ class _ProfilePageState extends State<ProfilePage> {
             Text('Аккаунт'.toUpperCase(), style: TextStyles.headerStyle2),
             const SizedBox(height: 10),
             GestureDetector(
-              onTap: () async {
-                _authBloc.add(DeleteAccountEvent(context: context));
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InfoPage(
+                      version: version,
+                    ),
+                  ),
+                );
               },
               child: Container(
                 padding: REdgeInsets.all(10),
@@ -194,6 +239,42 @@ class _ProfilePageState extends State<ProfilePage> {
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
                     )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: const Icon(
+                        Icons.info,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    SizedBox(width: 5.h),
+                    Text('О приложении', style: TextStyles.bodyStyle),
+                    const Spacer(),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                      size: 15,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                _authBloc.add(DeleteAccountEvent(context: context));
+              },
+              child: Container(
+                padding: REdgeInsets.all(10),
+                decoration:
+                    BoxDecoration(color: Theme.of(context).primaryColor),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -224,29 +305,29 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             GestureDetector(
               onTap: () async {
-                showDialog(context: context, builder:
-                (BuildContext context) {
-                  return CustomAlertDialog(
-                    title: "Выход из аккаунта",
-                    content: const Text("Вы действительно хотите выйти?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () async {
-                          _authBloc.add(LoggedOut());
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Да'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Нет'),
-                      ),
-                    ],
-                  );
-                }
-                );
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomAlertDialog(
+                        title: "Выход из аккаунта",
+                        content: const Text("Вы действительно хотите выйти?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () async {
+                              _authBloc.add(LoggedOut());
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Да'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Нет'),
+                          ),
+                        ],
+                      );
+                    });
               },
               child: Container(
                 padding: REdgeInsets.all(10),
@@ -284,7 +365,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 25.h),
-            Center(child: Text('Версия приложения $version', style: TextStyles.editStyle)),
+            Center(
+                child: Text('Версия приложения $version',
+                    style: TextStyles.editStyle)),
           ],
         ),
       ),
