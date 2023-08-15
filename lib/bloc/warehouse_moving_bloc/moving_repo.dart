@@ -14,6 +14,7 @@ class MovingRepo implements AbstractMoving {
     );
     final body = jsonDecode(response.body);
     final List<dynamic> data = body['data'];
+    Constants.movingPermission = body['movingPermission'];
     final moving = data.map((item) => MovingModel.fromJson(item)).toList();
     return moving;
   }

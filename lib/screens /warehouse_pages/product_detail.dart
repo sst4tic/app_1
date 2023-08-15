@@ -13,7 +13,6 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   final _detailBloc = ProductDetailBloc();
-
   @override
   void initState() {
     super.initState();
@@ -34,7 +33,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   child: CircularProgressIndicator(),
                 );
               } else if (state is ProductDetailLoaded) {
-                return buildProdDetails(state.product, context, _detailBloc);
+                return buildProdDetails(state.product, context, _detailBloc, state.warehouses, state.value);
               } else if (state is ProductDetailLoadingFailure) {
                 return Center(
                   child: Text(state.exception.toString()),

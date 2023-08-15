@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:yiwucloud/screens%20/check_screen.dart';
 import 'package:yiwucloud/screens%20/documents_page.dart';
 import 'package:yiwucloud/screens%20/info_page.dart';
+import 'package:yiwucloud/screens%20/sessions_page.dart';
 import 'package:yiwucloud/util/constants.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../models /build_user.dart';
@@ -257,6 +258,42 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     SizedBox(width: 5.h),
                     Text('О приложении', style: TextStyles.bodyStyle),
+                    const Spacer(),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                      size: 15,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const Sessions()));
+              },
+              child: Container(
+                padding: REdgeInsets.all(10),
+                decoration:
+                BoxDecoration(color: Theme.of(context).primaryColor),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: const Icon(
+                        Icons.devices,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    SizedBox(width: 5.h),
+                    Text('Активные устройства', style: TextStyles.bodyStyle),
                     const Spacer(),
                     const Icon(
                       Icons.arrow_forward_ios,

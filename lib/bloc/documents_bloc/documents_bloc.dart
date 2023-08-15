@@ -31,7 +31,6 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
       event.context.loaderOverlay.show();
       try {
         if (state is DocumentsLoaded) {
-          final type = await documentsRepo.getType();
           final documents = await documentsRepo.getDocuments(type: event.type, page: 1);
           emit(DocumentsLoaded(documents: documents, types: (state as DocumentsLoaded).types));
         }

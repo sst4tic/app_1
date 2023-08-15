@@ -25,6 +25,7 @@ showProductFilter({
             padding: REdgeInsets.symmetric(horizontal: 8, vertical: 12),
             height: MediaQuery.of(context).size.height * 0.8,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,11 +46,8 @@ showProductFilter({
                         onPressed: () async {
                           final newData = await Func().getProductsFilters();
                           innerSetState(() {
-                            for (var element in filterData) {
-                              element.initialValue = newData
-                                  .firstWhere((e) => e.name == element.name, orElse: () => element)
-                                  .initialValue;
-                            }
+                            filterData.clear();
+                            filterData.addAll(newData);
                           });
                         },
                         child: const Text(

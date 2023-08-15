@@ -16,29 +16,47 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('YiwuCloud')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBar(title: const Text('О приложении')),
+      body: ListView(
         children: [
-          Center(
-            child: Text('Версия приложения ${widget.version}',
-                style: TextStyles.editStyle.copyWith(fontSize: 15)),
+          Container(
+            decoration: Decorations.containerDecoration
+                .copyWith(borderRadius: BorderRadius.circular(0)),
+            width: double.infinity,
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/img/icon.png',
+                  width: 120.w,
+                  height: 120.h,
+                ),
+                const Text(
+                  'YiwuCloud',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  'Версия ${widget.version}',
+                  style: TextStyles.editStyle.copyWith(fontSize: 13),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
           ),
           SizedBox(height: 5.h),
-          ElevatedButton(
-            onPressed: () {
+          ListTile(
+            title: Text(
+              'Политика конфиденциальности',
+              style: TextStyles.editStyle.copyWith(fontSize: 14),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {
               launchUrlString('https://yiwumart.org/privacy-policy',
                   mode: LaunchMode.externalApplication);
             },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 35.h),
-            ),
-            child: const Text('Политика конфиденциальности'),
           ),
         ],
       ),

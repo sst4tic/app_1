@@ -134,7 +134,7 @@ Widget buildUser(
                                                 TextButton(
                                                   onPressed: () {
                                                     Navigator.of(dialogContext)
-                                                        .pop(); // Dismiss alert dialog
+                                                        .pop();
                                                   },
                                                   child: const Text('OK'),
                                                 ),
@@ -179,8 +179,7 @@ Widget buildUser(
                                         );
                                         if (croppedImg != null) {
                                           // ignore: use_build_context_synchronously
-                                          await uploadImg(
-                                                  File(croppedImg.path),
+                                          await uploadImg(File(croppedImg.path),
                                                   context)
                                               .then(
                                                   (value) => onRefresh.call());

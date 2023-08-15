@@ -9,17 +9,23 @@ class ProductDetails {
     this.totalCount,
     required this.price,
     required this.editPermission,
+    this.availability,
+    this.inSale,
+    this.preorders,
   });
 
   late final int id;
   late final String name;
-  late final String createdAt;
+  String? createdAt;
   late final sku;
   late final int price;
   late final String? description;
   late final List<Media> media;
   late final int? totalCount;
   late final bool editPermission;
+  late final Availability? availability;
+  late final InSale? inSale;
+  late final Preorders? preorders;
 
   ProductDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -33,6 +39,9 @@ class ProductDetails {
         .toList();
     totalCount = json['warehouse_total_count'];
     editPermission = json['locationEditBtn'];
+    availability = json['availability'] != null ? Availability.fromJson(json['availability']) : null;
+    inSale = json['in_sale'] != null ? InSale.fromJson(json['in_sale']) : null;
+    preorders = json['preorders'] != null ? Preorders.fromJson(json['preorders']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -131,6 +140,104 @@ class Warehouses {
     return data;
   }
 }
+
+class Availability {
+  Availability({
+    required this.total,
+    required this.list,
+  });
+  late final int total;
+  late final List<ListModel> list;
+
+  Availability.fromJson(Map<String, dynamic> json){
+    total = json['total'];
+    list = List.from(json['list']).map((e)=>ListModel.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['total'] = total;
+    data['list'] = list.map((e)=>e.toJson()).toList();
+    return data;
+  }
+}
+
+class InSale {
+  InSale({
+    required this.total,
+    required this.list,
+  });
+  late final int total;
+  late final List<ListModel> list;
+
+  InSale.fromJson(Map<String, dynamic> json){
+    total = json['total'];
+    list = List.from(json['list']).map((e)=>ListModel.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['total'] = total;
+    data['list'] = list.map((e)=>e.toJson()).toList();
+    return data;
+  }
+}
+
+class Preorders {
+  Preorders({
+    required this.total,
+    required this.list,
+  });
+  late final int total;
+  late final List<ListModel> list;
+
+  Preorders.fromJson(Map<String, dynamic> json){
+    total = json['total'];
+    list = List.from(json['list']).map((e)=>ListModel.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['total'] = total;
+    data['list'] = list.map((e)=>e.toJson()).toList();
+    return data;
+  }
+}
+
+
+class ListModel {
+  ListModel({
+     this.name,
+     this.wId,
+     this.qty,
+     this.id,
+     this.invoiceId,
+  });
+  late final String? name;
+  late final int? wId;
+  late final int? qty;
+  late final int? id;
+  late final String? invoiceId;
+
+  ListModel.fromJson(Map<String, dynamic> json){
+    name = json['name'];
+    wId = json['w_id'];
+    qty = json['qty'];
+    id = json['id'];
+    invoiceId = json['invoice_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['name'] = name;
+    _data['w_id'] = wId;
+    _data['qty'] = qty;
+    _data['id'] = id;
+    _data['invoice_id'] = invoiceId;
+    return _data;
+  }
+}
+
 
 class ProductDetailsWithWarehouses {
   final ProductDetails data;

@@ -156,7 +156,7 @@ class _ProductHistoryState extends State<ProductHistory> {
                   bottom: MediaQuery.of(context).size.height * 0.04),
               child: Center(
                   child:
-                      hasMore
+                      hasMore && list.length >= 10
                       ? const CircularProgressIndicator()
                       : const Text('Больше данных нет')))
         ),

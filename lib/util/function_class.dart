@@ -16,6 +16,7 @@ import 'filter_list_model.dart';
 import 'notification_model.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
+
 class Func {
   showSnackbar(context, String text, bool success) {
     success
@@ -67,6 +68,36 @@ class Func {
         .toList();
     return ProductDetailsWithWarehouses(data: data, warehouses: wareHouse);
   }
+  // for get in sale in prod details
+  Future<InSale> getInSale({required int prodId, required int warehouseId}) async {
+    var url = '${Constants.API_URL_DOMAIN}action=product_details_in_sale&product_id=$prodId&warehouse_id=$warehouseId';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    final data = InSale.fromJson(body['data']['in_sale']);
+    return data;
+  }
+
+  // func for getting user device and browser name
+  String getDeviceNameFromUserAgent(String userAgent) {
+    RegExp regExp = RegExp(r'\(([^;]+);');
+    Match? match = regExp.firstMatch(userAgent);
+    if (match != null) {
+      String deviceInfo = match.group(1) ?? '';
+      return deviceInfo.trim();
+    }
+    return '';
+  }
+
+  String getBrowserNameFromUserAgent(String userAgent) {
+    RegExp regExp = RegExp(r'([A-Za-z]+\/[\d\.]+)');
+    Match? match = regExp.firstMatch(userAgent);
+    if (match != null) {
+      String browserInfo = match.group(1) ?? '';
+      return browserInfo.trim();
+    }
+    return '';
+  }
 
   // for change location
   Future changeLocation(
@@ -81,12 +112,12 @@ class Func {
     return body;
   }
 
-  Future loadWarehousesList() async {
-    var url = '${Constants.API_URL_DOMAIN}action=warehouses_list';
+  Future loadWarehousesList([inSale = 1]) async {
+    var url = '${Constants.API_URL_DOMAIN}action=warehouses_list&in_sale=$inSale';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
-    return body;
+    return body['data'];
   }
 
   Future<List<CommentModel>> getComments({required int id}) async {

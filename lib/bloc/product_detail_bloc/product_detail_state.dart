@@ -8,8 +8,10 @@ class ProductDetailLoading extends ProductDetailState {}
 
 class ProductDetailLoaded extends ProductDetailState {
   final ProductDetailsWithWarehouses product;
+  final List<DropdownMenuItem> warehouses;
+  final String value;
 
-  ProductDetailLoaded({required this.product});
+  ProductDetailLoaded({required this.product, required this.warehouses, required this.value});
   List<Object?> get props => [product];
 }
 

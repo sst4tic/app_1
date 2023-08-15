@@ -19,3 +19,13 @@ class ChangeLocation extends ProductDetailEvent {
 
   ChangeLocation({required this.location, this.completer, required this.productId, required this.warehouseId, required this.context});
 }
+
+class ChangeWarehouseInSale extends ProductDetailEvent {
+  final int warehouseId;
+  final int productId;
+  final BuildContext context;
+
+  final Completer? completer;
+
+  ChangeWarehouseInSale({required this.warehouseId, this.completer, required this.productId, required this.context});
+}

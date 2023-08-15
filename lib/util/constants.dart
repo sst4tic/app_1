@@ -5,7 +5,8 @@ class Constants {
   static String header = 'Authorization';
   static String bearer = '';
   static String useragent = '';
-  static headers() => {header: bearer, 'user-agent': 'YiwuMart: test'};
+  static headers() => {header: bearer, 'user-agent': 'YiwuMart: $useragent'};
   static String startAt = '';
   static String endAt = '';
+  static bool movingPermission = false;
 }
