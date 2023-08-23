@@ -8,6 +8,7 @@ showFilter({
   required BuildContext context,
   required FilterModel filterData,
   Function(String)? onSubmitted,
+  required Function(bool) isFilter,
 }) =>
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -17,6 +18,7 @@ showFilter({
       backgroundColor: Colors.white,
       isScrollControlled: true,
       builder: (context) {
+        bool filterVal = true;
         final shipmentItems = filterData.shipmentType!.childData
             .map((e) => DropdownMenuItem(
                   value: e.value,
@@ -81,6 +83,7 @@ showFilter({
                                 filterData.shipmentPoint!.childData[0].value;
                             statusInitialVal =
                                 filterData.status!.childData[0].value;
+                            filterVal = false;
                           });
                         },
                         child: const Text(
@@ -208,6 +211,7 @@ showFilter({
                           saleChannelInitialVal;
                       filterData.shipmentType!.initialValue =
                           shipmentInitialVal;
+                      isFilter(filterVal);
                       onSubmitted!(apiFilter);
                       Navigator.pop(context);
                     },

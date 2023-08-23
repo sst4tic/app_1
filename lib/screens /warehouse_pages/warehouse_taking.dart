@@ -22,6 +22,7 @@ class _WarehouseTakingState extends State<WarehouseTaking>
   TabController? _tabController;
   final ScrollController _sController = ScrollController();
   final ScrollController _sControllerCompleted = ScrollController();
+  bool isFilter = false;
 
   @override
   void initState() {
@@ -65,15 +66,36 @@ class _WarehouseTakingState extends State<WarehouseTaking>
               },
               icon: const Icon(Icons.qr_code_scanner),
             ),
-            IconButton(
-              onPressed: () {
-                showFilter(
-                    context: context,
-                    onSubmitted: (filter) =>
-                        _takingBloc.add(LoadWarehouseTaking(filters: filter)),
-                    filterData: filterData);
-              },
-              icon: const Icon(Icons.filter_alt),
+            Stack(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    showFilter(
+                        context: context,
+                        isFilter: (val) => isFilter = val,
+                        onSubmitted: (filter) =>
+                            _takingBloc.add(LoadWarehouseTaking(filters: filter)),
+                        filterData: filterData);
+                  },
+                  icon: const Icon(Icons.filter_alt),
+                ),
+                if (isFilter)
+                  Positioned(
+                  right: 10,
+                  bottom: 27,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 9,
+                      minHeight: 9,
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
           bottom: PreferredSize(

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/models%20/workpace_model.dart';
 import '../../models /custom_dialogs_model.dart';
 import 'check_repo.dart';
@@ -70,6 +71,68 @@ class CheckBloc extends Bloc<CheckEvent, CheckState> {
                                     )
                                   ],
                                 );
+                        });
+                  },
+                  child: const Text('Да'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Нет'),
+                )
+              ],
+            );
+          });
+    });
+
+    on<LocationPostEvent>((event, emit) async {
+      showDialog(
+          context: event.context,
+          builder: (context) {
+            return CustomAlertDialog(
+              title: 'Подтверждение',
+              content: const Text('Вы действительно хотите отправить геолокацию?'),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    context.loaderOverlay.show();
+                    final check = await checkRepo.locationPost(
+                        lat: event.lat.toString(),
+                        lon: event.lon.toString(),
+                        type: event.type);
+                    event.context.loaderOverlay.hide();
+                    // ignore: use_build_context_synchronously
+                    showDialog(
+                        context: event.context,
+                        builder: (context) {
+                          return check['success']
+                              ? CustomAlertDialog(
+                            title: 'Успешно',
+                            content: Text(check['message']),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(context);
+                                  add(LoadCheck());
+                                },
+                                child: const Text('Ок'),
+                              )
+                            ],
+                          )
+                              : CustomAlertDialog(
+                            title: 'Ошибка',
+                            content: Text(check['message']),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Ок'),
+                              )
+                            ],
+                          );
                         });
                   },
                   child: const Text('Да'),

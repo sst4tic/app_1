@@ -7,7 +7,7 @@ import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/function_class.dart';
 import 'barcode_scanner_page.dart';
 import 'home_page.dart';
-import 'profile_page.dart';
+import 'profile/profile_page.dart';
 
 GlobalKey<MainScreenState> scakey = GlobalKey<MainScreenState>();
 final tabNavKeys = <GlobalKey<NavigatorState>>[

@@ -9,11 +9,13 @@ class WarehouseArrivalBloc extends Bloc<WarehouseArrivalEvent, WarehouseArrivalS
   WarehouseArrivalBloc() : super(WarehouseArrivalInitial()) {
     final arrivalRepo = ArrivalRepo();
     int page = 1;
+    String filters = '';
     on<LoadArrival>((event, emit) async {
       try {
         if (state is! WarehouseArrivalLoading) {
           emit(WarehouseArrivalLoading());
-          final warehouseArrival = await arrivalRepo.getArrival(page: page);
+          filters = event.filters ?? '';
+          final warehouseArrival = await arrivalRepo.getArrival(page: page, filters: filters);
           emit(WarehouseArrivalLoaded(
               warehouseArrival: warehouseArrival, page: 1, hasMore: true));
         }
@@ -28,7 +30,7 @@ class WarehouseArrivalBloc extends Bloc<WarehouseArrivalEvent, WarehouseArrivalS
       try {
         if(state is WarehouseArrivalLoaded && state.hasMore) {
           final warehouseArrival = (state as WarehouseArrivalLoaded).warehouseArrival;
-          final newWarehouseArrival = await arrivalRepo.getArrival(page: state.page + 1);
+          final newWarehouseArrival = await arrivalRepo.getArrival(page: state.page + 1, filters: filters);
           warehouseArrival.addAll(newWarehouseArrival);
           emit(WarehouseArrivalLoaded(
               warehouseArrival: warehouseArrival,

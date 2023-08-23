@@ -5,6 +5,7 @@ class SalesDetailsModel {
     required this.client,
     required this.manager,
     required this.printUrl,
+    this.editUrl,
     this.btnAct,
     required this.btnText,
     this.products,
@@ -28,6 +29,7 @@ class SalesDetailsModel {
   late final Client client;
   late final Manager manager;
   late final String printUrl;
+  late final String? editUrl;
   late final String? btnAct;
   late final String btnText;
   late final List<Products>? products;
@@ -59,6 +61,7 @@ class SalesDetailsModel {
     client = Client.fromJson(json['client']);
     manager = Manager.fromJson(json['manager']);
     printUrl = json['print_url'];
+    editUrl = json['edit_url'];
     btnAct = json['btnAct'];
     btnText = json['btnText'] ?? '';
     products = json['products'] != null
@@ -96,6 +99,7 @@ class SalesDetailsModel {
     data['client'] = client.toJson();
     data['manager'] = manager.toJson();
     data['print_url'] = printUrl;
+    data['edit_url'] = editUrl;
     data['btnAct'] = btnAct;
     data['btnText'] = btnText;
     data['products'] = products?.map((e) => e.toJson()).toList();

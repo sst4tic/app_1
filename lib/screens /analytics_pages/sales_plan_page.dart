@@ -1,11 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:yiwucloud/models%20/sales_plan_list_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:yiwucloud/screens%20/plan_view_page.dart';
+import 'package:yiwucloud/screens%20/analytics_pages/plan_view_page.dart';
 import 'package:yiwucloud/util/styles.dart';
-import '../util/constants.dart';
+import '../../util/constants.dart';
 
 class SalesPlanPage extends StatefulWidget {
   const SalesPlanPage({Key? key}) : super(key: key);

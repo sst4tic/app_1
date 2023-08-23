@@ -157,6 +157,14 @@ final lightTheme = ThemeData(
       borderSide: const BorderSide(color: Colors.red, width: 1),
       borderRadius: BorderRadius.circular(10),
     ),
+    enabledBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+    ),
+    disabledBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+    ),
   ),
   expansionTileTheme: const ExpansionTileThemeData(
       collapsedTextColor: ColorStyles.primaryColor,

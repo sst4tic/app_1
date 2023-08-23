@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:yiwucloud/models%20/search_model.dart';
 import '../../bloc/products_bloc/products_bloc.dart';
 import '../../models /build_product_filter.dart';
 import '../../models /build_warehouse_models.dart';
 import '../../models /product_filter_model.dart';
-import '../../util/function_class.dart';
 
 class AllProductsPage extends StatefulWidget {
   const AllProductsPage({Key? key}) : super(key: key);
@@ -17,7 +17,8 @@ class AllProductsPage extends StatefulWidget {
 class _AllProductsPageState extends State<AllProductsPage> {
   final productsBloc = ProductsBloc();
   final ScrollController _sController = ScrollController();
-  late final List<ProductFilterModel> filterData;
+  bool isFilter = false;
+  final productFilterBox = Hive.box<List<ProductFilterModel>>('product_filter');
 
   @override
   void initState() {
@@ -31,28 +32,46 @@ class _AllProductsPageState extends State<AllProductsPage> {
     });
   }
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    filterData = await Func().getProductsFilters();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           actions: [
-            IconButton(
-              onPressed: () async {
-                showProductFilter(
-                  context: context,
-                  filterData: filterData,
-                  onSubmitted: (value) {
-                    productsBloc.add(LoadProducts(filters: value));
+            Stack(
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    showProductFilter(
+                      context: context,
+                      filterData: productFilterBox.get('product_filter') ?? [],
+                      onSubmitted: (value) {
+                        productsBloc.add(LoadProducts(filters: value));
+                      },
+                      isFilter: (val) => setState(() => isFilter = val),
+                      type: 'all_products'
+                    );
                   },
-                );
-              },
-              icon: const Icon(Icons.filter_alt),
+
+                  icon: const Icon(Icons.filter_alt),
+                ),
+                if (isFilter)
+                  Positioned(
+                    right: 10,
+                    bottom: 27,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 9,
+                        minHeight: 9,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ],
           title: const Text('Все товары'),

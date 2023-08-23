@@ -21,6 +21,7 @@ class _ProductsMovingState extends State<ProductsMoving> {
   final _movingBloc = WarehouseMovingBloc();
   final ScrollController _sController = ScrollController();
   late final List<ProductFilterModel> filterData;
+  bool isFilter = false;
 
   @override
   void initState() {
@@ -62,16 +63,39 @@ class _ProductsMovingState extends State<ProductsMoving> {
                         onSubmitted: (value) =>
                             _movingBloc.add(LoadMoving(query: value))),
                     actions: [
-                      IconButton(
-                        onPressed: () {
-                          showProductFilter(
-                            context: context,
-                            onSubmitted: (value) {
-                              _movingBloc.add(LoadMoving(filters: value));
-                            }, filterData: filterData,
-                          );
-                        },
-                        icon: const Icon(Icons.filter_alt),
+                      Stack(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showProductFilter(
+                                context: context,
+                                onSubmitted: (value) {
+                                  _movingBloc.add(LoadMoving(filters: value));
+                                },
+                                isFilter: (val) => setState(() => isFilter = val),
+                                filterData: filterData,
+                                type: 'moving'
+                              );
+                            },
+                            icon: const Icon(Icons.filter_alt),
+                          ),
+                          if (isFilter)
+                            Positioned(
+                              right: 10,
+                              bottom: 27,
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                constraints: const BoxConstraints(
+                                  minWidth: 9,
+                                  minHeight: 9,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                       Constants.movingPermission ? IconButton(
                         onPressed: () {

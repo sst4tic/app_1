@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yiwucloud/screens%20/auth/login.dart';
 import 'package:yiwucloud/screens%20/main_screen.dart';
 import 'package:yiwucloud/util/constants.dart';
+import 'package:yiwucloud/util/hive_service.dart';
 import 'package:yiwucloud/util/notification_service.dart';
 import 'package:yiwucloud/util/styles.dart';
 import 'bloc/auth_bloc/auth_bloc.dart';
@@ -30,6 +31,7 @@ void main() async {
   await Permission.notification.request();
   NotificationService().initNotifications();
   tz.initializeTimeZones();
+  await HiveService().initHive();
   runApp(const MyApp());
 }
 
@@ -65,11 +67,13 @@ class _MyAppState extends State<MyApp> {
       if (Platform.isAndroid) {
         AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
         setState(() {
+          Constants.platform = 'Android';
           Constants.useragent = androidInfo.model;
         });
       } else if (Platform.isIOS) {
         IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
         setState(() {
+          Constants.platform = 'IOS';
           Constants.useragent = iosInfo.utsname.machine;
         });
       }

@@ -7,8 +7,10 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_comments_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales_details_chronology.dart';
+import 'package:yiwucloud/util/sales_details_model.dart';
 import '../../../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../../../models /build_sales_details.dart';
+import '../../invoice_edit_page.dart';
 
 class WareHouseSalesDetails extends StatefulWidget {
   const WareHouseSalesDetails(
@@ -57,11 +59,13 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       ? IconButton(
                           onPressed: () {
                             bottomSheet(
+                              salesDetails: state.salesDetails,
                                 boxesQty: state.salesDetails.boxesQty ?? 0,
-                                btnChronology: state.salesDetails.btnChronology,
-                                btnBan: state.salesDetails.btnBan,
-                                btnPrint: state.salesDetails.btnPrint,
-                                btnPostpone: state.salesDetails.btnPostpone);
+                                // btnChronology: state.salesDetails.btnChronology,
+                                // btnBan: state.salesDetails.btnBan,
+                                // btnPrint: state.salesDetails.btnPrint,
+                                // btnPostpone: state.salesDetails.btnPostpone
+                            );
                           },
                           icon: const Icon(Icons.more_horiz),
                         )
@@ -86,11 +90,8 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
   }
 
   bottomSheet(
-      {required bool btnChronology,
-      required bool btnBan,
-      required bool btnPrint,
-      required bool btnPostpone,
-      required int boxesQty,
+      {required SalesDetailsModel salesDetails,
+        boxesQty
       }) {
     return showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -111,7 +112,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 8.h),
-              if (btnChronology)
+              if (salesDetails.btnChronology)
                 ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -126,15 +127,15 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       backgroundColor: Colors.blue[400],
                       minimumSize: const Size(double.infinity, 40),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('Хронология'),
                         Icon(FontAwesomeIcons.codeBranch)
                       ],
                     )),
               SizedBox(height: 3.h),
-              if (btnPrint)
+              if (salesDetails.btnPrint)
                 ElevatedButton(
                     onPressed: () {
                       launchUrlString(printUrl,
@@ -144,9 +145,9 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       backgroundColor: Colors.blue[400],
                       minimumSize: const Size(double.infinity, 40),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('Печать накладной'),
                         Icon(FontAwesomeIcons.print)
                       ],
@@ -162,9 +163,9 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       backgroundColor: Colors.blue[400],
                       minimumSize: const Size(double.infinity, 40),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('Печать баркода товаров'),
                         Icon(FontAwesomeIcons.barcode)
                       ],
@@ -254,9 +255,9 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                     backgroundColor: Colors.blue[400],
                     minimumSize: const Size(double.infinity, 40),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('Печать баркода коробок'),
                       Icon(FontAwesomeIcons.box),
                     ],
@@ -276,15 +277,15 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                     backgroundColor: Colors.blue[400],
                     minimumSize: const Size(double.infinity, 40),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('Комментарии'),
                       Icon(FontAwesomeIcons.comment)
                     ],
                   )),
-              SizedBox(height: btnPostpone ? 3.h : 0),
-              if (btnPostpone)
+              SizedBox(height: salesDetails.btnPostpone ? 3.h : 0),
+              if (salesDetails.btnPostpone)
                 ElevatedButton(
                     onPressed: () {
                       _detailsBloc
@@ -294,15 +295,32 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       backgroundColor: Colors.yellow[700],
                       minimumSize: const Size(double.infinity, 40),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('Отложить накладную'),
                         Icon(FontAwesomeIcons.pause)
                       ],
                     )),
+              SizedBox(height: salesDetails.editUrl != null ? 3.h : 0),
+              if (salesDetails.editUrl != null)
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => InvoiceEditPage(url: salesDetails.editUrl!)));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: const Size(double.infinity, 40),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Редактировать накладную'),
+                        Icon(FontAwesomeIcons.penToSquare)
+                      ],
+                    )),
               SizedBox(height: 3.h),
-              if (btnBan)
+              if (salesDetails.btnBan)
                 ElevatedButton(
                     onPressed: () {
                       _detailsBloc.add(MovingRedirectionEvent(
@@ -315,9 +333,9 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       backgroundColor: Colors.red[900],
                       minimumSize: const Size(double.infinity, 40),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('Отменить накладную'),
                         Icon(FontAwesomeIcons.ban)
                       ],

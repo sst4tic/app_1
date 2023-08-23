@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:yiwucloud/screens%20/check_screen.dart';
-import 'package:yiwucloud/screens%20/documents_page.dart';
-import 'package:yiwucloud/screens%20/info_page.dart';
-import 'package:yiwucloud/screens%20/sessions_page.dart';
+import 'package:yiwucloud/screens%20/profile/check_screen.dart';
+import 'package:yiwucloud/screens%20/profile/documents_page.dart';
+import 'package:yiwucloud/screens%20/profile/info_page.dart';
+import 'package:yiwucloud/screens%20/profile/sessions_page.dart';
 import 'package:yiwucloud/util/constants.dart';
-import '../bloc/auth_bloc/auth_bloc.dart';
-import '../models /build_user.dart';
-import '../models /custom_dialogs_model.dart';
-import '../util/styles.dart';
-import '../util/user.dart';
+import '../../bloc/auth_bloc/auth_bloc.dart';
+import '../../models /build_user.dart';
+import '../../models /custom_dialogs_model.dart';
+import '../../util/styles.dart';
+import '../../util/user.dart';
 import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {

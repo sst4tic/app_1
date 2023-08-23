@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:yiwucloud/bloc/plan_view_bloc/plan_view_bloc.dart';
-
-import '../models /plan_view_model.dart';
-import '../util/styles.dart';
+import '../../models /plan_view_model.dart';
+import '../../util/styles.dart';
 
 class PlanViewPage extends StatefulWidget {
   const PlanViewPage({Key? key, required this.hash}) : super(key: key);

@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
-import '../bloc/attendance_bloc/attendance_bloc.dart';
-import '../models /attendance_model.dart';
-import '../util/styles.dart';
+import '../../bloc/attendance_bloc/attendance_bloc.dart';
+import '../../models /attendance_model.dart';
+import '../../util/styles.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -51,10 +51,13 @@ class _AttendancePageState extends State<AttendancePage> {
       return true;
     } else if (scheduleHour == arrivalHour && scheduleMinute > arrivalMinute) {
       return true;
+    } else if (scheduleHour == arrivalHour && scheduleMinute == arrivalMinute) {
+      return true;
     } else {
       return false;
     }
   }
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(

@@ -6,8 +6,8 @@ import '../../util/constants.dart';
 
 class ArrivalRepo implements AbstractArrival {
   @override
-  Future<List<ArrivalModel>> getArrival({required int page}) async {
-    var url = '${Constants.API_URL_DOMAIN}action=arrival_list&page=$page';
+  Future<List<ArrivalModel>> getArrival({required int page, String? filters}) async {
+    var url = '${Constants.API_URL_DOMAIN}action=arrival_list&page=$page&${filters ?? ''}';
     final response = await http.get(
         Uri.parse(url),
         headers: Constants.headers()

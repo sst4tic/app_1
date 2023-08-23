@@ -466,9 +466,9 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
                         ],
                       ),
                       const Divider(),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text('Адрес доставки:'),
                         ],
                       ),

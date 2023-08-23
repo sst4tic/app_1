@@ -2,15 +2,15 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiwucloud/models%20/product_filter_model.dart';
-import 'package:yiwucloud/util/function_class.dart';
-
+import '../util/function_class.dart';
 import '../util/styles.dart';
 
-showProductFilter({
-  required BuildContext context,
-  required List<ProductFilterModel> filterData,
-  Function(String)? onSubmitted,
-}) {
+showProductFilter(
+    {required BuildContext context,
+    required List<ProductFilterModel> filterData,
+    Function(String)? onSubmitted,
+    required Function(bool) isFilter,
+    required String type}) {
   final searchController = TextEditingController();
   showModalBottomSheet(
       context: context,
@@ -20,6 +20,7 @@ showProductFilter({
       ),
       isScrollControlled: true,
       builder: (context) {
+        bool filterVal = true;
         return StatefulBuilder(builder: (context, innerSetState) {
           return Container(
             padding: REdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -44,11 +45,28 @@ showProductFilter({
                     ),
                     TextButton(
                         onPressed: () async {
-                          final newData = await Func().getProductsFilters();
-                          innerSetState(() {
-                            filterData.clear();
-                            filterData.addAll(newData);
-                          });
+                          filterVal = false;
+                          if (type == 'all_products') {
+                            var data = await Func().getProductsFilters();
+                            innerSetState(() {
+                              filterData = data;
+                            });
+                          } else if (type == 'operations') {
+                            var data = await Func().getOperationFilters();
+                            innerSetState(() {
+                              filterData = data;
+                            });
+                          } else if (type == 'arrival') {
+                            var data = await Func().getArrivalFilters();
+                            innerSetState(() {
+                              filterData = data;
+                            });
+                          } else if (type == 'moving') {
+                            var data = await Func().getMovingFilters();
+                            innerSetState(() {
+                              filterData = data;
+                            });
+                          }
                         },
                         child: const Text(
                           'Сбросить',
@@ -97,9 +115,12 @@ showProductFilter({
                                     searchInnerWidgetHeight: 50,
                                     searchController: searchController,
                                     searchMatchFn: (item, searchValue) {
-                                      String itemValue = item.child.toString().toLowerCase();
-                                      String searchValueLower = searchValue.toLowerCase();
-                                      bool containsValue = itemValue.contains(searchValueLower);
+                                      String itemValue =
+                                          item.child.toString().toLowerCase();
+                                      String searchValueLower =
+                                          searchValue.toLowerCase();
+                                      bool containsValue =
+                                          itemValue.contains(searchValueLower);
                                       return containsValue;
                                     },
                                   )
@@ -140,6 +161,7 @@ showProductFilter({
                         .map((e) => '${e.value}=${e.initialValue}')
                         .join('&');
                     onSubmitted!(filter);
+                    isFilter(filterVal);
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(

@@ -1,6 +1,9 @@
-import 'package:yiwucloud/util/filter_list_model.dart';
+import 'package:hive/hive.dart';
+part 'product_filter_model.g.dart';
 
-class ProductFilterModel {
+
+@HiveType(typeId: 1)
+class ProductFilterModel extends HiveObject {
   ProductFilterModel({
     required this.value,
     required this.name,
@@ -8,17 +11,24 @@ class ProductFilterModel {
     required this.childData,
   });
 
-  var value;
+  @HiveField(0)
+  late dynamic value;
+
+  @HiveField(1)
   String? name;
-  var initialValue;
-  late final  List<ChildData> childData;
+
+  @HiveField(2)
+  late dynamic initialValue;
+
+  @HiveField(3)
+  late List<ChildDataProduct> childData;
 
   ProductFilterModel.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
     childData = List.from(json['data'])
-        .map((e) => ChildData.fromJson(e))
+        .map((e) => ChildDataProduct.fromJson(e))
         .toList();
   }
 
@@ -28,6 +38,28 @@ class ProductFilterModel {
     data['name'] = name;
     data['initial_value'] = initialValue;
     data['data'] = childData.map((e) => e.toJson()).toList();
+    return data;
+  }
+}
+
+@HiveType(typeId: 2)
+class ChildDataProduct extends HiveObject {
+  ChildDataProduct({
+    required this.value,
+    required this.text,
+  });
+  late final dynamic value;
+  late final String text;
+
+  ChildDataProduct.fromJson(Map<String, dynamic> json){
+    value = json['value'];
+    text = json['text'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['value'] = value;
+    data['text'] = text;
     return data;
   }
 }

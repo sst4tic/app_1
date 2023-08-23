@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:yiwucloud/screens%20/warehouse_pages/create_arrival_page.dart';
+import 'package:yiwucloud/models%20/operations_model.dart';
+import 'package:yiwucloud/screens%20/arrival_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/moving_model.dart';
-import '../bloc/warehouse_arrival_bloc/warehouse_arrival_bloc.dart';
 import '../screens /warehouse_pages/product_detail.dart';
 import '../util/arrival_model.dart';
 import '../util/product.dart';
@@ -16,193 +15,164 @@ import '../util/warehouse_sale.dart';
 Widget buildArrival(
     {required List<ArrivalModel> arrival,
     required ScrollController controller,
-    required BuildContext context}) {
-  return CustomScrollView(
-    controller: controller,
-    slivers: [
-      SliverToBoxAdapter(
-        child: Container(
-          padding: REdgeInsets.only(left: 8, right: 8, top: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CreateArrivalPage(),
-                      ));
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 7, right: 7),
-                  height: 40,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: const Center(
-                    child: Text(
-                      'Новый приход',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ),
+    required BuildContext context,
+    required VoidCallback onRefresh,
+    required bool hasMore}) {
+  return RefreshIndicator(
+    onRefresh: () async {
+      onRefresh();
+    },
+    child: CustomScrollView(
+      controller: controller,
+      slivers: [
+        SliverToBoxAdapter(
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: REdgeInsets.all(8),
+            itemCount: arrival.length,
+            itemBuilder: (context, index) {
+              final arrivalItem = arrival[index];
+              return Container(
+                padding: REdgeInsets.symmetric(horizontal: 12),
+                margin: REdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      SliverToBoxAdapter(
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),
-          itemCount: arrival.length,
-          itemBuilder: (context, index) {
-            final arrivalItem = arrival[index];
-            return Container(
-              margin: REdgeInsets.symmetric(vertical: 8),
-              padding: REdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '# ${arrivalItem.id}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).scaffoldBackgroundColor,
-                              elevation: 0),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.visibility,
-                                color: Theme.of(context).primaryColorLight,
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'Открыть',
-                                style: TextStyle(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '# ${arrivalItem.id}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13),
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return ArrivalDetailsPage(
+                                    id: arrivalItem.id.toString(),
+                                  );
+                                },
+                              ));
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                elevation: 0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.visibility,
                                   color: Theme.of(context).primaryColorLight,
                                 ),
-                              )
-                            ],
-                          ))
-                    ],
-                  ),
-                  const Divider(
-                    height: 0,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text('менеджер'.toUpperCase(), style: TextStyles.editStyle),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.circle,
-                          size: 12,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(arrivalItem.managerName,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 13)),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Text(
+                                  'Открыть',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                )
+                              ],
+                            ))
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'куда '.toUpperCase(),
-                    style: TextStyles.editStyle,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: REdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
+                    const Divider(
+                      height: 0,
                     ),
-                    child: Center(
-                      child: Text(arrivalItem.warehouseName,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13)),
+                    SizedBox(
+                      height: 5.h,
                     ),
-                  ),
-                  const Divider(),
-                  Center(
-                    child: Text(
-                      'Создано: ${arrivalItem.createdAt}',
+                    Text('менеджер'.toUpperCase(), style: TextStyles.editStyle),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.circle,
+                            size: 12,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(arrivalItem.managerName,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 13)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'куда '.toUpperCase(),
                       style: TextStyles.editStyle,
                     ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                ],
-              ),
-            );
-          },
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(arrivalItem.warehouseName,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13)),
+                      ),
+                    ),
+                    const Divider(),
+                    Center(
+                      child: Text(
+                        'Создано: ${arrivalItem.createdAt}',
+                        style: TextStyles.editStyle,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
-      ),
-      BlocBuilder<WarehouseArrivalBloc, WarehouseArrivalState>(
-        builder: (context, state) {
-          if (state is WarehouseArrivalLoadingMore) {
-            return const SliverToBoxAdapter(
-              child: Text('Больше нет данных'),
-            );
-          } else {
-            return const SliverToBoxAdapter(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-        },
-      ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return SizedBox(
-              height: 20.h,
-            );
-          },
-          childCount: 1,
+        SliverToBoxAdapter(
+          child: Center(
+              child: arrival.length <= 10 || hasMore == false
+                  ? const Text('Больше нет данных')
+                  : const CircularProgressIndicator()),
         ),
-      ),
-    ],
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return SizedBox(
+                height: 20.h,
+              );
+            },
+            childCount: 1,
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -247,7 +217,7 @@ Widget buildSales(
         ),
         SliverToBoxAdapter(
           child: ListView.builder(
-            padding: REdgeInsets.only(left: 8, right: 8, bottom: 8),
+            padding: REdgeInsets.all(8),
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -915,5 +885,282 @@ Widget buildMoving({
         ),
       ),
     ],
+  );
+}
+
+Widget buildOperations(
+    {required OperationModel operationModel,
+    required ScrollController controller,
+    required BuildContext context,
+    required VoidCallback onRefresh,
+    required bool hasMore}) {
+  final operationList = operationModel.operations;
+  return RefreshIndicator(
+    onRefresh: () async {
+      onRefresh();
+    },
+    child: CustomScrollView(
+      controller: controller,
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                padding: REdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Сумма поступлений:'.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      operationModel.totalSumIncome,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(height: 0),
+              Container(
+                color: Colors.white,
+                padding: REdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Сумма расходов:'.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      operationModel.totalSumExpense,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(height: 0),
+              Container(
+                color: Colors.white,
+                padding: REdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Сальдо:'.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      operationModel.totalSaldo,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: ListView.builder(
+            padding: REdgeInsets.all(8),
+            scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: operationList.length,
+            itemBuilder: (context, index) {
+              final operations = operationList[index];
+              return Container(
+                padding: REdgeInsets.symmetric(horizontal: 12),
+                margin: REdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.transparent),
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          '#${operations.id}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13),
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          height: 25.h,
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      height: 0,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: operations.typeName == 'Поступление'
+                            ? Colors.green[200]
+                            : (operations.typeName == 'Расход'
+                                ? Colors.red[200]
+                                : Theme.of(context).scaffoldBackgroundColor),
+                        borderRadius: BorderRadius.circular(8),
+                        border: operations.typeName == 'Поступление'
+                            ? Border.all(color: Colors.green, width: 1.5)
+                            : (operations.typeName == 'Расход'
+                                ? Border.all(color: Colors.red, width: 1.5)
+                                : Border.all(color: Colors.transparent)),
+                      ),
+                      child: Center(
+                        child: Text(
+                          operations.typeName.toUpperCase(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'счет'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(operations.billName,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'сотрудник'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Container(
+                      padding: REdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(operations.managerName,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      'комментарии'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    InkWell(
+                      hoverColor: Colors.red,
+                      onTap: () {
+                        operations.invoiceId != null ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WareHouseSalesDetails(
+                              invoiceId: operations.invoiceId!,
+                              id: operations.id,
+                            ),
+                          ),
+                        ) : null;
+                      },
+                      child: Container(
+                        padding:
+                            REdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(operations.comments ?? 'Нет сообщений',
+                                style:
+                                    const TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    const Divider(),
+                    Text(
+                      'сумма'.toUpperCase(),
+                      style: TextStyles.editStyle,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text('${operations.totalSum} ₸',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+                    const Divider(),
+                    Center(
+                      child: Text(
+                        operations.createdAt,
+                        style: TextStyles.editStyle,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Center(
+              child: operationList.length <= 9 || hasMore == false
+                  ? const Text('Больше нет данных')
+                  : const CircularProgressIndicator()),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return SizedBox(
+                height: 20.h,
+              );
+            },
+            childCount: 1,
+          ),
+        ),
+      ],
+    ),
   );
 }

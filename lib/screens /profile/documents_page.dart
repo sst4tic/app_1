@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiwucloud/bloc/documents_bloc/abstract_documents.dart';
 import 'package:yiwucloud/models%20/product_filter_model.dart';
 
-import '../bloc/documents_bloc/documents_bloc.dart';
+import '../../bloc/documents_bloc/documents_bloc.dart';
 import 'document_page.dart';
 
 class DocumentsPage extends StatefulWidget {

@@ -20,6 +20,7 @@ class _WarehouseSalesState extends State<WarehouseSales> {
   final _salesBloc = WarehouseSalesBloc();
   final ScrollController _sController = ScrollController();
   late final FilterModel filterData;
+  bool isFilter = false;
 
   @override
   void initState() {
@@ -72,16 +73,37 @@ class _WarehouseSalesState extends State<WarehouseSales> {
                     onSubmitted: (value) =>
                         _salesBloc.add(LoadWarehouseSales(query: value))),
                 actions: [
-                  IconButton(
-                    onPressed: () {
-                      showFilter(
-                          context: context,
-                          filterData: filterData,
-                          onSubmitted: (value) {
-                            _salesBloc.add(LoadWarehouseSales(filters: value));
-                          });
-                    },
-                    icon: const Icon(Icons.filter_alt),
+                  Stack(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showFilter(
+                              context: context,
+                              filterData: filterData,
+                              isFilter: (val) => isFilter = val,
+                              onSubmitted: (value) {
+                                _salesBloc.add(LoadWarehouseSales(filters: value));
+                              });
+                        },
+                        icon: const Icon(Icons.filter_alt),
+                      ),
+                      if (isFilter)
+                        Positioned(
+                        right: 10,
+                        bottom: 27,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 9,
+                            minHeight: 9,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   state.warehouseSales.btnPermission == true
                       ? IconButton(

@@ -23,4 +23,13 @@ class CheckRepo implements AbstractCheck {
     final body = jsonDecode(response.body);
     return body;
   }
+
+  @override
+  Future locationPost({required String lat, required String lon, required String type}) async {
+    var url = '${Constants.API_URL_DOMAIN}action=location_post&lat=$lat&lon=$lon&type=$type';
+    final response =
+    await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    return body;
+  }
 }

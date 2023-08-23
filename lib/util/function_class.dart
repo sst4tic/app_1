@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
@@ -68,9 +69,12 @@ class Func {
         .toList();
     return ProductDetailsWithWarehouses(data: data, warehouses: wareHouse);
   }
+
   // for get in sale in prod details
-  Future<InSale> getInSale({required int prodId, required int warehouseId}) async {
-    var url = '${Constants.API_URL_DOMAIN}action=product_details_in_sale&product_id=$prodId&warehouse_id=$warehouseId';
+  Future<InSale> getInSale(
+      {required int prodId, required int warehouseId}) async {
+    var url =
+        '${Constants.API_URL_DOMAIN}action=product_details_in_sale&product_id=$prodId&warehouse_id=$warehouseId';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
@@ -113,7 +117,8 @@ class Func {
   }
 
   Future loadWarehousesList([inSale = 1]) async {
-    var url = '${Constants.API_URL_DOMAIN}action=warehouses_list&in_sale=$inSale';
+    var url =
+        '${Constants.API_URL_DOMAIN}action=warehouses_list&in_sale=$inSale';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
@@ -161,12 +166,38 @@ class Func {
     final data = body['data']
         .map<ProductFilterModel>((json) => ProductFilterModel.fromJson(json))
         .toList();
+    await Hive.box<List<ProductFilterModel>>('product_filter')
+        .put('product_filter', data);
     return data;
   }
 
   // func for getting moving filters
   Future<List<ProductFilterModel>> getMovingFilters() async {
     var url = '${Constants.API_URL_DOMAIN}action=filters_list_moving';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    final data = body['data']
+        .map<ProductFilterModel>((json) => ProductFilterModel.fromJson(json))
+        .toList();
+    return data;
+  }
+
+  // func for getting operations filters
+  Future<List<ProductFilterModel>> getOperationFilters() async {
+    var url = '${Constants.API_URL_DOMAIN}action=filters_list_operations';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    final data = body['data']
+        .map<ProductFilterModel>((json) => ProductFilterModel.fromJson(json))
+        .toList();
+    return data;
+  }
+
+  // func for getting moving filters
+  Future<List<ProductFilterModel>> getArrivalFilters() async {
+    var url = '${Constants.API_URL_DOMAIN}action=filters_list_arrival';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
@@ -233,7 +264,8 @@ Future<File> getImageFromGallery() async {
 Future<File> takeImageFromCamera() async {
   final picker = ImagePicker();
   final pickedFile = await picker.pickImage(source: ImageSource.camera);
-  File rotatedImage = await FlutterExifRotation.rotateImage(path: pickedFile!.path);
+  File rotatedImage =
+      await FlutterExifRotation.rotateImage(path: pickedFile!.path);
   return File(rotatedImage.path);
 }
 

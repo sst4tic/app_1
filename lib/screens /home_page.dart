@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/home_page_bloc/home_page_bloc.dart';
 import '../models /build_services.dart';
+import '../util/function_class.dart';
 import 'notification_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,6 +19,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _homePageBloc.add(LoadServices());
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await Func().getProductsFilters();
   }
 
   @override

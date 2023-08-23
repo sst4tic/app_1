@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
-import '../bloc/sessions_bloc/sessions_bloc.dart';
-import '../bloc/sessions_bloc/sessions_repo.dart';
-import '../util/function_class.dart';
-import '../util/styles.dart';
+import '../../bloc/sessions_bloc/sessions_bloc.dart';
+import '../../bloc/sessions_bloc/sessions_repo.dart';
+import '../../util/function_class.dart';
+import '../../util/styles.dart';
 
 class Sessions extends StatefulWidget {
   const Sessions({Key? key}) : super(key: key);
@@ -58,7 +57,7 @@ class _SessionsState extends State<Sessions> {
 
   Widget buildSessions(sessions, currentSession) {
     var currentSessionIndex =
-        sessions.indexWhere((element) => element.id == currentSession) + 1;
+        sessions.length != 1 ? sessions.indexWhere((element) => element.id == currentSession) + 1 : sessions.indexWhere((element) => element.id == currentSession);
     return ListView(
       padding: REdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
       children: <Widget>[
@@ -73,11 +72,7 @@ class _SessionsState extends State<Sessions> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: REdgeInsets.only(
-                  top: 8.0,
-                  left: 8.0,
-                  right: 8.0,
-                ),
+                padding: REdgeInsets.all(8),
                 child: Row(children: [
                   Container(
                     width: 22.5.w,
@@ -93,48 +88,48 @@ class _SessionsState extends State<Sessions> {
                     ),
                   ),
                   const SizedBox(width: 10.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        sessions[currentSessionIndex].userAgent,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.0,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                    sessions[currentSessionIndex].userAgent,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14.0,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            sessions[currentSessionIndex].location,
-                            style: const TextStyle(
+                        Row(
+                          children: [
+                            Text(
+                              sessions[currentSessionIndex].location,
+                              style: const TextStyle(
+                                  fontSize: 10.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey),
+                            ),
+                            const SizedBox(width: 2.0),
+                            const Text('·',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold)),
+                            const Text(
+                              'в сети',
+                              style: TextStyle(
+                                color: Colors.green,
                                 fontSize: 10.0,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.grey),
-                          ),
-                          const SizedBox(width: 2.0),
-                          const Text('·',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold)),
-                          const Text(
-                            'в сети',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontSize: 10.0,
-                              fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ]),
-              ),
-              const SizedBox(height: 8.0),
-              const Divider(
-                height: 0,
               ),
             ],
           ),

@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:yiwucloud/screens%20/check_screen.dart';
+import 'package:yiwucloud/screens%20/profile/check_screen.dart';
 import '../firebase_options.dart';
 import '../main.dart';
 import '../screens /warehouse_pages/moving_details_page.dart';

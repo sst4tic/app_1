@@ -267,9 +267,9 @@ Widget buildProdDetails(
                             prodId: data.id,
                           )));
             },
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
                   'Посмотреть историю действий',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),

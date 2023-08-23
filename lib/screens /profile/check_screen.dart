@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +6,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:yiwucloud/bloc/check_bloc/check_bloc.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
-import 'package:yiwucloud/screens%20/schedule_page.dart';
-import '../models /haptic_model.dart';
-import '../util/styles.dart';
+import 'package:yiwucloud/screens%20/profile/schedule_page.dart';
+import '../../models /haptic_model.dart';
+import '../../util/styles.dart';
 import 'attendance_page.dart';
 
 class CheckPage extends StatefulWidget {
@@ -55,7 +56,11 @@ class _CheckPageState extends State<CheckPage> {
                         children: [
                           SizeTapAnimation(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SchedulePage()));
                             },
                             child: Row(
                               children: [
@@ -124,10 +129,14 @@ class _CheckPageState extends State<CheckPage> {
                           const Divider(),
                           SizeTapAnimation(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const AttendancePage()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AttendancePage()));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(
                                   Icons.schedule,
                                   color: Colors.blue,
@@ -182,7 +191,8 @@ class _CheckPageState extends State<CheckPage> {
                               const Text('Переработка'),
                               Text(workpace.overtime),
                             ],
-                          ),  const Divider(),
+                          ),
+                          const Divider(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -202,81 +212,131 @@ class _CheckPageState extends State<CheckPage> {
                       ),
                     ),
                     const Spacer(),
-                    ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          final position = await Geolocator.getCurrentPosition(
-                              desiredAccuracy: LocationAccuracy.high);
-                          // ignore: use_build_context_synchronously
-                          _checkBloc.add(CheckLocationEvent(
-                              lat: position.latitude,
-                              lon: position.longitude,
-                              context: context,
-                              type: workpace.btnType == 'in' ? 'in' : 'out'));
-                        } catch (e) {
-                          showDialog(
-                              context: context,
-                              builder: (context) => CustomAlertDialog(
-                                    title: 'Ошибка',
-                                    content: Text(
-                                        '${e.toString()}\n Проверьте разрешение в настройках'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () async {
-                                            await Permission.location.request();
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Ок'))
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              try {
+                                final position =
+                                    await Geolocator.getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.high);
+                                // ignore: use_build_context_synchronously
+                                _checkBloc.add(CheckLocationEvent(
+                                    lat: position.latitude,
+                                    lon: position.longitude,
+                                    context: context,
+                                    type: workpace.btnType == 'in'
+                                        ? 'in'
+                                        : 'out'));
+                              } catch (e) {
+                                // ignore: use_build_context_synchronously
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomAlertDialog(
+                                          title: 'Ошибка',
+                                          content: Text(
+                                              '${e.toString()}\n Проверьте разрешение в настройках'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () async {
+                                                  await Permission.location
+                                                      .request();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Ок'))
+                                          ],
+                                        ));
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: workpace.btnType == 'in'
+                                    ? Colors.blue
+                                    : Colors.red,
+                                minimumSize: const Size(double.infinity, 40)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: workpace.btnType == 'in'
+                                  ? [
+                                      const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 20.0,
+                                      ),
+                                      const Spacer(),
+                                      const Text(
+                                        'Пришел на работу',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                    ]
+                                  : [
+                                      const Icon(
+                                        Icons.exit_to_app,
+                                        color: Colors.white,
+                                        size: 20.0,
+                                      ),
+                                      const Spacer(),
+                                      const Text(
+                                        'Ушел с работы',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Spacer(),
                                     ],
-                                  ));
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: workpace.btnType == 'in'
-                              ? Colors.blue
-                              : Colors.red,
-                          minimumSize: const Size(double.infinity, 40)),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: workpace.btnType == 'in'
-                            ? [
-                                const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 20.0,
-                                ),
-                                const Spacer(),
-                                const Text(
-                                  'Пришел на работу',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Spacer(),
-                              ]
-                            : [
-                                const Icon(
-                                  Icons.exit_to_app,
-                                  color: Colors.white,
-                                  size: 20.0,
-                                ),
-                                const Spacer(),
-                                const Text(
-                                  'Ушел с работы',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                          const Spacer(),
-                        ],
-                      ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        ElevatedButton(
+                          onPressed: () async {
+                            try {
+                              final position =
+                                  await Geolocator.getCurrentPosition(
+                                      desiredAccuracy: LocationAccuracy.high);
+                              // ignore: use_build_context_synchronously
+                              _checkBloc.add(LocationPostEvent(
+                                  lat: position.latitude,
+                                  lon: position.longitude,
+                                  context: context,
+                                  type:
+                                      workpace.btnType == 'in' ? 'in' : 'out'));
+                            } catch (e) {
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => CustomAlertDialog(
+                                        title: 'Ошибка',
+                                        content: Text(
+                                            '${e.toString()}\n Проверьте разрешение в настройках'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () async {
+                                                await Permission.location
+                                                    .request();
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Ок'))
+                                        ],
+                                      ));
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              fixedSize: const Size(20, 40)),
+                          child: const Icon(CupertinoIcons.location),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 25.0),
                   ],
                 ),
               );

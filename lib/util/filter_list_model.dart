@@ -1,3 +1,5 @@
+import '../../models /product_filter_model.dart';
+
 class FilterModel {
   FilterModel({
      this.status,
@@ -83,14 +85,14 @@ class Status {
   String? value;
   String? name;
   int? initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   Status.fromJson(Map<String, dynamic> json){
     type = json['type'] ?? '';
     value = json['value'] ?? '';
     name = json['name'] ?? '';
     initialValue = json['initial_value'] ?? 0;
-    childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    childData = List.from(json['data']).map((e)=>ChildDataProduct.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -100,27 +102,6 @@ class Status {
     data['name'] = name;
     data['initial_value'] = initialValue;
     data['data'] = childData.map((e)=>e.toJson()).toList();
-    return data;
-  }
-}
-
-class ChildData {
-  ChildData({
-    required this.value,
-    required this.text,
-  });
-  late final value;
-  late final String text;
-
-  ChildData.fromJson(Map<String, dynamic> json){
-    value = json['value'];
-    text = json['text'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['value'] = value;
-    data['text'] = text;
     return data;
   }
 }
@@ -137,14 +118,14 @@ class TypeOfInvoice {
   late final String value;
   late final String name;
   late final String initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   TypeOfInvoice.fromJson(Map<String, dynamic> json){
     type = json['type'];
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
-    childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    childData = List.from(json['data']).map((e)=>ChildDataProduct.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -295,14 +276,14 @@ class PaymentsMethod {
   late final String value;
   late final String name;
   late final int initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   PaymentsMethod.fromJson(Map<String, dynamic> json){
     type = json['type'];
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
-    childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    childData = List.from(json['data']).map((e)=>ChildDataProduct.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -328,7 +309,7 @@ class ShipmentType {
   String? value;
   String? name;
   int? initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   ShipmentType.fromJson(Map<String, dynamic> json){
     type = json['type'] ?? '';
@@ -336,7 +317,7 @@ class ShipmentType {
     name = json['name'] ?? '';
     initialValue = json['initial_value'] ?? 0;
     childData = (json['data'] as List<dynamic>)
-        .map((e) => ChildData.fromJson(e))
+        .map((e) => ChildDataProduct.fromJson(e))
         .toList();
   }
 
@@ -363,14 +344,14 @@ class Discount {
   late final String value;
   late final String name;
   late final String initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   Discount.fromJson(Map<String, dynamic> json){
     type = json['type'];
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
-    childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    childData = List.from(json['data']).map((e)=>ChildDataProduct.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -396,7 +377,7 @@ class SaleChannel {
   String? value;
   String? name;
   int? initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   SaleChannel.fromJson(Map<String, dynamic> json){
     type = json['type'] ?? '';
@@ -404,7 +385,7 @@ class SaleChannel {
     name = json['name'] ?? '';
     initialValue = json['initial_value'] ?? 0;
     childData = (json['data'] as List<dynamic>)
-        .map((e) => ChildData.fromJson(e))
+        .map((e) => ChildDataProduct.fromJson(e))
         .toList();
   }
 
@@ -431,14 +412,14 @@ class Bill {
   late final String value;
   late final String name;
   late final int initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   Bill.fromJson(Map<String, dynamic> json){
     type = json['type'];
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
-    childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    childData = List.from(json['data']).map((e)=>ChildDataProduct.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -464,14 +445,14 @@ class ServicePoint {
   late final String value;
   late final String name;
   late final int initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   ServicePoint.fromJson(Map<String, dynamic> json){
     type = json['type'];
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
-    childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    childData = List.from(json['data']).map((e)=>ChildDataProduct.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -497,7 +478,7 @@ class ShipmentPoint {
   String? value;
   String? name;
   int? initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   ShipmentPoint.fromJson(Map<String, dynamic> json){
     type = json['type'] ?? '';
@@ -505,7 +486,7 @@ class ShipmentPoint {
     name = json['name'] ?? '';
     initialValue = json['initial_value'] ?? 0;
     childData = (json['data'] as List<dynamic>)
-        .map((e) => ChildData.fromJson(e))
+        .map((e) => ChildDataProduct.fromJson(e))
         .toList();
   }
 
@@ -532,14 +513,14 @@ class WithDocs {
   late final String value;
   late final String name;
   late final String initialValue;
-  late final List<ChildData> childData;
+  late final List<ChildDataProduct> childData;
 
   WithDocs.fromJson(Map<String, dynamic> json){
     type = json['type'];
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
-    childData = List.from(json['data']).map((e)=>ChildData.fromJson(e)).toList();
+    childData = List.from(json['data']).map((e)=>ChildDataProduct.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
