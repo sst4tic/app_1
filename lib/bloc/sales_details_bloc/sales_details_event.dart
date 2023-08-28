@@ -80,3 +80,15 @@ class DefineCourierEvent extends SalesDetailsEvent {
 
   List<Object?> get props => [ context, courierId, invoiceId];
 }
+
+class ReturnShipmentPoint extends SalesDetailsEvent {
+  ReturnShipmentPoint({
+    required this.id,
+    required this.warehouseId,
+  });
+
+  final int id;
+  final int warehouseId;
+
+  List<Object?> get props => [warehouseId, id];
+}

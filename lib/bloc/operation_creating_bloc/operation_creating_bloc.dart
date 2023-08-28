@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yiwucloud/bloc/operation_creating_bloc/operation_creating_repo.dart';
 import 'package:yiwucloud/main.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
-import 'package:yiwucloud/models%20/moving_details.dart';
 import 'package:yiwucloud/models%20/product_filter_model.dart';
 
 import '../../models /articles_list_model.dart';

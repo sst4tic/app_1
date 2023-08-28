@@ -61,10 +61,6 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                             bottomSheet(
                               salesDetails: state.salesDetails,
                                 boxesQty: state.salesDetails.boxesQty ?? 0,
-                                // btnChronology: state.salesDetails.btnChronology,
-                                // btnBan: state.salesDetails.btnBan,
-                                // btnPrint: state.salesDetails.btnPrint,
-                                // btnPostpone: state.salesDetails.btnPostpone
                             );
                           },
                           icon: const Icon(Icons.more_horiz),
@@ -119,7 +115,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              DetailsChronology(id: widget.id, isSales: true,),
+                              DetailsChronology(id: widget.id, isSales: true),
                         ),
                       );
                     },

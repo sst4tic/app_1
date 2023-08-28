@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:yiwucloud/main.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/function_class.dart';
+import '../../models /product_filter_model.dart';
 import '../../screens /arrival_details_page.dart';
 import '../../util/arrival_existence_model.dart';
 import 'create_arrival_repo.dart';
@@ -17,10 +19,10 @@ class CreateArrivalBloc extends Bloc<CreateArrivalEvent, CreateArrivalState> {
       try {
         final arrival =
             await createArrivalRepo.checkArrivalExistence(sku: event.sku);
-        final warehouses = await Func().loadWarehousesList(0);
+        final warehouses = Hive.box<List<ChildData>>('warehouse_list').get('warehouse_list') ?? await Func().loadWarehousesList(0);
         List<DropdownMenuItem<String>> mappedWarehouses = warehouses
             .map<DropdownMenuItem<String>>((e) => DropdownMenuItem<String>(
-                value: e['id'].toString(), child: Text(e['name_lang']!)))
+                value: e.value.toString(), child: Text(e.text)))
             .toList();
         if (arrival.exists) {
           emit(ArrivalExist(arrival: arrival, warehouses: mappedWarehouses));

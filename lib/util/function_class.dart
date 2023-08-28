@@ -116,13 +116,18 @@ class Func {
     return body;
   }
 
-  Future loadWarehousesList([inSale = 1]) async {
+  Future<List<ChildData>> loadWarehousesList([inSale = 1]) async {
     var url =
         '${Constants.API_URL_DOMAIN}action=warehouses_list&in_sale=$inSale';
     final response =
         await http.get(Uri.parse(url), headers: Constants.headers());
     final body = jsonDecode(response.body);
-    return body['data'];
+    final data = body['data']
+        .map<ChildData>((json) => ChildData.fromJson(json))
+        .toList();
+    await Hive.box<List<ChildData>>('warehouse_list')
+        .put('warehouse_list', data);
+    return data;
   }
 
   Future<List<CommentModel>> getComments({required int id}) async {
@@ -314,6 +319,63 @@ Future<void> uploadImg(File imageFile, BuildContext context) async {
       });
   // ignore: use_build_context_synchronously
   context.loaderOverlay.hide();
+}
+
+// func for check lateness
+bool check(String scheduleTime, String arrivalTime) {
+  RegExp timePattern = RegExp(r'^\d{2}:\d{2}$');
+
+  if (!timePattern.hasMatch(scheduleTime) ||
+      !timePattern.hasMatch(arrivalTime)) {
+    return false;
+  }
+
+  List<int> scheduleParts = scheduleTime.split(':').map(int.parse).toList();
+  List<int> arrivalParts = arrivalTime.split(':').map(int.parse).toList();
+
+  int scheduleHour = scheduleParts[0];
+  int scheduleMinute = scheduleParts[1];
+
+  int arrivalHour = arrivalParts[0];
+  int arrivalMinute = arrivalParts[1];
+
+  if (scheduleHour > arrivalHour) {
+    return true;
+  } else if (scheduleHour == arrivalHour && scheduleMinute > arrivalMinute) {
+    return true;
+  } else if (scheduleHour == arrivalHour && scheduleMinute == arrivalMinute) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool checkOut(String scheduleTime, String arrivalTime) {
+  RegExp timePattern = RegExp(r'^\d{2}:\d{2}$');
+
+  if (!timePattern.hasMatch(scheduleTime) ||
+      !timePattern.hasMatch(arrivalTime)) {
+    return false;
+  }
+
+  List<int> scheduleParts = scheduleTime.split(':').map(int.parse).toList();
+  List<int> arrivalParts = arrivalTime.split(':').map(int.parse).toList();
+
+  int scheduleHour = scheduleParts[0];
+  int scheduleMinute = scheduleParts[1];
+
+  int arrivalHour = arrivalParts[0];
+  int arrivalMinute = arrivalParts[1];
+
+  if (scheduleHour < arrivalHour) {
+    return false;
+  } else if (scheduleHour == arrivalHour && scheduleMinute < arrivalMinute) {
+    return false;
+  } else if (scheduleHour == arrivalHour && scheduleMinute == arrivalMinute) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 extension StringExtension on String {

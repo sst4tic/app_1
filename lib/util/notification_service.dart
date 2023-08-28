@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -142,9 +141,6 @@ class NotificationService {
     });
 
     await messaging.requestPermission();
-    if (Platform.isIOS) {
-      var APNS = await messaging.getAPNSToken();
-    }
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   }
 

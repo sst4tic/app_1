@@ -28,6 +28,14 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _invoiceController.dispose();
+    _sumController.dispose();
+    _commentController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -80,9 +88,9 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                 items: state.billsList
                     .map((e) =>
                     DropdownMenuItem(
-                      value: e.id,
+                      value: e.value,
                       child: Text(
-                        e.name,
+                        e.text,
                         maxLines: 1,
                       ),
                     ))
@@ -97,11 +105,11 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                   ),
                   padding: REdgeInsets.all(8),
                 ),
-                value: state.billsList[billsIndex].id,
+                value: state.billsList[billsIndex].value,
                 onChanged: (value) {
                   setState(() {
                     billsIndex = state.billsList
-                        .indexWhere((element) => element.id == value);
+                        .indexWhere((element) => element.text == value);
                   });
                 },
               )),
@@ -257,7 +265,7 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     _operationBloc.add(SubmitOperation(
-                        billsId: state.billsList[billsIndex].id.toString(),
+                        billsId: state.billsList[billsIndex].value.toString(),
                         articleId: state.articlesList[articlesIndex].value.toString(),
                         type: state.operationTypes[operationIndex].value.toString(),
                         invoiceId: _invoiceController.text,
@@ -278,7 +286,6 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
 ////
   int billsToIndex = 0;
   int billsFromIndex = 0;
-
   ////
   Widget buildMovingCreate(MovingCreateState state) {
     return Container(
@@ -300,9 +307,9 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                 items: state.billsList
                     .map((e) =>
                     DropdownMenuItem(
-                      value: e.id,
+                      value: e.value,
                       child: Text(
-                        e.name,
+                        e.text,
                         maxLines: 1,
                       ),
                     ))
@@ -317,11 +324,11 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                   ),
                   padding: REdgeInsets.all(8),
                 ),
-                value: state.billsList[billsToIndex].id,
+                value: state.billsList[billsToIndex].value,
                 onChanged: (value) {
                   setState(() {
                     billsToIndex = state.billsList
-                        .indexWhere((element) => element.id == value);
+                        .indexWhere((element) => element.text == value);
                   });
                 },
               )),
@@ -337,9 +344,9 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                 items: state.billsList
                     .map((e) =>
                     DropdownMenuItem(
-                      value: e.id,
+                      value: e.value,
                       child: Text(
-                        e.name,
+                        e.text,
                         maxLines: 1,
                       ),
                     ))
@@ -354,11 +361,11 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                   ),
                   padding: REdgeInsets.all(8),
                 ),
-                value: state.billsList[billsFromIndex].id,
+                value: state.billsList[billsFromIndex].value,
                 onChanged: (value) {
                   setState(() {
                     billsFromIndex = state.billsList
-                        .indexWhere((element) => element.id == value);
+                        .indexWhere((element) => element.text == value);
                   });
                 },
               )),
@@ -418,8 +425,8 @@ class _OperationCreatingPageState extends State<OperationCreatingPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     _operationBloc.add(SubmitMoving(
-                        billsIdFrom: state.billsList[billsFromIndex].id.toString(),
-                        billsIdTo: state.billsList[billsToIndex].id.toString(),
+                        billsIdFrom: state.billsList[billsFromIndex].value.toString(),
+                        billsIdTo: state.billsList[billsToIndex].text.toString(),
                         total: _sumController.text,
                         comments: _commentController.text));
                   },

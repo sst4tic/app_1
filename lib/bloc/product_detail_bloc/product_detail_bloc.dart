@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import '../../models /custom_dialogs_model.dart';
+import '../../models /product_filter_model.dart';
 import '../../util/function_class.dart';
 import '../../util/product_details.dart';
 
@@ -18,10 +20,14 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
         if (state is! ProductDetailLoading) {
           emit(ProductDetailLoading());
           final productDetail = await Func().loadProductDetail(event.id);
-          final warehouses = await Func().loadWarehousesList();
-          final List<DropdownMenuItem<String>> mappedWarehouses = warehouses
-              .map<DropdownMenuItem<String>>((e) => DropdownMenuItem<String>(
-                  value: e['id'].toString(), child: Text(e['name_lang']!)))
+          final warehouses = Hive.box<List<ChildData>>('warehouse_list')
+                  .get('warehouse_list') ??
+              await Func().loadWarehousesList(0);
+          final mappedWarehouses = warehouses
+              .map<DropdownMenuItem<String>>((e) => DropdownMenuItem(
+                    value: e.value.toString(),
+                    child: Text(e.text),
+                  ))
               .toList();
           emit(ProductDetailLoaded(
               product: productDetail,
@@ -86,7 +92,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
             .getInSale(prodId: event.productId, warehouseId: event.warehouseId);
         val = event.warehouseId.toString();
         emit(ProductDetailLoaded(
-          value: val,
+            value: val,
             product: ProductDetailsWithWarehouses(
                 data: ProductDetails(
                   id: loadedState.product.data.id,

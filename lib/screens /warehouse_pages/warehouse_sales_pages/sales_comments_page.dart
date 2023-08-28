@@ -24,6 +24,12 @@ class _SalesCommentsPageState extends State<SalesCommentsPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _textController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

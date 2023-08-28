@@ -4,7 +4,9 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:yiwucloud/models%20/product_filter_model.dart';
 import 'package:yiwucloud/screens%20/invoice_scan_page.dart';
 import 'package:yiwucloud/util/styles.dart';
 import '../bloc/sales_details_bloc/sales_details_bloc.dart';
@@ -34,10 +36,19 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
   late SalesDetailsBloc detailsBloc;
   List<DropdownMenuItem>? dropdownMenuItems;
   int? selectedVal;
+  final warehouseBox = Hive.box<List<ChildData>>('warehouse_list');
+  late final List<DropdownMenuItem> warehouseList;
 
   @override
   void initState() {
     super.initState();
+    warehouseList = warehouseBox
+        .get('warehouse_list')!
+        .map((e) => DropdownMenuItem(
+              value: e.value,
+              child: Text(e.text),
+            ))
+        .toList();
     salesDetails = widget.salesDetails;
     id = widget.id;
     detailsBloc = widget.detailsBloc;
@@ -223,6 +234,40 @@ class SalesDetailsWidgetState extends State<SalesDetailsWidget> {
             ],
           ),
         ),
+        salesDetails.selectReturn != null
+            ? SizedBox(height: 10.h)
+            : Container(),
+        salesDetails.selectReturn != null
+            ? Text(
+                'Сменить точку возврата'.toUpperCase(),
+                style: TextStyles.editStyle,
+              )
+            : Container(),
+        salesDetails.selectReturn != null ? SizedBox(height: 5.h) : Container(),
+        salesDetails.selectReturn != null
+            ? DropdownButton2(
+                underline: Container(),
+                hint: const Text(
+                  'Выберите точку отгрузки',
+                  style: TextStyle(color: Colors.black),
+                ),
+                isExpanded: true,
+                value: salesDetails.selectReturn,
+                buttonStyleData: ButtonStyleData(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  padding: REdgeInsets.all(8),
+                ),
+                items: warehouseList,
+                onChanged: (value) {
+                  detailsBloc
+                      .add(ReturnShipmentPoint(id: id, warehouseId: value));
+                },
+              )
+            : Container(),
         SizedBox(height: 10.h),
         Accordion(
           disableScrolling: true,

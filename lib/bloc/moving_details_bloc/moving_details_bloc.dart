@@ -112,8 +112,8 @@ class MovingDetailsBloc extends Bloc<MovingDetailsEvent, MovingDetailsState> {
                               value: event.select!.initialValue,
                               items: event.select!.data
                                   .map((e) => DropdownMenuItem(
-                                        value: e.id,
-                                        child: Text(e.name),
+                                        value: e.value,
+                                        child: Text(e.text),
                                       ))
                                   .toList(),
                               style: const TextStyle(fontSize: 12, color: Colors.black),

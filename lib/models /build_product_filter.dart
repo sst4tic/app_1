@@ -11,7 +11,6 @@ showProductFilter(
     Function(String)? onSubmitted,
     required Function(bool) isFilter,
     required String type}) {
-  final searchController = TextEditingController();
   showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -20,6 +19,7 @@ showProductFilter(
       ),
       isScrollControlled: true,
       builder: (context) {
+        final searchController = TextEditingController();
         bool filterVal = true;
         return StatefulBuilder(builder: (context, innerSetState) {
           return Container(

@@ -15,7 +15,7 @@ class OperationCreateState extends OperationCreatingState {
   });
    List<ChildData> billsList;
    List<ArticlesListModel> articlesList;
-   List<ChildDataProduct> operationTypes;
+   List<ChildData> operationTypes;
   final String invoiceId;
   final String totalSum;
   final String? comments;

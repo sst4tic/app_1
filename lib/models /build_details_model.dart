@@ -1,6 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
+import 'package:yiwucloud/models%20/product_filter_model.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/function_class.dart';
 import '../bloc/product_detail_bloc/product_detail_bloc.dart';
@@ -9,9 +11,10 @@ import '../util/product_details.dart';
 import '../util/styles.dart';
 import 'image_list_model.dart';
 
-Widget buildProdDetails(
-    ProductDetailsWithWarehouses product, BuildContext context, ProductDetailBloc bloc, items, String val) {
-  final imgList = product.data.media.map((e) => e.thumbnails.s350.toString()).toList();
+Widget buildProdDetails(ProductDetailsWithWarehouses product,
+    BuildContext context, ProductDetailBloc bloc, items, String val) {
+  final imgList =
+      product.data.media.map((e) => e.thumbnails.s350.toString()).toList();
   final fullImgList = product.data.media.map((e) => e.full.toString()).toList();
   const noImage =
       'https://cdn.yiwumart.org/storage/warehouse/products/images/no-image-ru.jpg';
@@ -55,18 +58,25 @@ Widget buildProdDetails(
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.grey[600]),
                               ),
-                              trailing: data.editPermission
-                                  ? IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: () {
-                                        bloc.add(ChangeLocation(
-                                            location: warehouse.location ?? '',
-                                            productId: data.id,
-                                            warehouseId: warehouse.id,
-                                            context: context));
-                                      },
-                                    )
-                                  : null,
+                              trailing: Container(
+                                padding: REdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Text(availability.qty.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              onTap: () {
+                                data.editPermission
+                                    ? bloc.add(ChangeLocation(
+                                        location: warehouse.location ?? '',
+                                        productId: data.id,
+                                        warehouseId: warehouse.id,
+                                        context: context))
+                                    : null;
+                              },
                             );
                           },
                           itemCount: product.data.availability!.list.length,
@@ -88,32 +98,62 @@ Widget buildProdDetails(
               ),
               padding: REdgeInsets.all(8),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'В продаже',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-                     DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                  buttonStyleData: ButtonStyleData(
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor),
-                                      padding: REdgeInsets.all(8)),
-                                  items: items,
-                                  value: val,
-                                  onChanged: (value) {
-                                      val = value.toString();
-                                    bloc.add(ChangeWarehouseInSale(warehouseId: int.parse(value.toString()), productId: product.data.id, context: context));
-                                  })
-                      )
-                    ],
+                  Padding(
+                    padding: REdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'В продаже',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const Spacer(),
+                        Expanded(
+                          child: DropdownButton2(
+                              underline: const SizedBox.shrink(),
+                              items: items,
+                              value: val,
+                              customButton: Container(
+                                padding: REdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(width: 5.w),
+                                    Expanded(
+                                      child: Text(
+                                        items[items.indexWhere((element) =>
+                                                element.value == val)]
+                                            .child
+                                            .data,
+                                        style: TextStyles.editStyle
+                                            .copyWith(color: Colors.black)
+                                            .copyWith(fontSize: 14),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_drop_down_outlined,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onChanged: (value) {
+                                val = value.toString();
+                                bloc.add(ChangeWarehouseInSale(
+                                    warehouseId: int.parse(value.toString()),
+                                    productId: product.data.id,
+                                    context: context));
+                              }),
+                        )
+                      ],
+                    ),
                   ),
                   const Divider(),
                   ListView.separated(
@@ -257,7 +297,7 @@ Widget buildProdDetails(
           ),
           child: TextButton(
             onPressed: () async {
-              final logs = await Func().loadWarehousesList();
+              final logs = Hive.box<List<ChildData>>('warehouse_list').get('warehouse_list') ?? await Func().loadWarehousesList(0);
               // ignore: use_build_context_synchronously
               Navigator.push(
                   context,

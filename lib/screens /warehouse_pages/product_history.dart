@@ -31,8 +31,8 @@ class _ProductHistoryState extends State<ProductHistory> {
     getLogs(prodId: widget.prodId, warehouseId: 1, page: urlPage);
     warehouseList = widget.logs
         .map((e) => DropdownMenuItem(
-              value: e['id'],
-              child: Text(e['name_lang']),
+              value: e.value,
+              child: Text(e.text),
             ))
         .toList();
     _sController.addListener(() {

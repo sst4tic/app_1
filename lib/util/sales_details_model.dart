@@ -24,6 +24,7 @@ class SalesDetailsModel {
     required this.btnPostpone,
     this.country,
     this.zone,
+    this.selectReturn
   });
 
   late final Client client;
@@ -56,6 +57,7 @@ class SalesDetailsModel {
   late final String? printBarcodeProduct;
   late final String? printBarcodeBox;
   late final zone;
+  int? selectReturn;
 
   SalesDetailsModel.fromJson(Map<String, dynamic> json) {
     client = Client.fromJson(json['client']);
@@ -92,6 +94,7 @@ class SalesDetailsModel {
     printBarcodeProduct = json['printBarcodeProduct'];
     printBarcodeBox = json['printBarcodeBoxes'];
     zone = json['zone_id'];
+    selectReturn = json['selectReturn'];
   }
 
   Map<String, dynamic> toJson() {
@@ -125,6 +128,7 @@ class SalesDetailsModel {
     data['printBarcodeProduct'] = printBarcodeProduct;
     data['printBarcodeBoxes'] = printBarcodeBox;
     data['zone_id'] = zone;
+    data['selectReturn'] = selectReturn;
     return data;
   }
 }

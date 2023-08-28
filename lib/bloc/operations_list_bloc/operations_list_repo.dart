@@ -13,7 +13,6 @@ class OperationsListRepo implements AbstractOperationsList {
         Uri.parse(url),
         headers: Constants.headers()
     );
-    print(Constants.USER_TOKEN);
     final body = jsonDecode(response.body);
     return OperationModel.fromJson(body['data']);
   }

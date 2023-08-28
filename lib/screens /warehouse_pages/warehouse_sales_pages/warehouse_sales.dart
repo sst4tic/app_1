@@ -34,6 +34,12 @@ class _WarehouseSalesState extends State<WarehouseSales> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _sController.dispose();
+  }
+
   void onAppBarTap() {
     _sController.animateTo(
       0,

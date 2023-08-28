@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     await Func().getProductsFilters();
+    await Func().loadWarehousesList();
   }
 
   @override

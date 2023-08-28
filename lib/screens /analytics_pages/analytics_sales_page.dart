@@ -30,6 +30,13 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
     _analyticsSalesBloc.add(LoadAnalyticsTopSales(date: _date));
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController!.dispose();
+    _dateController.dispose();
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
       locale: const Locale('ru', 'RU'),

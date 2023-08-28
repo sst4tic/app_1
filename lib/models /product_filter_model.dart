@@ -21,14 +21,14 @@ class ProductFilterModel extends HiveObject {
   late dynamic initialValue;
 
   @HiveField(3)
-  late List<ChildDataProduct> childData;
+  late List<ChildData> childData;
 
   ProductFilterModel.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     name = json['name'];
     initialValue = json['initial_value'];
     childData = List.from(json['data'])
-        .map((e) => ChildDataProduct.fromJson(e))
+        .map((e) => ChildData.fromJson(e))
         .toList();
   }
 
@@ -43,15 +43,15 @@ class ProductFilterModel extends HiveObject {
 }
 
 @HiveType(typeId: 2)
-class ChildDataProduct extends HiveObject {
-  ChildDataProduct({
+class ChildData extends HiveObject {
+  ChildData({
     required this.value,
     required this.text,
   });
   late final dynamic value;
   late final String text;
 
-  ChildDataProduct.fromJson(Map<String, dynamic> json){
+  ChildData.fromJson(Map<String, dynamic> json){
     value = json['value'];
     text = json['text'];
   }

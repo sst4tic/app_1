@@ -40,8 +40,8 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
     detailsBloc = widget.detailsBloc;
     dropdownMenuItems = movingDetails.couriers?.data
         .map((e) => DropdownMenuItem(
-              value: e.id,
-              child: Text(e.name),
+              value: e.value,
+              child: Text(e.text),
             ))
         .toList();
     selectedVal = movingDetails.couriers?.initialValue;
@@ -74,7 +74,10 @@ class MovingDetailsWidgetState extends State<MovingDetailsWidget> {
         movingDetails.btnBoxes != false
             ? ElevatedButton(
                 onPressed: () {
-                  detailsBloc.add(ChangeBoxQty(id: id, context: context, select: movingDetails.btnBoxesSelectStatus));
+                  detailsBloc.add(ChangeBoxQty(
+                      id: id,
+                      context: context,
+                      select: movingDetails.btnBoxesSelectStatus));
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 35.h),

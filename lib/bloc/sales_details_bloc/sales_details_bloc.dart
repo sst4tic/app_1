@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/bloc/sales_details_bloc/sales_details_repo.dart';
+import 'package:yiwucloud/main.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import '../../models /postpone_dialog_model.dart';
 import '../../util/sales_details_model.dart';
@@ -33,10 +34,15 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
     });
     on<MovingRedirectionEvent>((event, emit) async {
       event.context.loaderOverlay.show();
-      final position = event.act == 'Delivered' ? await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high) : null;
+      final position = event.act == 'Delivered'
+          ? await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high)
+          : null;
       final redirection = await salesDetailsRepo.movingRedirection(
-          id: event.id, act: event.act, lat: position?.latitude, lon: position?.longitude);
+          id: event.id,
+          act: event.act,
+          lat: position?.latitude,
+          lon: position?.longitude);
       final salesDetails =
           await salesDetailsRepo.loadSalesDetails(id: event.id);
       event.context.loaderOverlay.hide();
@@ -225,22 +231,22 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
       if (resp['success']) {
         // ignore: use_build_context_synchronously
         showDialog(
-                context: event.context,
-                builder: (context) {
-                  return CustomAlertDialog(
-                    title: 'Успешно!',
-                    content: Text(resp['message']),
-                    actions: [
-                      CustomDialogAction(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          add(LoadSalesDetails(id: event.invoiceId));
-                        },
-                        text: 'Ок',
-                      )
-                    ],
-                  );
-                });
+            context: event.context,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: 'Успешно!',
+                content: Text(resp['message']),
+                actions: [
+                  CustomDialogAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      add(LoadSalesDetails(id: event.invoiceId));
+                    },
+                    text: 'Ок',
+                  )
+                ],
+              );
+            });
       } else {
         // ignore: use_build_context_synchronously
         showDialog(
@@ -259,6 +265,33 @@ class SalesDetailsBloc extends Bloc<SalesDetailsEvent, SalesDetailsState> {
                 ],
               );
             });
+      }
+    });
+    on<ReturnShipmentPoint>((event, emit) async {
+      try {
+        navKey.currentContext!.loaderOverlay.show();
+        final resp = await salesDetailsRepo.requestReturnPoint(
+            id: event.id, warehouseId: event.warehouseId);
+        navKey.currentContext!.loaderOverlay.hide();
+        // ignore: use_build_context_synchronously
+        showDialog(
+            context: navKey.currentContext!,
+            builder: (context) {
+              return CustomAlertDialog(
+                title: resp['success'] ? 'Успешно!' : 'Произошла ошибка!',
+                content: Text(resp['message']),
+                actions: [
+                  CustomDialogAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Ок',
+                  )
+                ],
+              );
+            }).then((value) => add(LoadSalesDetails(id: event.id)));
+      } catch (e) {
+        print(e);
       }
     });
   }

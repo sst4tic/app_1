@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
 import '../../bloc/attendance_bloc/attendance_bloc.dart';
 import '../../models /attendance_model.dart';
 import '../../util/styles.dart';
+import '../map_screen.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -29,35 +31,6 @@ class _AttendancePageState extends State<AttendancePage> {
     _dateController.text = 'С начала месяца';
     _attendanceBloc.add(LoadAttendance(date: _date));
   }
-
-  bool check(String scheduleTime, String arrivalTime) {
-    RegExp timePattern = RegExp(r'^\d{2}:\d{2}$');
-
-    if (!timePattern.hasMatch(scheduleTime) ||
-        !timePattern.hasMatch(arrivalTime)) {
-      return false;
-    }
-
-    List<int> scheduleParts = scheduleTime.split(':').map(int.parse).toList();
-    List<int> arrivalParts = arrivalTime.split(':').map(int.parse).toList();
-
-    int scheduleHour = scheduleParts[0];
-    int scheduleMinute = scheduleParts[1];
-
-    int arrivalHour = arrivalParts[0];
-    int arrivalMinute = arrivalParts[1];
-
-    if (scheduleHour > arrivalHour) {
-      return true;
-    } else if (scheduleHour == arrivalHour && scheduleMinute > arrivalMinute) {
-      return true;
-    } else if (scheduleHour == arrivalHour && scheduleMinute == arrivalMinute) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
@@ -98,6 +71,12 @@ class _AttendancePageState extends State<AttendancePage> {
       _dateController.text = pickedDate;
       _attendanceBloc.add(LoadAttendance(date: AmanDate));
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dateController.dispose();
   }
 
   @override
@@ -152,6 +131,11 @@ class _AttendancePageState extends State<AttendancePage> {
           return ListTile(
             title: Text(attendance[index].day.capitalize(),
                 style: TextStyles.editStyle.copyWith(fontSize: 14)),
+            onTap: () {
+              attendanceItem.locations.isNotEmpty
+                  ? showMap(attendanceItem.locations)
+                  : null;
+            },
             trailing: attendanceItem.dayOff
                 ? Row(
                     mainAxisSize: MainAxisSize.min,
@@ -216,7 +200,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                 attendanceItem.outAt ?? emptyTime,
                                 style: TextStyles.editStyle.copyWith(
                                     color: attendanceItem.outAt != null
-                                        ? check(Constants.endAt,
+                                        ? checkOut(Constants.endAt,
                                                 attendanceItem.outAt!)
                                             ? Colors.red
                                             : Colors.green
@@ -236,4 +220,56 @@ class _AttendancePageState extends State<AttendancePage> {
           return const Divider(height: 0);
         });
   }
+
+  showMap(
+    List<Locations> item,
+  ) =>
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Column(
+              children: [
+                SizedBox(
+                  height: 8.h,
+                ),
+                const Text(
+                  'Дополнительные действия',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                ListView.separated(
+                  padding: REdgeInsets.all(8),
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 6.h);
+                  },
+                  itemCount: item.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      trailing: const Icon(FontAwesomeIcons.mapPin),
+                      title: Text(
+                        // item[index].createdAt,
+                        'asdsad',
+                        style: TextStyles.editStyle.copyWith(fontSize: 14),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MapScreen(
+                                    lat: item[index].lat,
+                                    lon: item[index].lon)));
+                      },
+                    );
+                  },
+                ),
+              ],
+            );
+          });
 }

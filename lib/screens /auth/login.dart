@@ -39,6 +39,8 @@ class _LoginState extends State<Login> {
   void dispose() {
     emailFocus.dispose();
     passFocus.dispose();
+    _emailController.dispose();
+    _passController.dispose();
     super.dispose();
   }
 

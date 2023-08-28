@@ -7,7 +7,6 @@ part 'sales_comments_state.dart';
 
 class SalesCommentsBloc extends Bloc<SalesCommentsEvent, SalesCommentsState> {
   late int _id;
-
   set id(int value) => _id = value;
 
   SalesCommentsBloc() : super(SalesCommentsInitial()) {

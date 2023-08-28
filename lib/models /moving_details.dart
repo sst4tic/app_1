@@ -1,4 +1,6 @@
 
+import 'package:yiwucloud/models%20/product_filter_model.dart';
+
 class MovingDetailsModel {
   MovingDetailsModel({
     this.invoiceId,
@@ -181,24 +183,3 @@ class Couriers {
   }
 }
 
-class ChildData {
-  ChildData({
-    required this.id,
-    required this.name,
-  });
-
-  late final id;
-  late final String name;
-
-  ChildData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    return data;
-  }
-}

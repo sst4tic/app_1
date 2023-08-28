@@ -66,4 +66,14 @@ class SalesDetailsRepo implements AbstractSalesDetails {
     final body = jsonDecode(response.body);
     return body;
   }
+  @override
+  Future requestReturnPoint({required int id, required int warehouseId}) async {
+    var url =
+        '${Constants.API_URL_DOMAIN}action=request_return_shipment_point&id=$id&warehouse_id=$warehouseId';
+    final response =
+        await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    print(body);
+    return body;
+  }
 }
