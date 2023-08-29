@@ -105,9 +105,13 @@ Widget buildServiceChild(List<Services> services) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const OverallAttendance();
             }));
-          }  else if (service.slug == 'accounting-bills-operations') {
+          } else if (service.slug == 'accounting-bills-operations') {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const OperationsListPage();
+            }));
+          } else if (service.slug == 'accounting-cashbox') {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const WarehouseSales();
             }));
           }
         },

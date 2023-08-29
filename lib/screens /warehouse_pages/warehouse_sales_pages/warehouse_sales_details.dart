@@ -11,13 +11,14 @@ import 'package:yiwucloud/util/sales_details_model.dart';
 import '../../../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../../../models /build_sales_details.dart';
 import '../../invoice_edit_page.dart';
+import '../../sales_operation_page.dart';
 
 class WareHouseSalesDetails extends StatefulWidget {
-  const WareHouseSalesDetails(
-      {Key? key, required this.id,
-        required this.invoiceId,
-      })
-      : super(key: key);
+  const WareHouseSalesDetails({
+    Key? key,
+    required this.id,
+    required this.invoiceId,
+  }) : super(key: key);
   final int id;
   final String invoiceId;
 
@@ -60,7 +61,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                           onPressed: () {
                             bottomSheet(
                               salesDetails: state.salesDetails,
-                                boxesQty: state.salesDetails.boxesQty ?? 0,
+                              boxesQty: state.salesDetails.boxesQty ?? 0,
                             );
                           },
                           icon: const Icon(Icons.more_horiz),
@@ -85,10 +86,7 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
     );
   }
 
-  bottomSheet(
-      {required SalesDetailsModel salesDetails,
-        boxesQty
-      }) {
+  bottomSheet({required SalesDetailsModel salesDetails, boxesQty}) {
     return showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -190,31 +188,30 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                             color: Colors.transparent,
                             child: CustomAlertDialog(
                               title: 'Выберите количество коробок',
-                              content:
-                              StatefulBuilder(
-                                builder: (context, innerSetState) {
-                                  return DropdownButtonHideUnderline(
-                                    child: DropdownButton2(
-                                      value: selectedValue,
-                                      isExpanded: true,
-                                      buttonStyleData: ButtonStyleData(
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: Theme.of(context).scaffoldBackgroundColor,
-                                        ),
-                                        padding: REdgeInsets.all(8),
+                              content: StatefulBuilder(
+                                  builder: (context, innerSetState) {
+                                return DropdownButtonHideUnderline(
+                                  child: DropdownButton2(
+                                    value: selectedValue,
+                                    isExpanded: true,
+                                    buttonStyleData: ButtonStyleData(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
                                       ),
-                                      items: dropdownItems,
-                                      onChanged: (value) {
-                                        innerSetState(() {
-                                          selectedValue = value!;
-                                        });
-                                      },
+                                      padding: REdgeInsets.all(8),
                                     ),
-                                  );
-                                }
-                              ),
+                                    items: dropdownItems,
+                                    onChanged: (value) {
+                                      innerSetState(() {
+                                        selectedValue = value!;
+                                      });
+                                    },
+                                  ),
+                                );
+                              }),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -229,10 +226,13 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                                         ? boxesQty
                                         : selectedValue + 49;
                                     String url = barcodeBoxesUrl!
-                                        .replaceFirst('/1', '/${start.toString()}')
-                                        .replaceFirst('$boxesQty', end.toString());
+                                        .replaceFirst(
+                                            '/1', '/${start.toString()}')
+                                        .replaceFirst(
+                                            '$boxesQty', end.toString());
 
-                                    launchUrlString(url, mode: LaunchMode.externalApplication);
+                                    launchUrlString(url,
+                                        mode: LaunchMode.externalApplication);
                                     Navigator.pop(context);
                                   },
                                   child: const Text('Печать'),
@@ -302,7 +302,11 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
               if (salesDetails.editUrl != null)
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => InvoiceEditPage(url: salesDetails.editUrl!)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  InvoiceEditPage(url: salesDetails.editUrl!)));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -313,6 +317,30 @@ class _WareHouseSalesDetailsState extends State<WareHouseSalesDetails> {
                       children: [
                         Text('Редактировать накладную'),
                         Icon(FontAwesomeIcons.penToSquare)
+                      ],
+                    )),
+              SizedBox(height: 3.h),
+              SizedBox(height: salesDetails.operationPermission ? 3.h : 0),
+              if (salesDetails.operationPermission)
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OperationSalesPage(
+                                    id: widget.id,
+                                    totalPrice: salesDetails.totalPrice,
+                                  )));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: const Size(double.infinity, 40),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Операции'),
+                        Icon(FontAwesomeIcons.moneyBillTransfer)
                       ],
                     )),
               SizedBox(height: 3.h),

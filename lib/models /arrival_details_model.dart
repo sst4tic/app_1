@@ -28,15 +28,15 @@ class ArrivalDetailsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['manager'] = manager;
-    _data['warehouse'] = warehouse;
-    _data['created_at'] = createdAt;
-    _data['printURL'] = printURL;
-    _data['comments'] = comments;
-    _data['products'] = products.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['manager'] = manager;
+    data['warehouse'] = warehouse;
+    data['created_at'] = createdAt;
+    data['printURL'] = printURL;
+    data['comments'] = comments;
+    data['products'] = products.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -60,11 +60,11 @@ class Products {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['name'] = name;
-    _data['sku'] = sku;
-    _data['qty'] = qty;
-    _data['price'] = price;
-    return _data;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['sku'] = sku;
+    data['qty'] = qty;
+    data['price'] = price;
+    return data;
   }
 }

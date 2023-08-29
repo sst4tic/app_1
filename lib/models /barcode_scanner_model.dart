@@ -60,7 +60,7 @@ class QRScannerState extends State<QRScanner> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      if (!isScanned && scanData != '') {
+      if (!isScanned && scanData.code != '') {
         isScanned = true;
         HapticFeedback.mediumImpact();
         controller.pauseCamera();

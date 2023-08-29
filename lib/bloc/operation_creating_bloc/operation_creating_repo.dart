@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:hive/hive.dart';
 import 'package:yiwucloud/bloc/operation_creating_bloc/abstract_creating_operation.dart';
 import 'package:http/http.dart' as http;
 import '../../models /articles_list_model.dart';
@@ -15,6 +16,7 @@ class OperationCreatingRepo implements AbstractCreatingOperation {
     final data = body['data']
         .map<ChildData>((json) => ChildData.fromJson(json))
         .toList();
+    await Hive.box<List<ChildData>>('warehouse_list').put('bills_list', data);
     return data;
   }
 

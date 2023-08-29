@@ -7,4 +7,5 @@ abstract class AbstractSalesDetails {
   Future getPostponeReasons();
   Future sendPostpone({required int reasonId, required int id});
   Future defineCourier({required int invoiceId, required int courierId});
+  Future requestReturnPoint({required int id, required int warehouseId});
 }

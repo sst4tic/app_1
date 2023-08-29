@@ -1,4 +1,3 @@
-
 import 'package:yiwucloud/models%20/product_filter_model.dart';
 
 class MovingDetailsModel {
@@ -182,4 +181,3 @@ class Couriers {
     return _data;
   }
 }
-

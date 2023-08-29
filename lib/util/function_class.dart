@@ -16,7 +16,6 @@ import 'constants.dart';
 import 'filter_list_model.dart';
 import 'notification_model.dart';
 import 'package:path/path.dart';
-import 'package:async/async.dart';
 
 class Func {
   showSnackbar(context, String text, bool success) {
@@ -281,7 +280,8 @@ String imageToBase64(File imageFile) {
 
 Future<void> uploadImg(File imageFile, BuildContext context) async {
   context.loaderOverlay.show();
-  var stream = http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+  var stream = http.ByteStream(imageFile.openRead());
+  stream.cast();
   var length = await imageFile.length();
   var uploadURL = '${Constants.BASE_URL_DOMAIN}api/user-avatar-post';
 

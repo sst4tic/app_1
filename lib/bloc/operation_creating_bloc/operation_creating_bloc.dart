@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:yiwucloud/bloc/operation_creating_bloc/operation_creating_repo.dart';
 import 'package:yiwucloud/main.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
@@ -15,22 +16,22 @@ class OperationCreatingBloc
     extends Bloc<OperationCreatingEvent, OperationCreatingState> {
   OperationCreatingBloc() : super(OperationCreatingInitial()) {
     final operationRepo = OperationCreatingRepo();
+    final billsList = Hive.box<List<ChildData>>('bills_list')
+        .get('bills_list');
     on<CheckOperationType>((event, emit) async {
       if (event.type == 'create_operation') {
-        final billsList = await operationRepo.getBillsList();
         final articlesList = await operationRepo.getArticlesList();
         final operationTypes = await operationRepo.getOperationTypes();
         emit(OperationCreateState(
-          billsList: billsList,
+          billsList: billsList ?? await operationRepo.getBillsList(),
           articlesList: articlesList,
           operationTypes: operationTypes,
           invoiceId: '',
           totalSum: '',
         ));
       } else if (event.type == 'create_moving') {
-        final billsList = await operationRepo.getBillsList();
         emit(MovingCreateState(
-          billsList: billsList,
+          billsList: billsList ?? await operationRepo.getBillsList(),
           totalSum: '',
         ));
       } else {

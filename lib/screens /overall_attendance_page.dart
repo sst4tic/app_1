@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiwucloud/bloc/overall_attendance_bloc/overall_attendance_bloc.dart';
 import 'package:yiwucloud/models%20/overall_attendance_model.dart';
 import 'package:yiwucloud/screens%20/map_screen.dart';
-import '../util/constants.dart';
 import '../util/styles.dart';
 
 class OverallAttendance extends StatefulWidget {
@@ -27,32 +26,6 @@ class _OverallAttendanceState extends State<OverallAttendance> {
 
   List originalList = [];
   List filteredList = [];
-
-  bool check(String scheduleTime, String arrivalTime) {
-    RegExp timePattern = RegExp(r'^\d{2}:\d{2}$');
-
-    if (!timePattern.hasMatch(scheduleTime) ||
-        !timePattern.hasMatch(arrivalTime)) {
-      return false;
-    }
-
-    List<int> scheduleParts = scheduleTime.split(':').map(int.parse).toList();
-    List<int> arrivalParts = arrivalTime.split(':').map(int.parse).toList();
-
-    int scheduleHour = scheduleParts[0];
-    int scheduleMinute = scheduleParts[1];
-
-    int arrivalHour = arrivalParts[0];
-    int arrivalMinute = arrivalParts[1];
-
-    if (scheduleHour > arrivalHour) {
-      return true;
-    } else if (scheduleHour == arrivalHour && scheduleMinute > arrivalMinute) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,26 +141,14 @@ class _OverallAttendanceState extends State<OverallAttendance> {
                   children: [
                     Text(
                       item.inAt ?? emptyVal,
-                      style: item.inAt != null
-                          ? TextStyles.editStyle.copyWith(
-                              color: check(item.inAt ?? Constants.startAt,
-                                      item.inAt!)
-                                  ? Colors.green
-                                  : Colors.red,
+                style: TextStyles.editStyle.copyWith(
                               fontSize: 13)
-                          : const TextStyle(),
                     ),
                     const Text(' - '),
                     Text(
                       item.outAt ?? emptyVal,
-                      style: item.outAt != null
-                          ? TextStyles.editStyle.copyWith(
-                              color: check(item.outAt ?? Constants.startAt,
-                                      item.outAt!)
-                                  ? Colors.green
-                                  : Colors.red,
-                              fontSize: 13)
-                          : const TextStyle(),
+                        style: TextStyles.editStyle.copyWith(
+                            fontSize: 13)
                     ),
                   ],
                 ),

@@ -14,6 +14,7 @@ class SalesDetailsModel {
     required this.totalPrice,
     this.contacts,
     this.couriers,
+    required this.operationPermission,
     required this.boxesPermission,
     this.boxesQty,
     required this.status,
@@ -39,6 +40,7 @@ class SalesDetailsModel {
   late final String totalPrice;
   late final List<String>? contacts;
   late final Couriers? couriers;
+  late final bool operationPermission;
   late final bool boxesPermission;
   late final int? boxesQty;
   late final int status;
@@ -76,6 +78,7 @@ class SalesDetailsModel {
     couriers = json['couriers'] != null
         ? Couriers.fromJson(json['couriers'])
         : null;
+    operationPermission = json['btnOperationsAdd'];
     boxesPermission = json['btnBoxesAdd'];
     boxesQty = json['boxes_qty'];
     status = json['status'];
@@ -111,6 +114,7 @@ class SalesDetailsModel {
     data['totalPrice'] = totalPrice;
     data['contacts'] = contacts;
     data['couriers'] = couriers?.toJson();
+    data['btnOperationsAdd'] = operationPermission;
     data['btnBoxesAdd'] = boxesPermission;
     data['boxes_qty'] = boxesQty;
     data['status'] = status;
