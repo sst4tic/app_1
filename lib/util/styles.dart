@@ -97,6 +97,10 @@ final lightTheme = ThemeData(
   progressIndicatorTheme: const ProgressIndicatorThemeData(
     color: ColorStyles.primaryColor,
   ),
+  checkboxTheme: CheckboxThemeData(
+    side: const BorderSide(color: Colors.white, width: 2),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+  ),
   appBarTheme: AppBarTheme(
     titleTextStyle: const TextStyle(
         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),

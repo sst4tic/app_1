@@ -10,8 +10,8 @@ import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/sales
 import 'package:yiwucloud/util/sales_details_model.dart';
 import '../../../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../../../models /build_sales_details.dart';
-import '../../invoice_edit_page.dart';
-import '../../sales_operation_page.dart';
+import 'invoice_edit_page.dart';
+import 'sales_operation_page.dart';
 
 class WareHouseSalesDetails extends StatefulWidget {
   const WareHouseSalesDetails({

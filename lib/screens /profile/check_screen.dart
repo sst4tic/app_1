@@ -21,6 +21,7 @@ class CheckPage extends StatefulWidget {
 class _CheckPageState extends State<CheckPage> {
   String emptyTime = '--:--';
   final _checkBloc = CheckBloc();
+  bool checkBoxValue = false;
 
   @override
   void initState() {
@@ -44,6 +45,9 @@ class _CheckPageState extends State<CheckPage> {
               );
             } else if (state is CheckLoaded) {
               final workpace = state.check;
+              if (workpace.btnType == 'out') {
+                checkBoxValue = true;
+              }
               return Padding(
                 padding: REdgeInsets.all(8.0),
                 child: Column(
@@ -212,48 +216,95 @@ class _CheckPageState extends State<CheckPage> {
                       ),
                     ),
                     const Spacer(),
+                    workpace.btnType == 'in'
+                        ? SizeTapAnimation(
+                            onTap: () {
+                              setState(() {
+                                checkBoxValue = !checkBoxValue;
+                              });
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              padding: REdgeInsets.all(8.0),
+                              decoration: Decorations.containerDecoration
+                                  .copyWith(color: Colors.red[400]),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Не забудьте расписаться в журнале ТБ!',
+                                    style: TextStyles.editStyle.copyWith(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                  SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: Checkbox(
+                                      fillColor: checkBoxValue
+                                          ? MaterialStateProperty.all<Color>(
+                                              Colors.white)
+                                          : null,
+                                      checkColor: Colors.green[800],
+                                      value: checkBoxValue,
+                                      onChanged: (bool? value) {},
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () async {
-                              try {
-                                final position =
-                                    await Geolocator.getCurrentPosition(
-                                        desiredAccuracy: LocationAccuracy.high);
-                                // ignore: use_build_context_synchronously
-                                _checkBloc.add(CheckLocationEvent(
-                                    lat: position.latitude,
-                                    lon: position.longitude,
-                                    context: context,
-                                    type: workpace.btnType == 'in'
-                                        ? 'in'
-                                        : 'out'));
-                              } catch (e) {
-                                // ignore: use_build_context_synchronously
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => CustomAlertDialog(
-                                          title: 'Ошибка',
-                                          content: Text(
-                                              '${e.toString()}\n Проверьте разрешение в настройках'),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () async {
-                                                  await Permission.location
-                                                      .request();
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('Ок'))
-                                          ],
-                                        ));
-                              }
-                            },
+                            onPressed: checkBoxValue
+                                ? () async {
+                                    try {
+                                      final position =
+                                          await Geolocator.getCurrentPosition(
+                                              desiredAccuracy:
+                                                  LocationAccuracy.high);
+                                      // ignore: use_build_context_synchronously
+                                      _checkBloc.add(CheckLocationEvent(
+                                          lat: position.latitude,
+                                          lon: position.longitude,
+                                          context: context,
+                                          type: workpace.btnType == 'in'
+                                              ? 'in'
+                                              : 'out'));
+                                    } catch (e) {
+                                      // ignore: use_build_context_synchronously
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              CustomAlertDialog(
+                                                title: 'Ошибка',
+                                                content: Text(
+                                                    '${e.toString()}\n Проверьте разрешение в настройках'),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () async {
+                                                        await Permission
+                                                            .location
+                                                            .request();
+                                                        // ignore: use_build_context_synchronously
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text('Ок'))
+                                                ],
+                                              ));
+                                    }
+                                  }
+                                : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: workpace.btnType == 'in'
                                     ? Colors.blue
                                     : Colors.red,
+                                disabledBackgroundColor:
+                                    Colors.blue.withOpacity(0.5),
                                 minimumSize: const Size(double.infinity, 40)),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -296,45 +347,50 @@ class _CheckPageState extends State<CheckPage> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 4.w),
-                        ElevatedButton(
-                          onPressed: () async {
-                            try {
-                              final position =
-                                  await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.high);
-                              // ignore: use_build_context_synchronously
-                              _checkBloc.add(LocationPostEvent(
-                                  lat: position.latitude,
-                                  lon: position.longitude,
-                                  context: context,
-                                  type:
-                                      workpace.btnType == 'in' ? 'in' : 'out'));
-                            } catch (e) {
-                              // ignore: use_build_context_synchronously
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => CustomAlertDialog(
-                                        title: 'Ошибка',
-                                        content: Text(
-                                            '${e.toString()}\n Проверьте разрешение в настройках'),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () async {
-                                                await Permission.location
-                                                    .request();
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Ок'))
-                                        ],
-                                      ));
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              fixedSize: const Size(20, 40)),
-                          child: const Icon(CupertinoIcons.location),
-                        ),
+                        SizedBox(width: workpace.btnType == 'in' ? 0 : 4.w),
+                        workpace.btnType == 'in'
+                            ? const SizedBox()
+                            : ElevatedButton(
+                                onPressed: () async {
+                                  try {
+                                    final position =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.high);
+                                    // ignore: use_build_context_synchronously
+                                    _checkBloc.add(LocationPostEvent(
+                                        lat: position.latitude,
+                                        lon: position.longitude,
+                                        context: context,
+                                        type: workpace.btnType == 'in'
+                                            ? 'in'
+                                            : 'out'));
+                                  } catch (e) {
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => CustomAlertDialog(
+                                              title: 'Ошибка',
+                                              content: Text(
+                                                  '${e.toString()}\n Проверьте разрешение в настройках'),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      await Permission.location
+                                                          .request();
+                                                      // ignore: use_build_context_synchronously
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text('Ок'))
+                                              ],
+                                            ));
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    fixedSize: const Size(20, 40)),
+                                child: const Icon(CupertinoIcons.location),
+                              ),
                       ],
                     ),
                   ],

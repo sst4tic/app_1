@@ -5,7 +5,7 @@ import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/product_detail.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/styles.dart';
-import '../bloc/scan_result_bloc/scan_resullt_bloc.dart';
+import '../../bloc/scan_result_bloc/scan_resullt_bloc.dart';
 
 class GlobalScanScreen extends StatefulWidget {
   const GlobalScanScreen({Key? key, required this.scanData}) : super(key: key);

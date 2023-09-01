@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:yiwucloud/models%20/product_filter_model.dart';
-import 'package:yiwucloud/screens%20/invoice_scan_page.dart';
+import 'package:yiwucloud/screens%20/scanner_pages/invoice_scan_page.dart';
 import 'package:yiwucloud/util/styles.dart';
 import '../bloc/sales_details_bloc/sales_details_bloc.dart';
 import '../util/sales_details_model.dart';

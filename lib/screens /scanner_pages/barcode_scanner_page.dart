@@ -7,8 +7,8 @@ import 'package:yiwucloud/models%20/barcode_scanner_model.dart';
 import 'package:yiwucloud/util/constants.dart';
 import 'package:yiwucloud/util/function_class.dart';
 import 'package:yiwucloud/util/styles.dart';
-import '../bloc/global_scanner_bloc/scanner_bloc.dart';
-import '../models /custom_dialogs_model.dart';
+import '../../bloc/global_scanner_bloc/scanner_bloc.dart';
+import '../../models /custom_dialogs_model.dart';
 import 'global_scan_screen.dart';
 
 class BarcodeScannerPage extends StatefulWidget {

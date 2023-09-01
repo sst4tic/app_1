@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-
 class CustomAlertDialog extends StatelessWidget {
   final String title;
   final Widget content;
@@ -21,21 +20,21 @@ class CustomAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Platform.isIOS
         ? CupertinoAlertDialog(
-      title: Text(
-        title,
-        textAlign: TextAlign.center,
-      ),
-      content: content,
-      actions: actions,
-    )
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+            ),
+            content: content,
+            actions: actions,
+          )
         : AlertDialog(
-      title: Text(
-        title,
-        textAlign: TextAlign.center,
-      ),
-      content: content,
-      actions: actions,
-    );
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+            ),
+            content: content,
+            actions: actions,
+          );
   }
 }
 
@@ -57,22 +56,22 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Platform.isIOS
         ? CupertinoTextField(
-      controller: controller,
-      inputFormatters: inputFormatters,
-      keyboardType: keyboardType,
-      placeholder: placeholder,
-    )
+            controller: controller,
+            inputFormatters: inputFormatters,
+            keyboardType: keyboardType,
+            placeholder: placeholder,
+          )
         : TextField(
-      controller: controller,
-      inputFormatters: inputFormatters ?? [],
-      keyboardType: keyboardType ?? TextInputType.text,
-      decoration: InputDecoration(
-        hintText: placeholder,
-        hintStyle: const TextStyle(
-          color: Colors.black12,
-        ),
-      ),
-    );
+            controller: controller,
+            inputFormatters: inputFormatters ?? [],
+            keyboardType: keyboardType ?? TextInputType.text,
+            decoration: InputDecoration(
+              hintText: placeholder,
+              hintStyle: const TextStyle(
+                color: Colors.black12,
+              ),
+            ),
+          );
   }
 }
 
@@ -90,12 +89,12 @@ class CustomDialogAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Platform.isIOS
         ? CupertinoDialogAction(
-      onPressed: onPressed,
-      child: Text(text),
-    )
+            onPressed: onPressed,
+            child: Text(text),
+          )
         : TextButton(
-      onPressed: onPressed,
-      child: Text(text),
-    );
+            onPressed: onPressed,
+            child: Text(text),
+          );
   }
 }

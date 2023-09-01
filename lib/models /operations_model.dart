@@ -6,36 +6,43 @@ class OperationModel {
     required this.count,
     required this.movingBtn,
     required this.addBtn,
+    required this.deleteBtn,
     required this.operations,
   });
+
   late final String totalSumIncome;
   late final String totalSumExpense;
   late final String totalSaldo;
   late final int count;
   late final bool movingBtn;
   late final bool addBtn;
+  late final bool deleteBtn;
   late final List<Operations> operations;
 
-  OperationModel.fromJson(Map<String, dynamic> json){
+  OperationModel.fromJson(Map<String, dynamic> json) {
     totalSumIncome = json['total_sum_income'];
     totalSumExpense = json['total_sum_expense'];
     totalSaldo = json['total_saldo'];
     count = json['count'];
     movingBtn = json['moving_btn'];
     addBtn = json['add_btn'];
-    operations = List.from(json['operations']).map((e)=>Operations.fromJson(e)).toList();
+    deleteBtn = json['delete_btn'];
+    operations = List.from(json['operations'])
+        .map((e) => Operations.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['total_sum_income'] = totalSumIncome;
-    _data['total_sum_expense'] = totalSumExpense;
-    _data['total_saldo'] = totalSaldo;
-    _data['count'] = count;
-    _data['moving_btn'] = movingBtn;
-    _data['add_btn'] = addBtn;
-    _data['operations'] = operations.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['total_sum_income'] = totalSumIncome;
+    data['total_sum_expense'] = totalSumExpense;
+    data['total_saldo'] = totalSaldo;
+    data['count'] = count;
+    data['moving_btn'] = movingBtn;
+    data['add_btn'] = addBtn;
+    data['delete_btn'] = deleteBtn;
+    data['operations'] = operations.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -53,7 +60,9 @@ class Operations {
     required this.totalSum,
     required this.managerName,
     required this.createdAt,
+    required this.isDeleted,
   });
+
   late final String? invoiceUrl;
   late final int id;
   late final String billName;
@@ -66,8 +75,9 @@ class Operations {
   late final String totalSum;
   late final String managerName;
   late final String createdAt;
+  late final bool isDeleted;
 
-  Operations.fromJson(Map<String, dynamic> json){
+  Operations.fromJson(Map<String, dynamic> json) {
     invoiceUrl = json['invoice_url'];
     id = json['id'];
     billName = json['bill_name'];
@@ -80,22 +90,24 @@ class Operations {
     totalSum = json['total_sum'];
     managerName = json['manager_name'];
     createdAt = json['created_at'];
+    isDeleted = json['is_deleted'];
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['invoice_url'] = invoiceUrl;
-    _data['id'] = id;
-    _data['bill_name'] = billName;
-    _data['comments'] = comments;
-    _data['invoice_id'] = invoiceId;
-    _data['is_moving'] = isMoving;
-    _data['type_name'] = typeName;
-    _data['type'] = type;
-    _data['article_name'] = articleName;
-    _data['total_sum'] = totalSum;
-    _data['manager_name'] = managerName;
-    _data['created_at'] = createdAt;
-    return _data;
+    final data = <String, dynamic>{};
+    data['invoice_url'] = invoiceUrl;
+    data['id'] = id;
+    data['bill_name'] = billName;
+    data['comments'] = comments;
+    data['invoice_id'] = invoiceId;
+    data['is_moving'] = isMoving;
+    data['type_name'] = typeName;
+    data['type'] = type;
+    data['article_name'] = articleName;
+    data['total_sum'] = totalSum;
+    data['manager_name'] = managerName;
+    data['created_at'] = createdAt;
+    data['is_deleted'] = isDeleted;
+    return data;
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:yiwucloud/models%20/haptic_model.dart';
+import 'package:yiwucloud/screens%20/accounting_pages/accounting_bills_page.dart';
 import 'package:yiwucloud/screens%20/analytics_pages/analytics_sales_page.dart';
 import 'package:yiwucloud/screens%20/overall_attendance_page.dart';
 import 'package:yiwucloud/screens%20/analytics_pages/sales_plan_page.dart';
@@ -12,7 +13,7 @@ import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_assembling.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_taking.dart';
 import 'package:yiwucloud/util/service.dart';
-import '../screens /operations_list_screen.dart';
+import '../screens /accounting_pages/operations_list_screen.dart';
 import '../screens /service_page.dart';
 import '../screens /warehouse_pages/all_products_page.dart';
 import '../util/function_class.dart';
@@ -112,6 +113,10 @@ Widget buildServiceChild(List<Services> services) {
           } else if (service.slug == 'accounting-cashbox') {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const WarehouseSales();
+            }));
+          } else if (service.slug == 'accounting-bills') {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const AccountingBillsPage();
             }));
           }
         },

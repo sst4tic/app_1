@@ -228,13 +228,13 @@ class ListModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['name'] = name;
-    _data['w_id'] = wId;
-    _data['qty'] = qty;
-    _data['id'] = id;
-    _data['invoice_id'] = invoiceId;
-    return _data;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['w_id'] = wId;
+    data['qty'] = qty;
+    data['id'] = id;
+    data['invoice_id'] = invoiceId;
+    return data;
   }
 }
 

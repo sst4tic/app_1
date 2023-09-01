@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/function_class.dart';
-import 'barcode_scanner_page.dart';
+import 'scanner_pages/barcode_scanner_page.dart';
 import 'home_page.dart';
 import 'profile/profile_page.dart';
 

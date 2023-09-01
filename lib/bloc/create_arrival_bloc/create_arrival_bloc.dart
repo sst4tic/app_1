@@ -5,7 +5,7 @@ import 'package:yiwucloud/main.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
 import 'package:yiwucloud/util/function_class.dart';
 import '../../models /product_filter_model.dart';
-import '../../screens /arrival_details_page.dart';
+import '../../screens /warehouse_pages/arrival_details_page.dart';
 import '../../util/arrival_existence_model.dart';
 import 'create_arrival_repo.dart';
 

@@ -114,16 +114,16 @@ class ManagersList {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['full_name'] = fullName;
-    _data['channel_name'] = channelName;
-    _data['channel_id'] = channelId;
-    _data['total_sum'] = totalSum;
+    final data = <String, dynamic>{};
+    data['full_name'] = fullName;
+    data['channel_name'] = channelName;
+    data['channel_id'] = channelId;
+    data['total_sum'] = totalSum;
     // _data['total_sum_last_period'] = totalSumLastPeriod;
     // _data['total_sum_difference_percentage'] = totalSumDifferencePercentage;
-    _data['total_sum_returns'] = totalSumReturns;
-    _data['plan'] = plan;
-    _data['plan_percentage'] = planPercentage;
-    return _data;
+    data['total_sum_returns'] = totalSumReturns;
+    data['plan'] = plan;
+    data['plan_percentage'] = planPercentage;
+    return data;
   }
 }

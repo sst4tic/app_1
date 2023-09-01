@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:yiwucloud/screens%20/global_scan_screen.dart';
+import 'package:yiwucloud/screens%20/scanner_pages/global_scan_screen.dart';
 class QRScanner extends StatefulWidget {
   const QRScanner({Key? key}) : super(key: key);
 

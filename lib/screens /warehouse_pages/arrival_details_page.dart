@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiwucloud/util/styles.dart';
 
-import '../bloc/arrival_details_bloc/arrival_details_bloc.dart';
+import '../../bloc/arrival_details_bloc/arrival_details_bloc.dart';
 
 class ArrivalDetailsPage extends StatefulWidget {
   const ArrivalDetailsPage({Key? key, required this.id}) : super(key: key);

@@ -95,13 +95,16 @@ class _MovingDetailsPageState extends State<MovingDetailsPage> {
                 ),
                 ListTile(
                   trailing: const Icon(FontAwesomeIcons.codeBranch),
-                  title: Text('Хронология', style: TextStyles.editStyle.copyWith(fontSize: 14),),
+                  title: Text(
+                    'Хронология',
+                    style: TextStyles.editStyle.copyWith(fontSize: 14),
+                  ),
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailsChronology(id: widget.id, isSales: false))
-                    );
+                            builder: (context) => DetailsChronology(
+                                id: widget.id, isSales: false)));
                   },
                 ),
               ],

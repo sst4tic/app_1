@@ -15,11 +15,11 @@ class PlanViewModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['name'] = name;
-    _data['total'] = total.toJson();
-    _data['managers'] = managers.map((e)=>e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['total'] = total.toJson();
+    data['managers'] = managers.map((e)=>e.toJson()).toList();
+    return data;
   }
 }
 
@@ -40,11 +40,11 @@ class Total {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['percent'] = percent;
-    _data['totalAmount'] = totalAmount;
-    _data['salesTotal'] = salesTotal;
-    return _data;
+    final data = <String, dynamic>{};
+    data['percent'] = percent;
+    data['totalAmount'] = totalAmount;
+    data['salesTotal'] = salesTotal;
+    return data;
   }
 }
 
@@ -71,12 +71,12 @@ class Managers {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['name'] = name;
-    _data['vertLine'] = vertLine;
-    _data['percent'] = percent;
-    _data['planAmount'] = planAmount;
-    _data['salesTotal'] = salesTotal;
-    return _data;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['vertLine'] = vertLine;
+    data['percent'] = percent;
+    data['planAmount'] = planAmount;
+    data['salesTotal'] = salesTotal;
+    return data;
   }
 }

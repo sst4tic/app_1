@@ -123,7 +123,8 @@ class _MyAppState extends State<MyApp> {
                         navigatorKey: navKey,
                         debugShowCheckedModeBanner: false,
                         theme: lightTheme,
-                        home: (state is Authenticated)
+                        home:
+                        (state is Authenticated)
                             ? const MainScreen()
                             : const Login(),
                       ),

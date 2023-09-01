@@ -297,7 +297,9 @@ Widget buildProdDetails(ProductDetailsWithWarehouses product,
           ),
           child: TextButton(
             onPressed: () async {
-              final logs = Hive.box<List<ChildData>>('warehouse_list').get('warehouse_list') ?? await Func().loadWarehousesList(0);
+              final logs = Hive.box<List<ChildData>>('warehouse_list')
+                      .get('warehouse_list') ??
+                  await Func().loadWarehousesList(0);
               // ignore: use_build_context_synchronously
               Navigator.push(
                   context,

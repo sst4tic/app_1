@@ -75,7 +75,7 @@ class _DetailsChronologyState extends State<DetailsChronology> {
                 }
               );
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Text(snapshot.error.toString());
             }
             return const Center(child: CircularProgressIndicator());
           },

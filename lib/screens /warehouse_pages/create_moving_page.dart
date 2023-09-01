@@ -5,7 +5,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 
-import '../util/constants.dart';
+import '../../util/constants.dart';
 
 class CreateMovingPage extends StatefulWidget {
   const CreateMovingPage({Key? key}) : super(key: key);
@@ -15,7 +15,6 @@ class CreateMovingPage extends StatefulWidget {
 }
 
 class _CreateMovingPageState extends State<CreateMovingPage> {
-
   @override
   void initState() {
     super.initState();
@@ -31,9 +30,9 @@ class _CreateMovingPageState extends State<CreateMovingPage> {
         body: WebView(
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
-            webViewController.loadUrl('${Constants.BASE_URL_DOMAIN}service/warehouse/products/moving/addition',
-                headers: Constants.headers()
-            );
+            webViewController.loadUrl(
+                '${Constants.BASE_URL_DOMAIN}service/warehouse/products/moving/addition',
+                headers: Constants.headers());
           },
           javascriptChannels: <JavascriptChannel>{
             JavascriptChannel(
@@ -43,16 +42,19 @@ class _CreateMovingPageState extends State<CreateMovingPage> {
                     var decodedMessage = jsonDecode(message.message);
                     Future.delayed(const Duration(milliseconds: 500), () {
                       Navigator.pop(context);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MovingDetailsPage(id: decodedMessage['moving_id'], movingId: decodedMessage['moving_number'])));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MovingDetailsPage(
+                                  id: decodedMessage['moving_id'],
+                                  movingId: decodedMessage['moving_number'])));
                     });
                   }
-                }
-            ),
+                }),
           },
           onPageFinished: (finish) {
             context.loaderOverlay.hide();
           },
-        )
-    );
+        ));
   }
 }

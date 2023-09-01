@@ -32,3 +32,14 @@ class LoadMore extends OperationsListEvent {
   List<Object?> get props => [];
 }
 
+class DeleteOperation extends OperationsListEvent {
+  DeleteOperation({
+    this.completer,
+    required this.id
+  });
+
+  final Completer? completer;
+  final int id;
+
+  List<Object?> get props => [completer];
+}

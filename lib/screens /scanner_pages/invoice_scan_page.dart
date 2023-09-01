@@ -7,11 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:yiwucloud/util/box_scan_model.dart';
 import 'package:yiwucloud/util/constants.dart';
-import '../bloc/invoice_scanner_bloc/invoice_scanner_bloc.dart';
-import '../main.dart';
-import '../models /conditional_parent_widget.dart';
-import '../util/invoice_scan_model.dart';
-import '../util/styles.dart';
+import '../../bloc/invoice_scanner_bloc/invoice_scanner_bloc.dart';
+import '../../main.dart';
+import '../../models /conditional_parent_widget.dart';
+import '../../util/invoice_scan_model.dart';
+import '../../util/styles.dart';
 
 class InvoiceScanPage extends StatefulWidget {
   const InvoiceScanPage({Key? key, required this.id, required this.invoiceId})
@@ -321,7 +321,7 @@ class _InvoiceScanPageState extends State<InvoiceScanPage> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      if (scanData != '' && !isScanned) {
+      if (scanData.code != '' && !isScanned) {
         isScanned = true;
         controller.pauseCamera();
         HapticFeedback.mediumImpact();

@@ -35,9 +35,9 @@ class MovingDetailsBloc extends Bloc<MovingDetailsEvent, MovingDetailsState> {
     });
     on<MovingRedirectionEvent>((event, emit) async {
       try {
+        event.context.loaderOverlay.show();
         final position = event.act == 'wareHouseComplete' ? await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high) : null;
-        event.context.loaderOverlay.show();
         final redirection =
             await movingRepo.movingRedirection(id: event.id, act: event.act, lat: position?.latitude, lon: position?.longitude);
         event.context.loaderOverlay.hide();

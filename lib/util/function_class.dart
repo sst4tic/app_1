@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:yiwucloud/models%20/custom_dialogs_model.dart';
-import 'package:yiwucloud/screens%20/global_scan_screen.dart';
+import 'package:yiwucloud/screens%20/scanner_pages/global_scan_screen.dart';
 import 'package:yiwucloud/util/comment_model.dart';
 import 'package:yiwucloud/util/product_details.dart';
 import 'package:http/http.dart' as http;
@@ -248,13 +248,6 @@ class Func {
       } else {
         fdw.enableScanner(true);
       }
-    }
-  }
-
-  // for clear scanner
-  void clearScanner() {
-    if (Platform.isAndroid && Constants.useragent == 'TC26') {
-      onScanResultListener = fdw.onScanResult.listen((result) {});
     }
   }
 }

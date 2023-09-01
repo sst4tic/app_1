@@ -4,12 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiwucloud/models%20/build_warehouse_models.dart';
 import 'package:yiwucloud/models%20/operations_model.dart';
+import 'package:yiwucloud/models%20/search_model.dart';
 
-import '../bloc/operations_list_bloc/operations_list_bloc.dart';
-import '../models /build_product_filter.dart';
-import '../models /product_filter_model.dart';
-import '../util/function_class.dart';
-import '../util/styles.dart';
+import '../../bloc/operations_list_bloc/operations_list_bloc.dart';
+import '../../models /build_product_filter.dart';
+import '../../models /product_filter_model.dart';
+import '../../util/function_class.dart';
+import '../../util/styles.dart';
 import 'operation_creating_page.dart';
 
 class OperationsListPage extends StatefulWidget {
@@ -60,6 +61,11 @@ class _OperationsListPageState extends State<OperationsListPage> {
             return Scaffold(
               appBar: AppBar(
                 title: const Text('Операции'),
+                bottom: searchModel(
+                    context: context,
+                    onSubmitted: (val) {
+                      _operationsListBloc.add(LoadOperations(query: val));
+                    }),
                 actions: [
                   Stack(
                     children: [
@@ -108,7 +114,7 @@ class _OperationsListPageState extends State<OperationsListPage> {
                   onRefresh: () {
                     _operationsListBloc.add(LoadOperations());
                   },
-                  hasMore: state.hasMore),
+                  hasMore: state.hasMore, onDelete: (int id) => _operationsListBloc.add(DeleteOperation(id: id))),
             );
           } else if (state is OperationsListLoadingFailure) {
             return Scaffold(

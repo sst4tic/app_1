@@ -306,7 +306,7 @@ class _MultiScanPageState extends State<MultiScanPage> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      if (scanData != '' && !isScanned) {
+      if (scanData.code != '' && !isScanned) {
         isScanned = true;
         String formattedCode = formatScanData(scanData.code!);
         controller.pauseCamera();

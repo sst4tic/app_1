@@ -12,10 +12,10 @@ class OperationSalesModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['operations'] = operations.map((e)=>e.toJson()).toList();
-    _data['totalPriceBills'] = totalPriceBills;
-    return _data;
+    final data = <String, dynamic>{};
+    data['operations'] = operations.map((e)=>e.toJson()).toList();
+    data['totalPriceBills'] = totalPriceBills;
+    return data;
   }
 }
 
@@ -48,14 +48,14 @@ class Operations {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['typeName'] = typeName;
-    _data['total_sum'] = totalSum;
-    _data['billName'] = billName;
-    _data['manager_name'] = managerName;
-    _data['created_at'] = createdAt;
-    _data['btnRemove'] = btnRemove;
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['typeName'] = typeName;
+    data['total_sum'] = totalSum;
+    data['billName'] = billName;
+    data['manager_name'] = managerName;
+    data['created_at'] = createdAt;
+    data['btnRemove'] = btnRemove;
+    return data;
   }
 }

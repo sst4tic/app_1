@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiwucloud/models%20/operations_model.dart';
-import 'package:yiwucloud/screens%20/arrival_details_page.dart';
+import 'package:yiwucloud/screens%20/warehouse_pages/arrival_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/moving_details_page.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_sales_pages/warehouse_sales_details.dart';
 import 'package:yiwucloud/util/moving_model.dart';
@@ -893,6 +893,7 @@ Widget buildOperations(
     required ScrollController controller,
     required BuildContext context,
     required VoidCallback onRefresh,
+    required Function(int id) onDelete,
     required bool hasMore}) {
   final operationList = operationModel.operations;
   return RefreshIndicator(
@@ -1004,9 +1005,46 @@ Widget buildOperations(
                               fontWeight: FontWeight.bold, fontSize: 13),
                         ),
                         const Spacer(),
-                        SizedBox(
-                          height: 25.h,
-                        ),
+                        operationModel.deleteBtn && !operations.isDeleted
+                            ? ElevatedButton(
+                                onPressed: () => onDelete(operations.id),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red, elevation: 0),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    const Text(
+                                      'Удалить',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ))
+                            : operations.isDeleted
+                                ? Container(
+                                    padding: REdgeInsets.all(4),
+                                    margin: REdgeInsets.symmetric(vertical: 6),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.red,
+                                    ),
+                                    child: const Text(
+                                      'Удален',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : SizedBox(
+                                    height: 25.h,
+                                  ),
                       ],
                     ),
                     const Divider(
@@ -1095,15 +1133,17 @@ Widget buildOperations(
                     InkWell(
                       hoverColor: Colors.red,
                       onTap: () {
-                        operations.invoiceId != null ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => WareHouseSalesDetails(
-                              invoiceId: operations.invoiceId!,
-                              id: operations.id,
-                            ),
-                          ),
-                        ) : null;
+                        operations.invoiceId != null
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WareHouseSalesDetails(
+                                    invoiceId: operations.invoiceId!,
+                                    id: operations.id,
+                                  ),
+                                ),
+                              )
+                            : null;
                       },
                       child: Container(
                         padding:
@@ -1113,8 +1153,8 @@ Widget buildOperations(
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(operations.comments ?? 'Нет сообщений',
-                                style:
-                                    const TextStyle(fontWeight: FontWeight.bold)),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                     const Divider(),

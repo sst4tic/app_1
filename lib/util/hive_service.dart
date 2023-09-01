@@ -15,5 +15,6 @@ class HiveService {
     Hive.openBox<List<ChildData>>('child_data');
     Hive.openBox<List<ChildData>>('warehouse_list');
     Hive.openBox<List<ChildData>>('bills_list');
+    Hive.openBox<List<ChildData>>('bills_types');
   }
 }
