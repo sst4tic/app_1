@@ -7,6 +7,7 @@ import 'package:yiwucloud/screens%20/accounting_pages/accounting_bills_page.dart
 import 'package:yiwucloud/screens%20/analytics_pages/analytics_sales_page.dart';
 import 'package:yiwucloud/screens%20/overall_attendance_page.dart';
 import 'package:yiwucloud/screens%20/analytics_pages/sales_plan_page.dart';
+import 'package:yiwucloud/screens%20/users_list_screen.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_arrival.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/products_moving.dart';
 import 'package:yiwucloud/screens%20/warehouse_pages/warehouse_assembling.dart';
@@ -117,6 +118,11 @@ Widget buildServiceChild(List<Services> services) {
           } else if (service.slug == 'accounting-bills') {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const AccountingBillsPage();
+            }));
+          }
+          else if (service.slug == 'account-users-list-view') {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const UsersListPage();
             }));
           }
         },

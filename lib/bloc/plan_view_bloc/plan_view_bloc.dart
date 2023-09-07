@@ -22,11 +22,21 @@ class PlanViewBloc extends Bloc<PlanViewEvent, PlanViewState> {
 
     }
 
+    Future<TodaySalesModel> getTodaySales() async {
+      var url = '${Constants.API_URL_DOMAIN}action=analytics_today_sales';
+      final response =
+          await http.get(Uri.parse(url), headers: Constants.headers());
+      final body = jsonDecode(response.body);
+      final data = body['data'];
+      return TodaySalesModel.fromJson(data);
+    }
+
     on<LoadPlanView>((event, emit) async {
       try {
         emit(PlanViewLoading());
         var planView = await getPlanView(event.hash);
-        emit(PlanViewLoaded(planView: planView));
+        var todaySales = await getTodaySales();
+        emit(PlanViewLoaded(planView: planView, todaySales: todaySales));
       } catch (e) {
         emit(PlanViewLoadingFailure(exception: e));
       } finally {

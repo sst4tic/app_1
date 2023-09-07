@@ -141,7 +141,7 @@ class _AnalyticsSalesPageState extends State<AnalyticsSalesPage>
         controller: _tabController,
         children: [
           if (state.channels != null)
-            buildChannels(channelsList: state.channels!.channelsList!),
+            buildChannels(channelsList: state.channels!.channelsList!, totalSum: state.channels!.totalSum!, totalSumReturns: state.channels!.totalSumReturns!),
           (state.managers != null)
               ? buildManagers(managersList: state.managers!.managersList!)
               : const Center(child: CircularProgressIndicator()),

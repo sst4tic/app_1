@@ -80,3 +80,32 @@ class Managers {
     return data;
   }
 }
+
+class TodaySalesModel {
+  TodaySalesModel({
+    required this.salesToday,
+    required this.salesMonth,
+    required this.planPercentage,
+    required this.plans,
+  });
+  late final salesToday;
+  late final salesMonth;
+  late final double planPercentage;
+  late final plans;
+
+  TodaySalesModel.fromJson(Map<String, dynamic> json){
+    salesToday = json['sales_today'];
+    salesMonth = json['sales_month'];
+    planPercentage = json['plan_percentage'];
+    plans = json['plans'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['sales_today'] = salesToday;
+    data['sales_month'] = salesMonth;
+    data['plan_percentage'] = planPercentage;
+    data['plans'] = plans;
+    return data;
+  }
+}

@@ -247,7 +247,11 @@ class _CheckPageState extends State<CheckPage> {
                                           : null,
                                       checkColor: Colors.green[800],
                                       value: checkBoxValue,
-                                      onChanged: (bool? value) {},
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          checkBoxValue = !checkBoxValue;
+                                        });
+                                      },
                                     ),
                                   ),
                                 ],

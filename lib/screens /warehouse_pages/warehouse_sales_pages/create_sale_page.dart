@@ -15,7 +15,6 @@ class CreateSalePage extends StatefulWidget {
 }
 
 class _CreateSalePageState extends State<CreateSalePage> {
-
   @override
   void initState() {
     super.initState();
@@ -25,34 +24,38 @@ class _CreateSalePageState extends State<CreateSalePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Склад: Создание продажи'),
-      ),
-      body: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
-          webViewController.loadUrl('${Constants.BASE_URL_DOMAIN}service/warehouse/products/requests/addition',
-              headers: Constants.headers()
-          );
-        },
-        javascriptChannels: <JavascriptChannel>{
-          JavascriptChannel(
-              name: 'WebViewMessage',
-              onMessageReceived: (JavascriptMessage message) {
-                if (message.message != '') {
-                  var decodedMessage = jsonDecode(message.message);
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => WareHouseSalesDetails(id: decodedMessage['invoice_id'], invoiceId: decodedMessage['invoice_number'])));
-                  });
-                }
-              }
-          ),
-        },
-        onPageFinished: (finish) {
-          context.loaderOverlay.hide();
-        },
-      )
-    );
+        appBar: AppBar(
+          title: const Text('Склад: Создание продажи'),
+        ),
+        body: WebView(
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (WebViewController webViewController) {
+            webViewController.loadUrl(
+                '${Constants.BASE_URL_DOMAIN}service/warehouse/products/requests/addition',
+                headers: Constants.headers());
+          },
+          javascriptChannels: <JavascriptChannel>{
+            JavascriptChannel(
+                name: 'WebViewMessage',
+                onMessageReceived: (JavascriptMessage message) {
+                  if (message.message != '') {
+                    var decodedMessage = jsonDecode(message.message);
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WareHouseSalesDetails(
+                                  id: decodedMessage['invoice_id'],
+                                  invoiceId:
+                                      decodedMessage['invoice_number'])));
+                    });
+                  }
+                }),
+          },
+          onPageFinished: (finish) {
+            context.loaderOverlay.hide();
+          },
+        ));
   }
 }

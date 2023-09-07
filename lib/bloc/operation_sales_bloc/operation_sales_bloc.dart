@@ -43,12 +43,11 @@ class OperationSalesBloc
       return body;
     }
 
-    Future deleteOperation(
-        {required int id, required invoiceId}) async {
+    Future deleteOperation({required int id, required invoiceId}) async {
       var url =
           '${Constants.API_URL_DOMAIN}action=request_bills_delete&rid=$invoiceId&oid=$id';
       final response =
-      await http.get(Uri.parse(url), headers: Constants.headers());
+          await http.get(Uri.parse(url), headers: Constants.headers());
       final body = jsonDecode(response.body);
       return body;
     }
@@ -181,12 +180,11 @@ class OperationSalesBloc
                         text: 'Да',
                         onPressed: () async {
                           final resp = await deleteOperation(
-                              id: event.id,
-                              invoiceId: event.invoiceId);
+                              id: event.id, invoiceId: event.invoiceId);
                           Navigator.of(context).pop();
                           // ignore: use_build_context_synchronously
-                          Func().showSnackbar(
-                              navKey.currentContext!, resp['message'], resp['success']);
+                          Func().showSnackbar(navKey.currentContext!,
+                              resp['message'], resp['success']);
                           add(LoadOperationSales(id: event.invoiceId));
                         })
                   ]);

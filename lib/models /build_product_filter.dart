@@ -66,6 +66,11 @@ showProductFilter(
                             innerSetState(() {
                               filterData = data;
                             });
+                          } else if (type == 'users') {
+                            var data = await Func().getUserFilters();
+                            innerSetState(() {
+                              filterData = data;
+                            });
                           }
                         },
                         child: const Text(

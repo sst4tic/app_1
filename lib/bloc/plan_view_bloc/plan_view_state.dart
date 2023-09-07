@@ -17,9 +17,11 @@ class PlanViewLoading extends PlanViewState {
 class PlanViewLoaded extends PlanViewState {
   PlanViewLoaded({
     required this.planView,
+    required this.todaySales,
   });
 
   final List<PlanViewModel> planView;
+  final TodaySalesModel todaySales;
 
   List<Object?> get props => [planView];
 }

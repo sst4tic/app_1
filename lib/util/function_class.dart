@@ -221,6 +221,20 @@ class Func {
     return data;
   }
 
+  // func for getting user filters
+  Future<List<ProductFilterModel>> getUserFilters() async {
+    var url = '${Constants.API_URL_DOMAIN}action=filters_list_users';
+    final response =
+    await http.get(Uri.parse(url), headers: Constants.headers());
+    final body = jsonDecode(response.body);
+    final data = body['data']
+        .map<ProductFilterModel>((json) => ProductFilterModel.fromJson(json))
+        .toList();
+    await Hive.box<List<ProductFilterModel>>('product_filter')
+        .put('product_filter', data);
+    return data;
+  }
+
   // for zebra scanner
   void initGlobalScanner() {
     if (Platform.isAndroid && Constants.useragent == 'TC26') {

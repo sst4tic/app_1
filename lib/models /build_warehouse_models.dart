@@ -1139,7 +1139,7 @@ Widget buildOperations(
                                 MaterialPageRoute(
                                   builder: (context) => WareHouseSalesDetails(
                                     invoiceId: operations.invoiceId!,
-                                    id: operations.id,
+                                    id: int.parse(operations.invoiceId!),
                                   ),
                                 ),
                               )
