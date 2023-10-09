@@ -119,8 +119,7 @@ Widget buildServiceChild(List<Services> services) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const AccountingBillsPage();
             }));
-          }
-          else if (service.slug == 'account-users-list-view') {
+          } else if (service.slug == 'account-users-list-view') {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const UsersListPage();
             }));
